@@ -44,13 +44,13 @@ loadScripts(document, 'script');</script>
 <ul class="sub-nav-list">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor-summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
 </ul>
 <ul class="sub-nav-list">
 <li>Detail:&nbsp;</li>
-<li><a href="#field-detail">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-detail">Method</a></li>
 </ul>
@@ -80,21 +80,6 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="summary">
 <ul class="summary-list">
-<!-- =========== FIELD SUMMARY =========== -->
-<li>
-<section class="field-summary" id="field-summary">
-<h2>Field Summary</h2>
-<div class="caption"><span>Fields</span></div>
-<div class="summary-table three-column-summary">
-<div class="table-header col-first">Modifier and Type</div>
-<div class="table-header col-second">Field</div>
-<div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>protected static <a href="TargetPose.html" title="enum class in frc.robot.subsystems.controls.drive">TargetPose</a></code></div>
-<div class="col-second even-row-color"><code><a href="#chosenTarget" class="member-name-link">chosenTarget</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-</div>
-</section>
-</li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <li>
 <section class="constructor-summary" id="constructor-summary">
@@ -120,15 +105,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#setupAssistantController(frc.robot.subsystems.interfaces.Drive,edu.wpi.first.wpilibj2.command.button.CommandXboxController)" class="member-name-link">setupAssistantController</a><wbr>(<a href="../../interfaces/Drive.html" title="interface in frc.robot.subsystems.interfaces">Drive</a>&nbsp;drive,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#setupController(frc.robot.subsystems.interfaces.Drive,edu.wpi.first.wpilibj2.command.button.CommandXboxController)" class="member-name-link">setupController</a><wbr>(<a href="../../interfaces/Drive.html" title="interface in frc.robot.subsystems.interfaces">Drive</a>&nbsp;drive,
  edu.wpi.first.wpilibj2.command.button.CommandXboxController&nbsp;controller)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#setupController(frc.robot.subsystems.interfaces.Drive,frc.robot.subsystems.interfaces.Elevator,frc.robot.subsystems.interfaces.Arm,edu.wpi.first.wpilibj2.command.button.CommandXboxController)" class="member-name-link">setupController</a><wbr>(<a href="../../interfaces/Drive.html" title="interface in frc.robot.subsystems.interfaces">Drive</a>&nbsp;drive,
- <a href="../../interfaces/Elevator.html" title="interface in frc.robot.subsystems.interfaces">Elevator</a>&nbsp;elevator,
- <a href="../../interfaces/Arm.html" title="interface in frc.robot.subsystems.interfaces">Arm</a>&nbsp;arm,
- edu.wpi.first.wpilibj2.command.button.CommandXboxController&nbsp;controller)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -141,20 +120,6 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="details">
 <ul class="details-list">
-<!-- ============ FIELD DETAIL =========== -->
-<li>
-<section class="field-details" id="field-detail">
-<h2>Field Details</h2>
-<ul class="member-list">
-<li>
-<section class="detail" id="chosenTarget">
-<h3>chosenTarget</h3>
-<div class="member-signature"><span class="modifiers">protected static</span>&nbsp;<span class="return-type"><a href="TargetPose.html" title="enum class in frc.robot.subsystems.controls.drive">TargetPose</a></span>&nbsp;<span class="element-name">chosenTarget</span></div>
-</section>
-</li>
-</ul>
-</section>
-</li>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <li>
 <section class="constructor-details" id="constructor-detail">
@@ -175,18 +140,9 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="setupController(frc.robot.subsystems.interfaces.Drive,frc.robot.subsystems.interfaces.Elevator,frc.robot.subsystems.interfaces.Arm,edu.wpi.first.wpilibj2.command.button.CommandXboxController)">
+<section class="detail" id="setupController(frc.robot.subsystems.interfaces.Drive,edu.wpi.first.wpilibj2.command.button.CommandXboxController)">
 <h3>setupController</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setupController</span><wbr><span class="parameters">(<a href="../../interfaces/Drive.html" title="interface in frc.robot.subsystems.interfaces">Drive</a>&nbsp;drive,
- <a href="../../interfaces/Elevator.html" title="interface in frc.robot.subsystems.interfaces">Elevator</a>&nbsp;elevator,
- <a href="../../interfaces/Arm.html" title="interface in frc.robot.subsystems.interfaces">Arm</a>&nbsp;arm,
- edu.wpi.first.wpilibj2.command.button.CommandXboxController&nbsp;controller)</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="setupAssistantController(frc.robot.subsystems.interfaces.Drive,edu.wpi.first.wpilibj2.command.button.CommandXboxController)">
-<h3>setupAssistantController</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setupAssistantController</span><wbr><span class="parameters">(<a href="../../interfaces/Drive.html" title="interface in frc.robot.subsystems.interfaces">Drive</a>&nbsp;drive,
  edu.wpi.first.wpilibj2.command.button.CommandXboxController&nbsp;controller)</span></div>
 </section>
 </li>

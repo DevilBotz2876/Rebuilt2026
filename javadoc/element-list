@@ -5,11 +5,10 @@ frc.robot.commands.common.elevator
 frc.robot.commands.common.flywheel
 frc.robot.commands.common.motor
 frc.robot.commands.driveAssist
-frc.robot.config.game.reefscape2025
+frc.robot.config.game.Rebuilt2026
 frc.robot.io.implementations.motor
 frc.robot.io.interfaces
 frc.robot.subsystems.controls.arm
-frc.robot.subsystems.controls.combination
 frc.robot.subsystems.controls.drive
 frc.robot.subsystems.controls.elevator
 frc.robot.subsystems.controls.flywheel
