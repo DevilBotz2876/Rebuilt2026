@@ -29,7 +29,7 @@ The code uses Java WPILib and the [WPILib command-based](https://docs.wpilib.org
     1. Start WPILib VSCode
     1. Clone Repository
     1. Login to GitHub Account (if prompted)
-    1. Repo: https://github.com/DevilBotz2876/XxxYYYY (where Xxx is the name of the FRC game and YYYY is the year E.g. "Reefscape2025"
+    1. Repo: https://github.com/DevilBotz2876/XxxYYYY (where Xxx is the name of the FRC game and YYYY is the year E.g. "Rebuilt2026")
       * Note: The initial compilation will take a while because of all the dependencies that need to be downloaded. If all works well, in the Terminal view at the bottom, you should see:
 1. Simulating the Code
    1. Starting a Simulation
@@ -86,7 +86,7 @@ integration process.
             * ...
       * [`config/`](src/main/java/frc/robot/config/): The config directory is used to support multiple robot versions using the same code base.
          * `game/`(src/main/java/frc/robot/config/game/): Each game will generally have it's own robot configuration.
-            * `reefscape2025/`: game-specific robot configurations are stored here.
+            * `Rebuilt2026/`: game-specific robot configurations are stored here.
                * `RobotConfig.java`: Defines all of the subsystems and controls required for a "robot". Each robot _variant_ extends RobotConfig and instantiates the subsystems and overrides constants as needed. Implements simulation stubs for all subsystems.
               * `RobotConfigPhoenix..java`: Robot config for the "Phoenix" robot that instantiates specific subsystems (e.g. drivetrain and vision) using specific hardware IO instances. Everything else not explicitly overrideen will use the default _stub _versions.
                * ...
