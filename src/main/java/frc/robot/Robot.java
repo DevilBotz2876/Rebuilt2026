@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.config.game.reefscape2025.*;
+import frc.robot.config.game.Rebuilt2026.*;
 import frc.robot.util.DevilBotState;
 import frc.robot.util.DevilBotState.State;
 import org.littletonrobotics.junction.LoggedRobot;
