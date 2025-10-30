@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.config.game.reefscape2025.*;
+import frc.robot.config.game.Rebuilt2026.*;
 import frc.robot.util.Elastic;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -44,20 +44,20 @@ public class RobotContainer {
             .withDescription("Loading Settings for Robot Name = " + robotName));
     switch (robotName) {
       case "PHOENIX":
-        robotConfig = new RobotConfigPhoenix();
-        break;
+        // robotConfig = new RobotConfigPhoenix();
+        // break;
       case "NEMO":
-        robotConfig = new RobotConfigNemo();
-        break;
-      case "STUB":
-        robotConfig = new RobotConfigStub();
-        break;
+        // robotConfig = new RobotConfigNemo();
+        // break;
       case "COMP":
-        robotConfig = new RobotConfigComp();
-        break;
+        // robotConfig = new RobotConfigComp();
+        // break;
+      case "STUB":
+        // robotConfig = new RobotConfigStub();
+        // break;
       default:
-        DriverStation.reportError("failed to determine robot name.  Default to NEMO", true);
-        robotConfig = new RobotConfigComp();
+        DriverStation.reportError("failed to determine robot name.  Default to STUB", true);
+        robotConfig = new RobotConfigStub();
     }
 
     robotConfig.configureBindings();
