@@ -47,6 +47,7 @@ public class RobotConfig {
   public ElevatorMotorSubsystem elevator;
   public FlywheelMotorSubsystem flywheel;
   public SendableChooser<Command> autoChooser;
+  public SimpleMotorSubsystem simpleMotor;
   // TODO: Add VisionSubsystem Declaration
 
   // Controls
@@ -67,7 +68,8 @@ public class RobotConfig {
     }
     // arm = createArm(robotProperties, "myArm");
     // elevator = createElevator(robotProperties, "myElevator");
-    flywheel = createFlywheel(robotProperties, "myFlywheel");
+    // flywheel = createFlywheel(robotProperties, "myFlywheel");
+    simpleMotor = createSimpleMotor(robotProperties, "mySimpleMotor");
   }
 
   public RobotConfig(boolean stubDrive, boolean stubAuto, boolean stubVision) {
@@ -125,7 +127,7 @@ public class RobotConfig {
 
     simpleMotorSettings.targetPositionToleranceInRad =
         Double.parseDouble(
-            robotProperties.getProperty(simpleMotorSettingsPrefix + ".targetVelocityToleranceInRPMs"));
+            robotProperties.getProperty(simpleMotorSettingsPrefix + ".targetPositionToleranceInRad"));
     simpleMotorSettings.maxPositionInRads =
         Double.parseDouble(
             robotProperties.getProperty(simpleMotorSettingsPrefix + ".maxPositionInRads"));
