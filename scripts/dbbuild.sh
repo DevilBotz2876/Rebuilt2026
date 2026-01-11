@@ -1,0 +1,1 @@
+sh gradlew DBBuild-$1
