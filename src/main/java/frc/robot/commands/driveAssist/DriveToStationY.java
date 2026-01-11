@@ -4,8 +4,8 @@
 
 package frc.robot.commands.driveAssist;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.path.PathConstraints;
+// import com.pathplanner.lib.auto.AutoBuilder;
+// import com.pathplanner.lib.path.PathConstraints;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -32,13 +32,13 @@ public class DriveToStationY extends Command {
   @Override
   public void execute() {
 
-    PathConstraints constraints = new PathConstraints(4.2672, 9.4664784, 2 * Math.PI, 4 * Math.PI);
-    AutoBuilder.pathfindToPose(
-        targetPose,
-        constraints,
-        0.0 // Goal end velocity in meters/sec// Rotation delay distance in meters. This is how
-        // far the robot should travel before attempting to rotate.
-        );
+    // PathConstraints constraints = new PathConstraints(4.2672, 9.4664784, 2 * Math.PI, 4 * Math.PI);
+    // AutoBuilder.pathfindToPose(
+        // targetPose,
+        // constraints,
+        // 0.0 // Goal end velocity in meters/sec// Rotation delay distance in meters. This is how
+        // // far the robot should travel before attempting to rotate.
+        // );
   }
 
   // Called once the command ends or is interrupted.
