@@ -108,7 +108,7 @@ public class RobotConfig {
 
   private SimpleMotorSubsystem createSimpleMotor(Properties robotProperties, String name) {
     SimpleMotorSettings simpleMotorSettings = new SimpleMotorSettings();
-    String simpleMotorSettingsPrefix = name + ".simplemotorsettings";
+    String simpleMotorSettingsPrefix = name + ".simpleMotorSettings";
 
     simpleMotorSettings.color =
         new Color8Bit(
