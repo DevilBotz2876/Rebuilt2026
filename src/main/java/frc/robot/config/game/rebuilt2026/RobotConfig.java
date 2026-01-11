@@ -22,6 +22,7 @@ import frc.robot.io.implementations.motor.MotorIOElevatorStub;
 import frc.robot.io.implementations.motor.MotorIOFlywheelStub;
 import frc.robot.io.implementations.motor.MotorIOSparkMax;
 import frc.robot.io.implementations.motor.MotorIOSparkMax.SparkMaxSettings;
+import frc.robot.io.implementations.motor.MotorIOStub;
 import frc.robot.io.implementations.motor.MotorIOTalonFx;
 import frc.robot.io.implementations.motor.MotorIOTalonFx.TalonFxSettings;
 import frc.robot.subsystems.controls.drive.DriveControls;
@@ -31,9 +32,12 @@ import frc.robot.subsystems.implementations.drive.DriveSwerveCTRE;
 import frc.robot.subsystems.implementations.motor.ArmMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.ElevatorMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.FlywheelMotorSubsystem;
+import frc.robot.subsystems.implementations.motor.SimpleMotorSubsystem;
 import frc.robot.subsystems.interfaces.Arm.ArmSettings;
 import frc.robot.subsystems.interfaces.Elevator.ElevatorSettings;
 import frc.robot.subsystems.interfaces.Flywheel.FlywheelSettings;
+import frc.robot.subsystems.interfaces.SimpleMotor.SimpleMotorSettings;
+
 import java.util.Properties;
 
 /* Put all constants here with reasonable defaults */
@@ -98,6 +102,76 @@ public class RobotConfig {
     FlywheelControls.setupController(flywheel, mainController);
     if (null != this.autoChooser) {
       SmartDashboard.putData("Autonomous", this.autoChooser);
+    }
+  }
+
+
+  private SimpleMotorSubsystem createSimpleMotor(Properties robotProperties, String name) {
+    SimpleMotorSettings simpleMotorSettings = new SimpleMotorSettings();
+    String simpleMotorSettingsPrefix = name + ".simplemotorsettings";
+
+    simpleMotorSettings.color =
+        new Color8Bit(
+            Integer.parseInt(robotProperties.getProperty(simpleMotorSettingsPrefix + ".color.red")),
+            Integer.parseInt(robotProperties.getProperty(simpleMotorSettingsPrefix + ".color.green")),
+            Integer.parseInt(robotProperties.getProperty(simpleMotorSettingsPrefix + ".color.blue")));
+
+    simpleMotorSettings.maxVelocityInRadiansPerSecond =
+        Double.parseDouble(
+            robotProperties.getProperty(simpleMotorSettingsPrefix + ".maxVelocityInRadiansPerSecond"));
+    simpleMotorSettings.maxAccelerationInRadiansPerSecondSquared =
+        Double.parseDouble(
+            robotProperties.getProperty(simpleMotorSettingsPrefix + ".maxAccelerationInRadiansPerSecondSquared"));
+
+    simpleMotorSettings.targetPositionToleranceInRad =
+        Double.parseDouble(
+            robotProperties.getProperty(simpleMotorSettingsPrefix + ".targetVelocityToleranceInRPMs"));
+    simpleMotorSettings.maxPositionInRads =
+        Double.parseDouble(
+            robotProperties.getProperty(simpleMotorSettingsPrefix + ".maxPositionInRads"));
+    simpleMotorSettings.minPositionInRads =
+        Double.parseDouble(
+            robotProperties.getProperty(simpleMotorSettingsPrefix + ".minPositionInRads"));
+    simpleMotorSettings.startingPositionInRads = 
+        Double.parseDouble(
+            robotProperties.getProperty(simpleMotorSettingsPrefix + ".startingPositionInRads"));
+    simpleMotorSettings.moiKgMetersSquared =
+        Double.parseDouble(
+            robotProperties.getProperty(simpleMotorSettingsPrefix + ".moiKgMetersSquared"));
+    
+    simpleMotorSettings.feedforward =
+        new SimpleMotorFeedforward(
+            Double.parseDouble(
+                robotProperties.getProperty(simpleMotorSettingsPrefix + ".feedforward.ks")),
+            Double.parseDouble(
+                robotProperties.getProperty(simpleMotorSettingsPrefix + ".feedforward.kv")),
+            Double.parseDouble(
+                robotProperties.getProperty(simpleMotorSettingsPrefix + ".feedforward.ka", "0.0")));
+
+    simpleMotorSettings.motor =
+        getDCMotor(robotProperties.getProperty(simpleMotorSettingsPrefix + ".DCMotor"));
+
+    MotorIOBaseSettings IOSettings = getMotorIOBaseSettings(robotProperties, name);
+
+    switch (robotProperties.getProperty(name + ".motor.motorController")) {
+      case "talonFX":
+        TalonFxSettings talonSettings = new TalonFxSettings();
+        talonSettings.canId =
+            Integer.parseInt(robotProperties.getProperty(name + ".talonFX.setting.id"));
+        return new SimpleMotorSubsystem(
+            new MotorIOTalonFx(IOSettings, talonSettings), name, simpleMotorSettings);
+
+      case "sparkMax":
+        SparkMaxSettings sparkMaxSettings = new SparkMaxSettings();
+        sparkMaxSettings.canId =
+            Integer.parseInt(robotProperties.getProperty(name + ".sparkMax.setting.id"));
+        return new SimpleMotorSubsystem(
+            new MotorIOSparkMax(IOSettings, sparkMaxSettings), name, simpleMotorSettings);
+
+      case "sim":
+      default:
+        return new SimpleMotorSubsystem(
+            new MotorIOStub(IOSettings, simpleMotorSettings), name, simpleMotorSettings);
     }
   }
 
