@@ -30,7 +30,7 @@ public class RobotContainer {
     try {
       String configPath = "";
       if (Robot.isReal()){
-        configPath = "~/lvuser/deploy";
+        configPath = "/home/lvuser/deploy";
       } else {
         configPath = "src/main/deploy";
       }
