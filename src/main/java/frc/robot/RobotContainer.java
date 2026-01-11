@@ -28,7 +28,13 @@ public class RobotContainer {
 
     // get configuration from robot_config.properties
     try {
-      FileReader propertiesFile = new FileReader("src/main/deploy/robot_config.properties");
+      String configPath = "";
+      if (Robot.isReal()){
+        configPath = "~/lvuser/deploy";
+      } else {
+        configPath = "src/main/deploy";
+      }
+      FileReader propertiesFile = new FileReader(configPath + "/robot_config.properties");
       robotProperties.load(propertiesFile);
       // System.out.println(simulationProperties.toString());
       propertiesFile.close();
