@@ -42,19 +42,9 @@ public class RobotContainer {
       System.out.println(e);
     }
 
-    RobotConfig robotConfig = new RobotConfig();
-    String robotName = robotProperties.getProperty("robot.name", "UNKNOWN");
-    String robotDrive = robotProperties.getProperty("robot.drive", "UNKNOWN");
-
+    String robotName = robotProperties.getProperty("robot.name", "UNKNOWN");    
+    RobotConfig robotConfig = new RobotConfig(robotProperties);
     // System.out.println(robotName + ", " + robotDrive);
-
-    if (robotDrive.equals("ctre")) {
-      robotConfig.drive = new DriveSwerveCTRE(new TunerConstants(robotProperties));
-    }
-
-    if (Robot.isSimulation()) {
-      robotConfig.drive.setPose(new Pose2d(new Translation2d(1, 1), new Rotation2d()));
-    }
 
     try (FileInputStream input = new FileInputStream("simulation.properties")) {
       robotProperties.load(input);
