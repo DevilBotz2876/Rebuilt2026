@@ -3,6 +3,7 @@ package frc.robot.io.interfaces;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.swerve.SwerveModule;
+// TODO: Add Pathplanner back
 // import com.pathplanner.lib.util.FlippingUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -59,6 +60,7 @@ public class DriveIO {
     inputs.poseX = inputs.pose.getTranslation().getX();
     inputs.poseY = inputs.pose.getTranslation().getY();
     inputs.poseRotInDegrees = inputs.pose.getRotation().getDegrees();
+    // TODO:Flip Pose
     // inputs.flippedPose = FlippingUtil.flipFieldPose(inputs.pose);
     // inputs.flippedPoseX = inputs.flippedPose.getTranslation().getX();
     // inputs.flippedPoseY = inputs.flippedPose.getTranslation().getY();
