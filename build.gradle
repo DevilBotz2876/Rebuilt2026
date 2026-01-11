@@ -1,6 +1,8 @@
 plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2026.1.1"
+    id "com.diffplug.spotless" version "8.1.0"
+    id "com.peterabeles.gversion" version "1.10.2"
 }
 
 java {
@@ -148,3 +150,59 @@ tasks.register("clean-profiles"){
         include '*.properties'
     }
 }
+
+// START: Setup spotless
+
+// Configure the spotless settings for the various file types (java, gradle, xml, etc)
+spotless {
+    java {
+        target fileTree('.') {
+            include '**/*.java'
+            exclude '**/build/**', '**/build-*/**'
+        }
+        toggleOffOn()
+        googleJavaFormat()
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+    groovyGradle {
+        target fileTree('.') {
+            include '**/*.gradle'
+            exclude '**/build/**', '**/build-*/**'
+        }
+        greclipse()
+        indentWithSpaces(4)
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+    format 'xml', {
+        target fileTree('.') {
+            include '**/*.xml'
+            exclude '**/build/**', '**/build-*/**'
+        }
+        eclipseWtp('xml')
+        trimTrailingWhitespace()
+        indentWithSpaces(2)
+        endWithNewline()
+    }
+    format 'misc', {
+        target fileTree('.') {
+            include '**/*.md', '**/.gitignore'
+            exclude '**/build/**', '**/build-*/**'
+        }
+        trimTrailingWhitespace()
+        indentWithSpaces(2)
+        endWithNewline()
+    }
+}
+
+// Disable automatics spotless execution during a build
+// By default, spotless is configured to run during a build. This is generally undesirable because we don't want formatting errors to cause build failures and hinder developent, debugging, and testing. We generally want to run and apply the spotless changes prior to committing and/or pushing the code to a source code repository (e.g. git)
+if (!('spotlessCheck' in gradle.startParameter.taskNames)) {
+    spotlessJavaCheck.enabled = false
+    spotlessGroovyGradleCheck.enabled = false
+    spotlessXmlCheck.enabled = false
+    spotlessMiscCheck.enabled = false
+}
+// END: Setup spotless
