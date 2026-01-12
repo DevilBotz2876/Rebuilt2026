@@ -26,12 +26,14 @@ import frc.robot.io.implementations.motor.MotorIOStub;
 import frc.robot.io.implementations.motor.MotorIOTalonFx;
 import frc.robot.io.implementations.motor.MotorIOTalonFx.TalonFxSettings;
 import frc.robot.subsystems.controls.drive.DriveControls;
+import frc.robot.subsystems.controls.flywheel.FlywheelPrototypeControls;
 import frc.robot.subsystems.implementations.drive.DriveBase;
 import frc.robot.subsystems.implementations.drive.DriveSwerveCTRE;
 import frc.robot.subsystems.implementations.motor.ArmMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.ElevatorMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.FlywheelMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.SimpleMotorSubsystem;
+import frc.robot.subsystems.interfaces.Flywheel;
 import frc.robot.subsystems.interfaces.Arm.ArmSettings;
 import frc.robot.subsystems.interfaces.Elevator.ElevatorSettings;
 import frc.robot.subsystems.interfaces.Flywheel.FlywheelSettings;
@@ -41,11 +43,9 @@ import java.util.Properties;
 /* Put all constants here with reasonable defaults */
 public class RobotConfig {
   public DriveBase drive;
-  public ArmMotorSubsystem arm;
-  public ElevatorMotorSubsystem elevator;
-  public FlywheelMotorSubsystem flywheel;
   public SendableChooser<Command> autoChooser;
-  public SimpleMotorSubsystem simpleMotor;
+  public FlywheelMotorSubsystem prototypeMotor1;
+  public FlywheelMotorSubsystem prototypeMotor2;
   // TODO: Add VisionSubsystem Declaration
 
   // Controls
@@ -64,10 +64,8 @@ public class RobotConfig {
     if (Robot.isSimulation()) {
       drive.setPose(new Pose2d(new Translation2d(1, 1), new Rotation2d()));
     }
-    // arm = createArm(robotProperties, "myArm");
-    // elevator = createElevator(robotProperties, "myElevator");
-    // flywheel = createFlywheel(robotProperties, "myFlywheel");
-    simpleMotor = createSimpleMotor(robotProperties, "mySimpleMotor");
+    prototypeMotor1 = createFlywheel(robotProperties, "prototypeMotor1");
+    prototypeMotor2 = createFlywheel(robotProperties, "prototypeMotor2");
   }
 
   public RobotConfig(boolean stubDrive, boolean stubAuto, boolean stubVision) {
@@ -97,9 +95,8 @@ public class RobotConfig {
     DriveControls.setupController(drive, mainController);
     // Send vision-based odometry measurements to drive's odometry calculations
     // vision.setVisionMeasurementConsumer(drive::addVisionMeasurement);
-    // ArmControls.setupController(arm, mainController);
-    // ElevatorControls.setupController(elevator, mainController);
-    // FlywheelControls.setupController(flywheel, mainController);
+    FlywheelPrototypeControls.setupSmartDashboardControl(prototypeMotor1);
+     FlywheelPrototypeControls.setupSmartDashboardControl(prototypeMotor2);
     if (null != this.autoChooser) {
       SmartDashboard.putData("Autonomous", this.autoChooser);
     }
