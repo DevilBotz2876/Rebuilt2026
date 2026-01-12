@@ -26,7 +26,6 @@ import frc.robot.io.implementations.motor.MotorIOStub;
 import frc.robot.io.implementations.motor.MotorIOTalonFx;
 import frc.robot.io.implementations.motor.MotorIOTalonFx.TalonFxSettings;
 import frc.robot.subsystems.controls.drive.DriveControls;
-import frc.robot.subsystems.controls.flywheel.FlywheelControls;
 import frc.robot.subsystems.implementations.drive.DriveBase;
 import frc.robot.subsystems.implementations.drive.DriveSwerveCTRE;
 import frc.robot.subsystems.implementations.motor.ArmMotorSubsystem;
@@ -37,7 +36,6 @@ import frc.robot.subsystems.interfaces.Arm.ArmSettings;
 import frc.robot.subsystems.interfaces.Elevator.ElevatorSettings;
 import frc.robot.subsystems.interfaces.Flywheel.FlywheelSettings;
 import frc.robot.subsystems.interfaces.SimpleMotor.SimpleMotorSettings;
-
 import java.util.Properties;
 
 /* Put all constants here with reasonable defaults */
@@ -107,7 +105,6 @@ public class RobotConfig {
     }
   }
 
-
   private SimpleMotorSubsystem createSimpleMotor(Properties robotProperties, String name) {
     SimpleMotorSettings simpleMotorSettings = new SimpleMotorSettings();
     String simpleMotorSettingsPrefix = name + ".simpleMotorSettings";
@@ -115,32 +112,37 @@ public class RobotConfig {
     simpleMotorSettings.color =
         new Color8Bit(
             Integer.parseInt(robotProperties.getProperty(simpleMotorSettingsPrefix + ".color.red")),
-            Integer.parseInt(robotProperties.getProperty(simpleMotorSettingsPrefix + ".color.green")),
-            Integer.parseInt(robotProperties.getProperty(simpleMotorSettingsPrefix + ".color.blue")));
+            Integer.parseInt(
+                robotProperties.getProperty(simpleMotorSettingsPrefix + ".color.green")),
+            Integer.parseInt(
+                robotProperties.getProperty(simpleMotorSettingsPrefix + ".color.blue")));
 
     simpleMotorSettings.maxVelocityInRadiansPerSecond =
         Double.parseDouble(
-            robotProperties.getProperty(simpleMotorSettingsPrefix + ".maxVelocityInRadiansPerSecond"));
+            robotProperties.getProperty(
+                simpleMotorSettingsPrefix + ".maxVelocityInRadiansPerSecond"));
     simpleMotorSettings.maxAccelerationInRadiansPerSecondSquared =
         Double.parseDouble(
-            robotProperties.getProperty(simpleMotorSettingsPrefix + ".maxAccelerationInRadiansPerSecondSquared"));
+            robotProperties.getProperty(
+                simpleMotorSettingsPrefix + ".maxAccelerationInRadiansPerSecondSquared"));
 
     simpleMotorSettings.targetPositionToleranceInRad =
         Double.parseDouble(
-            robotProperties.getProperty(simpleMotorSettingsPrefix + ".targetPositionToleranceInRad"));
+            robotProperties.getProperty(
+                simpleMotorSettingsPrefix + ".targetPositionToleranceInRad"));
     simpleMotorSettings.maxPositionInRads =
         Double.parseDouble(
             robotProperties.getProperty(simpleMotorSettingsPrefix + ".maxPositionInRads"));
     simpleMotorSettings.minPositionInRads =
         Double.parseDouble(
             robotProperties.getProperty(simpleMotorSettingsPrefix + ".minPositionInRads"));
-    simpleMotorSettings.startingPositionInRads = 
+    simpleMotorSettings.startingPositionInRads =
         Double.parseDouble(
             robotProperties.getProperty(simpleMotorSettingsPrefix + ".startingPositionInRads"));
     simpleMotorSettings.moiKgMetersSquared =
         Double.parseDouble(
             robotProperties.getProperty(simpleMotorSettingsPrefix + ".moiKgMetersSquared"));
-    
+
     simpleMotorSettings.feedforward =
         new SimpleMotorFeedforward(
             Double.parseDouble(
@@ -392,7 +394,7 @@ public class RobotConfig {
     switch (motor) {
       case "KrakenX60":
         return DCMotor.getKrakenX60(1);
-        // more motors if needed
+      // more motors if needed
       default:
         return DCMotor.getKrakenX60(1);
     }
