@@ -101,7 +101,7 @@ public class RobotConfig {
     // vision.setVisionMeasurementConsumer(drive::addVisionMeasurement);
     // ArmControls.setupController(arm, mainController);
     // ElevatorControls.setupController(elevator, mainController);
-    FlywheelControls.setupController(flywheel, mainController);
+    // FlywheelControls.setupController(flywheel, mainController);
     if (null != this.autoChooser) {
       SmartDashboard.putData("Autonomous", this.autoChooser);
     }
