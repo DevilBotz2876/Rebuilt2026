@@ -96,7 +96,9 @@ public class RobotConfig {
     // Send vision-based odometry measurements to drive's odometry calculations
     // vision.setVisionMeasurementConsumer(drive::addVisionMeasurement);
     FlywheelPrototypeControls.setupSmartDashboardControl(prototypeMotor1);
-     FlywheelPrototypeControls.setupSmartDashboardControl(prototypeMotor2);
+    FlywheelPrototypeControls.setupSmartDashboardControl(prototypeMotor2);
+    FlywheelPrototypeControls.setupController(prototypeMotor1, mainController);
+    FlywheelPrototypeControls.setupControllerTwo(prototypeMotor2, mainController);
     if (null != this.autoChooser) {
       SmartDashboard.putData("Autonomous", this.autoChooser);
     }
