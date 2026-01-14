@@ -10,7 +10,8 @@ public class FlywheelToVelocity extends Command {
   Flywheel flywheel;
   DoubleSupplier velocityRPM;
   double targetVelocity;
-  /** Sets speed of a flywheel in RPM*/
+
+  /** Sets speed of a flywheel in RPM */
   public FlywheelToVelocity(Flywheel flywheel, DoubleSupplier velocityRPM) {
     this.flywheel = flywheel;
     this.velocityRPM = velocityRPM;
@@ -20,15 +21,20 @@ public class FlywheelToVelocity extends Command {
 
   @Override
   public void initialize() {
-    targetVelocity = MathUtil.clamp(velocityRPM.getAsDouble(), -flywheel.getSettings().maxVelocityInRPMs, flywheel.getSettings().maxVelocityInRPMs);
+    targetVelocity =
+        MathUtil.clamp(
+            velocityRPM.getAsDouble(),
+            -flywheel.getSettings().maxVelocityInRPMs,
+            flywheel.getSettings().maxVelocityInRPMs);
   }
 
   @Override
   public void execute() {
     flywheel.setTargetVelocity(targetVelocity);
   }
+
   @Override
   public boolean isFinished() {
-      return flywheel.isAtSetpoint();
+    return flywheel.isAtSetpoint();
   }
 }
