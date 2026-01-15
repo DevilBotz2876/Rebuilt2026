@@ -131,7 +131,7 @@ tasks.addRule("Pattern: DBBuild-<PROFILE>: builds the robot with the given profi
             // proceed, delete old .properties files
             println "Deleting previous properties files..."
             delete fileTree('src/main/deploy'){
-                include 'robot_config.properties'
+                include '*.properties'
             }
 
             // copy properties file over and build
@@ -151,7 +151,7 @@ tasks.register("clean-profiles"){
     group = "DevilBotz"
     println "Deleting .properties files..."
     delete fileTree('src/main/deploy'){
-        include 'robot_config.properties'
+        include '*.properties'
     }
 }
 
