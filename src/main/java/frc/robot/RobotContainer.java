@@ -8,9 +8,7 @@ import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.config.game.rebuilt2026.*;
 import frc.robot.util.Elastic;
-import java.io.FileInputStream;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.Properties;
 
 public class RobotContainer {
