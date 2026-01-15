@@ -41,12 +41,12 @@ public class RobotContainer {
     RobotConfig robotConfig = new RobotConfig(robotProperties);
     // System.out.println(robotName + ", " + robotDrive);
 
-    try (FileInputStream input = new FileInputStream("simulation.properties")) {
-      robotProperties.load(input);
-    } catch (IOException e) {
-      System.err.println("Failed to load simulation configuration file: " + e.getMessage());
-      System.exit(1);
-    }
+    // try (FileInputStream input = new FileInputStream("simulation.properties")) {
+    //   robotProperties.load(input);b
+    // } catch (IOException e) {
+    //   System.err.println("Failed to load simulation configuration file: " + e.getMessage());
+    //   System.exit(1);
+    // }
 
     Preferences.initString("Robot Name", robotName);
     robotName = Preferences.getString("Robot Name", robotName);
