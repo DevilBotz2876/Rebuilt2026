@@ -1,26 +1,84 @@
 package frc.robot.config.game.rebuilt2026;
 
+import static edu.wpi.first.units.Units.Degrees;
+
+import java.util.Optional;
+import java.util.Properties;
+
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot;
+import frc.robot.config.game.rebuilt2026.tunerConstants.TunerConstants;
 import frc.robot.subsystems.controls.drive.DriveControls;
 import frc.robot.subsystems.implementations.drive.DriveBase;
+import frc.robot.subsystems.implementations.drive.DriveSwerveCTRE;
+import frc.robot.subsystems.implementations.vision.VisionSubsystem;
+import frc.robot.subsystems.implementations.vision.camera.CameraPhotonSim;
+import frc.robot.subsystems.interfaces.Vision.Camera.CameraSettings;
 
 /* Put all constants here with reasonable defaults */
 public class RobotConfig {
   public DriveBase drive;
   public SendableChooser<Command> autoChooser;
+  public VisionSubsystem vision;
   // TODO: Add VisionSubsystem Declaration
 
   // Controls
   public CommandXboxController mainController = new CommandXboxController(0);
   public CommandXboxController assistController = new CommandXboxController(1);
 
-  public RobotConfig() {
+  public RobotConfig(Properties robotProperties) {
+    if (robotProperties.getProperty("robot.drive").equals("ctre")) {
+      this.drive = new DriveSwerveCTRE(new TunerConstants(robotProperties));
+    } else {
+      drive = new DriveBase("BASE");
+    }
+
     // no-args constructor, for now
+    vision =
+        new VisionSubsystem(
+            AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark),
+            Optional.of(drive::addVisionMeasurement));
+
+    CameraSettings simCameraSettings = new CameraSettings();
+    simCameraSettings.fps = 30;
+    simCameraSettings.resWidth = 800;
+    simCameraSettings.resHeight = 600;
+    // "sim" camera that +12 inch along x axis and pitch of -45 degrees
+    vision.addCamera(
+        new CameraPhotonSim(
+            "sim",
+            new Transform3d(
+                new Translation3d(Units.inchesToMeters(12), 0, 0),
+                new Rotation3d(
+                    Angle.ofBaseUnits(0, Degrees),
+                    Angle.ofBaseUnits(-45, Degrees),
+                    Angle.ofBaseUnits(0, Degrees))),
+            simCameraSettings,
+            vision.getFieldLayout(),
+            () -> drive.getPose()));
+    vision.addCamera(
+        new CameraPhotonSim(
+            "sim2",
+            new Transform3d(
+                new Translation3d(Units.inchesToMeters(12), Units.inchesToMeters(12), 0),
+                new Rotation3d(
+                    Angle.ofBaseUnits(0, Degrees),
+                    Angle.ofBaseUnits(-45, Degrees),
+                    Angle.ofBaseUnits(-45, Degrees))),
+            simCameraSettings,
+            vision.getFieldLayout(),
+            () -> drive.getPose()));
   }
 
   public RobotConfig(boolean stubDrive, boolean stubAuto, boolean stubVision) {
