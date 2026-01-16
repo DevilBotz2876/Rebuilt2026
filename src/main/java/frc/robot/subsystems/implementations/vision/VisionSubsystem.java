@@ -100,36 +100,9 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
               validPoseMeasurements.add(matchingPoseMeasurement);
               MatchingMeasurementInfo matchingMeasurementInfo = new MatchingMeasurementInfo(poseMeasurement, cameraIndex, measurementInfoOptional.get().aprilTag);
               measurmentToMatchMap.put(matchingPoseMeasurement, matchingMeasurementInfo);
-              if (VISION_LOGGING_DEBUG) {
-                // Logger.recordOutput(
-                //     "Vision/"
-                //         + cameras.get(cameraIndex).getName()
-                //         + "/PoseMeasurements/"
-                //         + String.valueOf(i)
-                //         + "/matchingMeasurementInfo",
-                //     "Camera: "
-                //         + cameras.get(matchingCameraIndex).getName()
-                //         + " MatchingTagId: "
-                //         + matchingTagId
-                //         + " timestamp: "
-                //         + matchingPoseMeasurement.timestamp);
-              }
 
               if (!validPoseMeasurements.contains(matchingPoseMeasurement)) {
                 validPoseMeasurements.add(matchingPoseMeasurement);
-                if (VISION_LOGGING_DEBUG) {
-                  // Logger.recordOutput(
-                  //     "Vision/"
-                  //         + cameras.get(matchingCameraIndex).getName()
-                  //         + "/PoseMeasurements/0"
-                  //         + "/matchingMeasurementInfo",
-                  //     "Camera: "
-                  //         + cameras.get(cameraIndex).getName()
-                  //         + " MatchingTagId: "
-                  //         + matchingTagId
-                  //         + " timestamp: "
-                  //         + poseMeasurement.timestamp);
-                }
               }
             }
           }
@@ -145,6 +118,7 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
               cameras.get(cameraIndex).getVisionPoseMeasurements()[i];
           boolean isValid = validPoseMeasurements.contains(poseMeasurement);
           String reason = "";
+          String matchDebug = "N/A";
 
           if (poseMeasurement.targetIds.length >= 2) {
             reason = "MultiTag with IDs:" + Arrays.toString(poseMeasurement.targetIds);
@@ -156,6 +130,13 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
                     + poseMeasurement.robotToBestTargetDistanceInMeters;
           } else if (isValid) {
             reason = "Cross Tag Check,  Same AprilTag as different camera";
+            MatchingMeasurementInfo matchInfo = measurmentToMatchMap.get(poseMeasurement);
+            matchDebug = "Camera: "
+                    + cameras.get(matchInfo.cameraIndex).getName()
+                    + " MatchingTagId: "
+                    + matchInfo.aprilTag
+                    + " timestamp: "
+                    + matchInfo.measurement.timestamp;
 
           } else {
             reason =
@@ -177,6 +158,13 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
                   + String.valueOf(i)
                   + "/isValid",
               isValid);
+          Logger.recordOutput(
+                "Vision/"
+                    + cameras.get(cameraIndex).getName()
+                    + "/PoseMeasurements/"
+                    + String.valueOf(i)
+                    + "/matchingMeasurementInfo",
+                matchDebug);
         }
       }
     }
