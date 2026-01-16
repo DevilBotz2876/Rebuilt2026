@@ -33,9 +33,9 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
   }
   private List<Camera> cameras;
   private List<CameraInputsAutoLogged> cameraInputs;
-  // for each camera, a map of the seen aprilTags to an list of poseMeasurements with that april tag
+  // for each camera, a map of the seen aprilTags to an set of poseMeasurements with that april tag
   // seen
-  private List<Map<Integer, List<VisionPoseMeasurement>>> cameraTagPoses = new LinkedList<>();
+  private List<Map<Integer, Set<VisionPoseMeasurement>>> cameraTagPoses = new LinkedList<>();
   private AprilTagFieldLayout fieldLayout;
   private Optional<VisionMeasurementConsumer> visionMeasurementConsumer;
 
@@ -66,10 +66,8 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
     Map<VisionPoseMeasurement, MatchingMeasurementInfo> measurmentToMatchMap = new HashMap<>();
 
     for (int cameraIndex = 0; cameraIndex < cameras.size(); cameraIndex++) {
-      int i = -1;
       for (VisionPoseMeasurement poseMeasurement :
           cameras.get(cameraIndex).getVisionPoseMeasurements()) {
-        i++;
 
         // more than one tag then valid for estimation
         if (poseMeasurement.targetIds.length >= 2) {
@@ -181,16 +179,14 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
     // camera and remove if its lifespan has passed
     double currentTime = Timer.getFPGATimestamp();
     for (int cameraIndex = 0; cameraIndex < cameraTagPoses.size(); cameraIndex++) {
-      // the time between one publish and the next
-      double oneMeasureDurationSeconds = 1.0 / cameras.get(cameraIndex).getCameraSettings().fps;
 
-      double measureLifespan = oneMeasureDurationSeconds * 5; // found 5 from testing in sim
+      double measurementLifespan = 0.25;
 
-      Map<Integer, List<VisionPoseMeasurement>> tagMap = cameraTagPoses.get(cameraIndex);
+      Map<Integer, Set<VisionPoseMeasurement>> tagMap = cameraTagPoses.get(cameraIndex);
 
-      for (List<VisionPoseMeasurement> posesAtSeenTag : tagMap.values()) {
+      for (Set<VisionPoseMeasurement> posesAtSeenTag : tagMap.values()) {
         posesAtSeenTag.removeIf(
-            measurement -> currentTime - measurement.timestamp > measureLifespan);
+            measurement -> currentTime - measurement.timestamp > measurementLifespan);
       }
     }
   }
@@ -218,8 +214,8 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
                 .add(poseMeasurements[i]);
           } else {
             // make new key if first time tag is being seen
-            List<VisionPoseMeasurement> poseMeasurementList =
-                new ArrayList<VisionPoseMeasurement>();
+            Set<VisionPoseMeasurement> poseMeasurementList =
+                new HashSet<VisionPoseMeasurement>();
             poseMeasurementList.add(poseMeasurements[i]);
             cameraTagPoses
                 .get(cameraIndex)
@@ -273,7 +269,7 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
         continue;
       }
       // map of the april tag ids to the poseMeasurements that saw the tag
-      Map<Integer, List<VisionPoseMeasurement>> seenTagIdmap =
+      Map<Integer, Set<VisionPoseMeasurement>> seenTagIdmap =
           cameraTagPoses.get(knownTagsCameraIndex);
 
       for (int aprilTagId : poseMeasurement.targetIds) {
@@ -282,10 +278,8 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
           continue;
         }
 
-        List<VisionPoseMeasurement> posesAtSeenTag = seenTagIdmap.get(aprilTagId);
-        for (int i = 0; i < posesAtSeenTag.size(); i++) {
-          VisionPoseMeasurement possiblePoseMeasurementMatch = posesAtSeenTag.get(i); // get latest
-
+        Set<VisionPoseMeasurement> posesAtSeenTag = seenTagIdmap.get(aprilTagId);
+        for (VisionPoseMeasurement possiblePoseMeasurementMatch : posesAtSeenTag) {
           // if the measurements where at different times, then dont comapare
           if (Math.abs(poseMeasurement.timestamp - possiblePoseMeasurementMatch.timestamp)
               > TIMESTAMP_TOLERANCE_SECONDS) {
