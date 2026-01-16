@@ -38,36 +38,36 @@ public interface Vision {
     }
 
     /**
-     * Updates the camera, creates pose measurement for that cycle and populates the inputs 
-     * 
+     * Updates the camera, creates pose measurement for that cycle and populates the inputs
+     *
      * @param inputs the inputs associatied with the camera
      */
     public void update(CameraInputs inputs);
 
-    /** 
-     * Returns the 3D transform from the robot to the camera 
-     * 
+    /**
+     * Returns the 3D transform from the robot to the camera
+     *
      * @return the transform from the robot to the camera
      */
     public Transform3d getRobotToCamera();
 
     /**
      * Returns the name of the camera
-     * 
+     *
      * @return the name
      */
     public String getName();
 
     /**
      * Returns the array of vision pose measurement that may be used in pose estimation
-     * 
+     *
      * @return the array of vision measurement
      */
     public VisionPoseMeasurement[] getVisionPoseMeasurements();
 
     /**
      * Returns the settings of the camera
-     * 
+     *
      * @return camera settings
      */
     public CameraSettings getCameraSettings();
@@ -75,36 +75,36 @@ public interface Vision {
 
   /**
    * Update the specified camera and proccess it's inputs can vision measurment
-   * 
+   *
    * @param index the index of the camera to update
    */
   public void updateCamera(int index);
 
   /**
    * Add a camera to the subsytem
-   * 
+   *
    * @param camera the camera to add
    */
   public void addCamera(Camera camera);
 
   /**
    * Returns the cameras used by the subsystem
-   * 
+   *
    * @return thw list of cameras
    */
   public List<Camera> getCameras();
 
-    /**
+  /**
    * Returns the camera inputs of the cameras with in the subsystem
-   * 
+   *
    * @return a list of cameras inputs
    */
   public List<CameraInputsAutoLogged> getCameraInputs();
 
   /**
    * Returns the AprilTag field layout used by the subsystem
-   * 
-   * @return the AprilTag field layout 
+   *
+   * @return the AprilTag field layout
    */
   public AprilTagFieldLayout getFieldLayout();
 }

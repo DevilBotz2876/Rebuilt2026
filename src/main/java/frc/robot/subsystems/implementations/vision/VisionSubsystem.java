@@ -1,14 +1,12 @@
 package frc.robot.subsystems.implementations.vision;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.interfaces.CameraInputsAutoLogged;
 import frc.robot.subsystems.interfaces.Vision;
 import frc.robot.subsystems.interfaces.Vision.Camera.VisionPoseMeasurement;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,20 +15,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-
 import org.littletonrobotics.junction.Logger;
 
 public class VisionSubsystem extends SubsystemBase implements Vision {
-  public class MatchingMeasurementInfo  {
+  public class MatchingMeasurementInfo {
     public VisionPoseMeasurement measurement;
     public int cameraIndex;
     public int aprilTag;
+
     MatchingMeasurementInfo(VisionPoseMeasurement measurement, int cameraIndex, int aprilTag) {
       this.measurement = measurement;
       this.cameraIndex = cameraIndex;
       this.aprilTag = aprilTag;
     }
   }
+
   private List<Camera> cameras;
   private List<CameraInputsAutoLogged> cameraInputs;
   // for each camera, a map of the seen aprilTags to an set of poseMeasurements with that april tag
@@ -95,9 +94,10 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
               measurementToMatchMap.put(poseMeasurement, measurementInfoOptional.get());
 
               validPoseMeasurements.add(matchingPoseMeasurement);
-              MatchingMeasurementInfo matchingMeasurementInfo = new MatchingMeasurementInfo(poseMeasurement, cameraIndex, measurementInfoOptional.get().aprilTag);
+              MatchingMeasurementInfo matchingMeasurementInfo =
+                  new MatchingMeasurementInfo(
+                      poseMeasurement, cameraIndex, measurementInfoOptional.get().aprilTag);
               measurementToMatchMap.put(matchingPoseMeasurement, matchingMeasurementInfo);
-
             }
           }
         }
@@ -125,7 +125,8 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
           } else if (isValid) {
             reason = "Cross Tag Check,  Same AprilTag as different camera";
             MatchingMeasurementInfo matchInfo = measurementToMatchMap.get(poseMeasurement);
-            matchDebug = "Camera: "
+            matchDebug =
+                "Camera: "
                     + cameras.get(matchInfo.cameraIndex).getName()
                     + " MatchingTagId: "
                     + matchInfo.aprilTag
@@ -153,12 +154,12 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
                   + "/isValid",
               isValid);
           Logger.recordOutput(
-                "Vision/"
-                    + cameras.get(cameraIndex).getName()
-                    + "/PoseMeasurements/"
-                    + String.valueOf(i)
-                    + "/matchingMeasurementInfo",
-                matchDebug);
+              "Vision/"
+                  + cameras.get(cameraIndex).getName()
+                  + "/PoseMeasurements/"
+                  + String.valueOf(i)
+                  + "/matchingMeasurementInfo",
+              matchDebug);
         }
       }
     }
@@ -214,8 +215,7 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
                 .add(poseMeasurements[i]);
           } else {
             // make new key if first time tag is being seen
-            Set<VisionPoseMeasurement> poseMeasurementList =
-                new HashSet<VisionPoseMeasurement>();
+            Set<VisionPoseMeasurement> poseMeasurementList = new HashSet<VisionPoseMeasurement>();
             poseMeasurementList.add(poseMeasurements[i]);
             cameraTagPoses
                 .get(cameraIndex)
@@ -259,19 +259,19 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
   }
 
   /**
-   * Returns an Optional based on the given camera and pose measurement. 
-   * <p>
-   * The Optional contains the matching measurment infomation if there is a measurment from a different camera, 
-   * within the timestamp tolerance, that has same AprilTag ID detected as the given measurment.
-   * 
+   * Returns an Optional based on the given camera and pose measurement.
+   *
+   * <p>The Optional contains the matching measurment infomation if there is a measurment from a
+   * different camera, within the timestamp tolerance, that has same AprilTag ID detected as the
+   * given measurment.
+   *
    * @param poseCameraIndex the index of the camera that the given pose measurment is from
    * @param poseMeasurement the vision pose measurement
-   * 
-   * @return an empty Optional if there is no pose measurment, or
-   * an Optional holding the matching pose measurement info
+   * @return an empty Optional if there is no pose measurment, or an Optional holding the matching
+   *     pose measurement info
    */
-  private Optional<MatchingMeasurementInfo>
-      getMatchingTagPoseMeasurement(int poseCameraIndex, VisionPoseMeasurement poseMeasurement) {
+  private Optional<MatchingMeasurementInfo> getMatchingTagPoseMeasurement(
+      int poseCameraIndex, VisionPoseMeasurement poseMeasurement) {
     for (int knownTagsCameraIndex = 0;
         knownTagsCameraIndex < cameraTagPoses.size();
         knownTagsCameraIndex++) {
@@ -296,7 +296,9 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
               > TIMESTAMP_TOLERANCE_SECONDS) {
             continue;
           }
-          MatchingMeasurementInfo info = new MatchingMeasurementInfo(possiblePoseMeasurementMatch, knownTagsCameraIndex, aprilTagId);
+          MatchingMeasurementInfo info =
+              new MatchingMeasurementInfo(
+                  possiblePoseMeasurementMatch, knownTagsCameraIndex, aprilTagId);
           return Optional.of(info);
         }
       }

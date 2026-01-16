@@ -2,9 +2,6 @@ package frc.robot.config.game.rebuilt2026;
 
 import static edu.wpi.first.units.Units.Degrees;
 
-import java.util.Optional;
-import java.util.Properties;
-
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -25,6 +22,8 @@ import frc.robot.subsystems.implementations.drive.DriveSwerveCTRE;
 import frc.robot.subsystems.implementations.vision.VisionSubsystem;
 import frc.robot.subsystems.implementations.vision.camera.CameraPhotonSim;
 import frc.robot.subsystems.interfaces.Vision.Camera.CameraSettings;
+import java.util.Optional;
+import java.util.Properties;
 
 /* Put all constants here with reasonable defaults */
 public class RobotConfig {
