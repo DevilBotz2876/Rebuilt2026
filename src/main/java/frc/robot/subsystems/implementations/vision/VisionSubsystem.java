@@ -11,10 +11,13 @@ import frc.robot.subsystems.interfaces.Vision.Camera.VisionPoseMeasurement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+
 import org.littletonrobotics.junction.Logger;
 
 public class VisionSubsystem extends SubsystemBase implements Vision {
@@ -59,7 +62,7 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
       updateCamera(i);
     }
 
-    List<VisionPoseMeasurement> validPoseMeasurements = new LinkedList<>();
+    Set<VisionPoseMeasurement> validPoseMeasurements = new HashSet<VisionPoseMeasurement>();
     Map<VisionPoseMeasurement, MatchingMeasurementInfo> measurmentToMatchMap = new HashMap<>();
 
     for (int cameraIndex = 0; cameraIndex < cameras.size(); cameraIndex++) {
@@ -67,10 +70,6 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
       for (VisionPoseMeasurement poseMeasurement :
           cameras.get(cameraIndex).getVisionPoseMeasurements()) {
         i++;
-        // if already valid no need to check
-        if (validPoseMeasurements.contains(poseMeasurement)) {
-          continue;
-        }
 
         // more than one tag then valid for estimation
         if (poseMeasurement.targetIds.length >= 2) {
@@ -101,9 +100,6 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
               MatchingMeasurementInfo matchingMeasurementInfo = new MatchingMeasurementInfo(poseMeasurement, cameraIndex, measurementInfoOptional.get().aprilTag);
               measurmentToMatchMap.put(matchingPoseMeasurement, matchingMeasurementInfo);
 
-              if (!validPoseMeasurements.contains(matchingPoseMeasurement)) {
-                validPoseMeasurements.add(matchingPoseMeasurement);
-              }
             }
           }
         }
@@ -170,13 +166,13 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
     }
 
     // add valid pose measurment to consumer
-    for (int i = 0; i < validPoseMeasurements.size(); i++) {
-      double distanceMeters = validPoseMeasurements.get(i).robotToBestTargetDistanceInMeters;
+    for (VisionPoseMeasurement measurement : validPoseMeasurements) {
+      double distanceMeters = measurement.robotToBestTargetDistanceInMeters;
       visionMeasurementConsumer
           .get()
           .add(
-              validPoseMeasurements.get(i).robotPose,
-              validPoseMeasurements.get(i).timestamp,
+              measurement.robotPose,
+              measurement.timestamp,
               VecBuilder.fill(distanceMeters / 2, distanceMeters / 2, distanceMeters / 2));
     }
 
