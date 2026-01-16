@@ -39,13 +39,13 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
   private AprilTagFieldLayout fieldLayout;
   private Optional<VisionMeasurementConsumer> visionMeasurementConsumer;
 
-  // maximum allow time between 2 poseMeasurements to still be considered vaild, need to tune
+  // maximum allowed time between 2 poseMeasurements to still be considered valid, need to tune
   private final double TIMESTAMP_TOLERANCE_SECONDS = 10;
-  // maximum distance between robot and tag for poseMeasurement to be vailid to be considered
+  // maximum distance between robot and tag for poseMeasurement to be valid to be considered
   private final double MAXIMUM_SINGLE_TAG_DISTANCE_METERS = 2.0; // need to tune to robot
   // show if pose measurement is valid, reason (and matching pose if there is one) and
   // poseMeasurement data at
-  // AdvagtageKit/RealOutputs/Vision/'cameraName'/PoseMeasurements/'poseIndex'/
+  // AdvantageKit/RealOutputs/Vision/'cameraName'/PoseMeasurements/'poseIndex'/
   private final boolean VISION_LOGGING_DEBUG = true;
 
   public VisionSubsystem(
@@ -63,7 +63,7 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
     }
 
     Set<VisionPoseMeasurement> validPoseMeasurements = new HashSet<VisionPoseMeasurement>();
-    Map<VisionPoseMeasurement, MatchingMeasurementInfo> measurmentToMatchMap = new HashMap<>();
+    Map<VisionPoseMeasurement, MatchingMeasurementInfo> measurementToMatchMap = new HashMap<>();
 
     for (int cameraIndex = 0; cameraIndex < cameras.size(); cameraIndex++) {
       for (VisionPoseMeasurement poseMeasurement :
@@ -75,7 +75,7 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
           continue;
         } else {
 
-          // one tag seen but is close then validfor estimation
+          // one tag seen but is close then valid for estimation
           if (poseMeasurement.robotToBestTargetDistanceInMeters != -1
               && poseMeasurement.robotToBestTargetDistanceInMeters
                   <= MAXIMUM_SINGLE_TAG_DISTANCE_METERS) {
@@ -84,19 +84,19 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
           }
           // check measurements from other cameras for matching tag
           else {
-            // camera index, april tag id, pose measurement
             Optional<MatchingMeasurementInfo> measurementInfoOptional =
-                getMatchingTagPoseMeasuremnet(cameraIndex, poseMeasurement);
+                getMatchingTagPoseMeasurement(cameraIndex, poseMeasurement);
+
             if (measurementInfoOptional.isPresent()) {
               VisionPoseMeasurement matchingPoseMeasurement =
                   measurementInfoOptional.get().measurement;
 
               validPoseMeasurements.add(poseMeasurement);
-              measurmentToMatchMap.put(poseMeasurement, measurementInfoOptional.get());
+              measurementToMatchMap.put(poseMeasurement, measurementInfoOptional.get());
 
               validPoseMeasurements.add(matchingPoseMeasurement);
               MatchingMeasurementInfo matchingMeasurementInfo = new MatchingMeasurementInfo(poseMeasurement, cameraIndex, measurementInfoOptional.get().aprilTag);
-              measurmentToMatchMap.put(matchingPoseMeasurement, matchingMeasurementInfo);
+              measurementToMatchMap.put(matchingPoseMeasurement, matchingMeasurementInfo);
 
             }
           }
@@ -124,7 +124,7 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
                     + poseMeasurement.robotToBestTargetDistanceInMeters;
           } else if (isValid) {
             reason = "Cross Tag Check,  Same AprilTag as different camera";
-            MatchingMeasurementInfo matchInfo = measurmentToMatchMap.get(poseMeasurement);
+            MatchingMeasurementInfo matchInfo = measurementToMatchMap.get(poseMeasurement);
             matchDebug = "Camera: "
                     + cameras.get(matchInfo.cameraIndex).getName()
                     + " MatchingTagId: "
@@ -175,8 +175,8 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
     }
 
     // cant clear all at the same time because camera are not sync
-    // check if a pose has be in there for a lifespan based off of fps of data published by the
-    // camera and remove if its lifespan has passed
+    // check if a pose has been there for lifespan based off of fps of data published by the
+    // camera/processor and remove if its lifespan has passed
     double currentTime = Timer.getFPGATimestamp();
     for (int cameraIndex = 0; cameraIndex < cameraTagPoses.size(); cameraIndex++) {
 
@@ -222,7 +222,7 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
                 .put(poseMeasurements[i].targetIds[j], poseMeasurementList);
           }
         }
-        // debug infomation on measurements
+        // debug information on measurements
         if (VISION_LOGGING_DEBUG) {
           Logger.recordOutput(
               "Vision/"
@@ -258,9 +258,20 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
     }
   }
 
-  // returns optional of pair (camera index, pair (aprilTag, poseMe)) or empty optional for no match
+  /**
+   * Returns an Optional based on the given camera and pose measurement. 
+   * <p>
+   * The Optional contains the matching measurment infomation if there is a measurment from a different camera, 
+   * within the timestamp tolerance, that has same AprilTag ID detected as the given measurment.
+   * 
+   * @param poseCameraIndex the index of the camera that the given pose measurment is from
+   * @param poseMeasurement the vision pose measurement
+   * 
+   * @return an empty Optional if there is no pose measurment, or
+   * an Optional holding the matching pose measurement info
+   */
   private Optional<MatchingMeasurementInfo>
-      getMatchingTagPoseMeasuremnet(int poseCameraIndex, VisionPoseMeasurement poseMeasurement) {
+      getMatchingTagPoseMeasurement(int poseCameraIndex, VisionPoseMeasurement poseMeasurement) {
     for (int knownTagsCameraIndex = 0;
         knownTagsCameraIndex < cameraTagPoses.size();
         knownTagsCameraIndex++) {
@@ -280,7 +291,7 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
 
         Set<VisionPoseMeasurement> posesAtSeenTag = seenTagIdmap.get(aprilTagId);
         for (VisionPoseMeasurement possiblePoseMeasurementMatch : posesAtSeenTag) {
-          // if the measurements where at different times, then dont comapare
+          // if the measurements are at different times, then dont comapare
           if (Math.abs(poseMeasurement.timestamp - possiblePoseMeasurementMatch.timestamp)
               > TIMESTAMP_TOLERANCE_SECONDS) {
             continue;
