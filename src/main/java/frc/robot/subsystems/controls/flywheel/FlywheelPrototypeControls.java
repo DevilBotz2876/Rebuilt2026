@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.common.flywheel.FlywheelCommand;
 import frc.robot.commands.common.flywheel.FlywheelToVelocity;
 import frc.robot.commands.common.motor.MotorPitCommand;
@@ -26,13 +27,6 @@ public class FlywheelPrototypeControls {
         new MotorRunVoltageCommand(
             (Motor) motor,
             () -> {
-              /*if (controller.rightTrigger().getAsBoolean() && mode == 0){
-                mode = 1;
-
-              } else if (controller.rightTrigger().getAsBoolean() && mode == 1){
-                mode = 0;
-              }
-              if (mode == 0){/* */
               if (controller.rightBumper().getAsBoolean()) {
                 returnFactor = -1;
               } else {
@@ -47,31 +41,17 @@ public class FlywheelPrototypeControls {
               } else if (controller.b().getAsBoolean()) {
                 return 10.0 * returnFactor;
               }
-              return 0.0;
-            }));
-  }
+              return 0.0;}));
 
-  public static void setupController2(Flywheel motor, CommandXboxController controller) {
-    SubsystemBase flywheelSubsystem = (SubsystemBase) motor;
-    SmartDashboard.putData(
-        flywheelSubsystem.getName() + "/Commands/Select motor",
-        new InstantCommand(
-            () ->
-                SmartDashboard.putString(
-                    "Prototype/Selected Motor/", flywheelSubsystem.getName())));
-    Command c =
-        new ConditionalCommand(
-            new MotorRunVoltageCommand((Motor) motor, () -> controller.getLeftY()),
-            new MotorRunVoltageCommand((Motor) motor, () -> 0.0),
-            () ->
-                SmartDashboard.getString("Prototype/Selected Motor/", "NULL")
-                    == flywheelSubsystem.getName());
-    flywheelSubsystem.setDefaultCommand(c);
-  }
-
+        // controller.rightTrigger().(
+        //   new FlywheelCommand(
+        //       motor,
+        //       () -> {
+        //         return 0.0;
+        //       }));
+            }
   public static void setupControllerTwo(Flywheel motor, CommandXboxController controller) {
     SubsystemBase motorSubsystem = (SubsystemBase) motor;
-
     motorSubsystem.setDefaultCommand(
         new MotorRunVoltageCommand(
             (Motor) motor,
@@ -90,16 +70,6 @@ public class FlywheelPrototypeControls {
               } else if (controller.pov(90).getAsBoolean()) {
                 return 10.0 * returnFactor;
               }
-              return 0.0;
-            }));
-  }
-
-  public static void setupVelocityController(Flywheel motor, CommandXboxController controller) {
-    SubsystemBase flywheelSubsystem = (SubsystemBase) motor;
-    flywheelSubsystem.setDefaultCommand(
-        new FlywheelCommand(
-            motor,
-            () -> {
               return 0.0;
             }));
   }
