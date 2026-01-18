@@ -21,7 +21,6 @@ import frc.robot.subsystems.implementations.drive.DriveBase;
 import frc.robot.subsystems.implementations.drive.DriveSwerveCTRE;
 import frc.robot.subsystems.implementations.vision.VisionSubsystem;
 import frc.robot.subsystems.implementations.vision.camera.CameraPhoton;
-import frc.robot.subsystems.implementations.vision.camera.CameraPhotonSim;
 import frc.robot.subsystems.interfaces.Vision.Camera.CameraSettings;
 import java.util.Optional;
 import java.util.Properties;
@@ -59,7 +58,8 @@ public class RobotConfig {
         new CameraPhoton(
             "left",
             new Transform3d(
-                new Translation3d(Units.inchesToMeters(10), Units.inchesToMeters(14.5), Units.inchesToMeters(7)),
+                new Translation3d(
+                    Units.inchesToMeters(10), Units.inchesToMeters(14.5), Units.inchesToMeters(7)),
                 new Rotation3d(
                     Angle.ofBaseUnits(0, Degrees),
                     Angle.ofBaseUnits(5, Degrees),
@@ -70,7 +70,10 @@ public class RobotConfig {
         new CameraPhoton(
             "front",
             new Transform3d(
-                new Translation3d(Units.inchesToMeters(14.5), Units.inchesToMeters(0.25), Units.inchesToMeters(3.5)),
+                new Translation3d(
+                    Units.inchesToMeters(14.5),
+                    Units.inchesToMeters(0.25),
+                    Units.inchesToMeters(3.5)),
                 new Rotation3d(
                     Angle.ofBaseUnits(0, Degrees),
                     Angle.ofBaseUnits(0, Degrees),
@@ -81,7 +84,8 @@ public class RobotConfig {
         new CameraPhoton(
             "right",
             new Transform3d(
-                new Translation3d(Units.inchesToMeters(10), Units.inchesToMeters(-14.5), Units.inchesToMeters(7)),
+                new Translation3d(
+                    Units.inchesToMeters(10), Units.inchesToMeters(-14.5), Units.inchesToMeters(7)),
                 new Rotation3d(
                     Angle.ofBaseUnits(0, Degrees),
                     Angle.ofBaseUnits(5, Degrees),
