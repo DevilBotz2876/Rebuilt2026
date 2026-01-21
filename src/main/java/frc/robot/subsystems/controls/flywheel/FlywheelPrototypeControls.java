@@ -1,12 +1,8 @@
 package frc.robot.subsystems.controls.flywheel;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.common.flywheel.FlywheelCommand;
 import frc.robot.commands.common.flywheel.FlywheelToVelocity;
 import frc.robot.commands.common.motor.MotorPitCommand;
@@ -41,15 +37,19 @@ public class FlywheelPrototypeControls {
               } else if (controller.b().getAsBoolean()) {
                 return 10.0 * returnFactor;
               }
-              return 0.0;}));
+              return 0.0;
+            }));
 
-        controller.rightTrigger().whileTrue(
-          new FlywheelCommand(
-              motor,
-              () -> {
-                return 0.0;
-              }));
-            }
+    controller
+        .rightTrigger()
+        .whileTrue(
+            new FlywheelCommand(
+                motor,
+                () -> {
+                  return 0.0;
+                }));
+  }
+
   public static void setupControllerTwo(Flywheel motor, CommandXboxController controller) {
     SubsystemBase motorSubsystem = (SubsystemBase) motor;
     motorSubsystem.setDefaultCommand(
