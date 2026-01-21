@@ -43,12 +43,12 @@ public class FlywheelPrototypeControls {
               }
               return 0.0;}));
 
-        // controller.rightTrigger().(
-        //   new FlywheelCommand(
-        //       motor,
-        //       () -> {
-        //         return 0.0;
-        //       }));
+        controller.rightTrigger().whileTrue(
+          new FlywheelCommand(
+              motor,
+              () -> {
+                return 0.0;
+              }));
             }
   public static void setupControllerTwo(Flywheel motor, CommandXboxController controller) {
     SubsystemBase motorSubsystem = (SubsystemBase) motor;
