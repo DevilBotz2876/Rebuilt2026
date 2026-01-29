@@ -7,15 +7,24 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import java.util.List;
+import java.util.Optional;
+import java.util.function.ToIntFunction;
+
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.targeting.MultiTargetPNPResult;
 import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class CameraPhoton extends CameraBase {
   private final PhotonCamera camera;
   private final AprilTagFieldLayout tagLayout;
   private VisionPoseMeasurement[] poseMeasurements;
+  private final PhotonPoseEstimator photonPoseEstimator;
 
   public CameraPhoton(
       String name,
@@ -25,6 +34,7 @@ public class CameraPhoton extends CameraBase {
     super(name, robotToCamera, settings);
     camera = new PhotonCamera(getName());
     this.tagLayout = tagLayout;
+    photonPoseEstimator = new PhotonPoseEstimator(tagLayout, robotToCamera);
   }
 
   @Override
@@ -43,6 +53,7 @@ public class CameraPhoton extends CameraBase {
     // no tags
     if (!result.hasTargets()) {
       inputs.targetIds = new int[0];
+      inputs.cameraDistanceToTargetMeters = -1.0;
       poseMeasurements[0] = new VisionPoseMeasurement();
       return;
     }
@@ -56,6 +67,8 @@ public class CameraPhoton extends CameraBase {
               .toPose2d();
       inputs.targetIds =
           multitagResult.fiducialIDsUsed.stream().mapToInt(Short::toUnsignedInt).toArray();
+      poseMeasurements[0] = createMeasurement(result);
+      return;
     }
 
     // one tag
@@ -76,7 +89,8 @@ public class CameraPhoton extends CameraBase {
             .getTranslation()
             .getDistance(Translation3d.kZero);
 
-    poseMeasurements[0] = createMeasurement(result, inputs.cameraPose, inputs.targetIds);
+    // poseMeasurements[0] = createMeasurement(result, inputs.cameraPose, inputs.targetIds);
+    poseMeasurements[0] = createMeasurement(result);
   }
 
   @Override
@@ -86,6 +100,37 @@ public class CameraPhoton extends CameraBase {
 
   public PhotonCamera getPhotonCamera() {
     return camera;
+  }
+
+  private VisionPoseMeasurement createMeasurement(
+      PhotonPipelineResult result) {
+    VisionPoseMeasurement measurement = new VisionPoseMeasurement();
+    Optional<EstimatedRobotPose> estPose = photonPoseEstimator.estimateCoprocMultiTagPose(result);
+    if(estPose.isEmpty()) {
+      estPose = photonPoseEstimator.estimateLowestAmbiguityPose(result);
+    }
+
+    measurement.targetIds = estPose.get().targetsUsed.stream().mapToInt(new ToIntFunction<PhotonTrackedTarget>() {
+      public int applyAsInt(PhotonTrackedTarget value) {
+        return value.fiducialId;
+      };
+    }).toArray();
+    measurement.timestamp = estPose.get().timestampSeconds;
+
+    Transform3d robotToCamera = getRobotToCamera();
+    measurement.robotPose =
+        estPose.get().estimatedPose.toPose2d();
+
+    // robot to camera + camera to target = robot to target
+    // TODO: Determine best start location for calculated distance
+    // the distance should be measured at a place that is easy to verify in person
+    measurement.robotToBestTargetDistanceInMeters =
+        robotToCamera
+            .plus(result.getBestTarget().getBestCameraToTarget())
+            .getTranslation()
+            .getDistance(Translation3d.kZero);
+
+    return measurement;
   }
 
   private VisionPoseMeasurement createMeasurement(
