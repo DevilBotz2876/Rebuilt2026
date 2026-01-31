@@ -27,6 +27,7 @@ import frc.robot.io.implementations.motor.MotorIOTalonFx;
 import frc.robot.io.implementations.motor.MotorIOTalonFx.TalonFxSettings;
 import frc.robot.subsystems.controls.drive.DriveControls;
 import frc.robot.subsystems.controls.flywheel.FlywheelPrototypeControls;
+import frc.robot.subsystems.controls.flywheel.ShooterControls;
 import frc.robot.subsystems.implementations.drive.DriveBase;
 import frc.robot.subsystems.implementations.drive.DriveSwerveCTRE;
 import frc.robot.subsystems.implementations.motor.ArmMotorSubsystem;
@@ -95,10 +96,10 @@ public class RobotConfig {
     DriveControls.setupController(drive, mainController);
     // Send vision-based odometry measurements to drive's odometry calculations
     // vision.setVisionMeasurementConsumer(drive::addVisionMeasurement);
+    ShooterControls.setupVoltageController(shooterFlywheel, indexerFlywheel, assistController);
     FlywheelPrototypeControls.setupSmartDashboardControl(shooterFlywheel);
     FlywheelPrototypeControls.setupSmartDashboardControl(indexerFlywheel);
-    FlywheelPrototypeControls.setupController(shooterFlywheel, mainController);
-    FlywheelPrototypeControls.setupControllerTwo(indexerFlywheel, mainController);
+    
     if (null != this.autoChooser) {
       SmartDashboard.putData("Autonomous", this.autoChooser);
     }
