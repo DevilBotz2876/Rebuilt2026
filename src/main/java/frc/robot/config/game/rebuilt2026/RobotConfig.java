@@ -26,8 +26,6 @@ import frc.robot.io.implementations.motor.MotorIOStub;
 import frc.robot.io.implementations.motor.MotorIOTalonFx;
 import frc.robot.io.implementations.motor.MotorIOTalonFx.TalonFxSettings;
 import frc.robot.subsystems.controls.drive.DriveControls;
-import frc.robot.subsystems.controls.flywheel.FlywheelControls;
-import frc.robot.subsystems.controls.flywheel.FlywheelPrototypeControls;
 import frc.robot.subsystems.controls.flywheel.IntakeControls;
 import frc.robot.subsystems.implementations.drive.DriveBase;
 import frc.robot.subsystems.implementations.drive.DriveSwerveCTRE;
@@ -35,7 +33,6 @@ import frc.robot.subsystems.implementations.motor.ArmMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.ElevatorMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.FlywheelMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.SimpleMotorSubsystem;
-import frc.robot.subsystems.interfaces.Flywheel;
 import frc.robot.subsystems.interfaces.Arm.ArmSettings;
 import frc.robot.subsystems.interfaces.Elevator.ElevatorSettings;
 import frc.robot.subsystems.interfaces.Flywheel.FlywheelSettings;
@@ -97,7 +94,11 @@ public class RobotConfig {
     DriveControls.setupController(drive, mainController);
     // Send vision-based odometry measurements to drive's odometry calculations
     // vision.setVisionMeasurementConsumer(drive::addVisionMeasurement);
-    IntakeControls.setupVoltageController(topIntakeFlywheel, bottomIntakeFlywheel, mainController);//.setupVoltageController(topIntakeFlywheel, bottomIntakeFlywheel, mainController);
+    IntakeControls.setupVoltageController(
+        topIntakeFlywheel,
+        bottomIntakeFlywheel,
+        mainController); // .setupVoltageController(topIntakeFlywheel, bottomIntakeFlywheel,
+    // mainController);
     IntakeControls.setupSmartDashboardControl(topIntakeFlywheel);
     IntakeControls.setupSmartDashboardControl(bottomIntakeFlywheel);
     if (null != this.autoChooser) {
