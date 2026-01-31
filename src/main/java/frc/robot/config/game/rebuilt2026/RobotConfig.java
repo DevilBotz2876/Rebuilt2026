@@ -43,7 +43,8 @@ import java.util.Properties;
 public class RobotConfig {
   public DriveBase drive;
   public SendableChooser<Command> autoChooser;
-  public FlywheelMotorSubsystem intakeFlywheel;
+  public FlywheelMotorSubsystem topIntakeFlywheel;
+  public FlywheelMotorSubsystem bottomIntakeFlywheel;
   // public FlywheelMotorSubsystem prototypeMotor2;
   // TODO: Add VisionSubsystem Declaration
 
@@ -63,7 +64,8 @@ public class RobotConfig {
     if (Robot.isSimulation()) {
       drive.setPose(new Pose2d(new Translation2d(1, 1), new Rotation2d()));
     }
-    intakeFlywheel = createFlywheel(robotProperties, "intakeFlywheel");
+    topIntakeFlywheel = createFlywheel(robotProperties, "topIntakeFlywheel");
+    bottomIntakeFlywheel = createFlywheel(robotProperties, "bottomIntakeFlywheel");
   }
 
   public RobotConfig(boolean stubDrive, boolean stubAuto, boolean stubVision) {
@@ -93,8 +95,10 @@ public class RobotConfig {
     DriveControls.setupController(drive, mainController);
     // Send vision-based odometry measurements to drive's odometry calculations
     // vision.setVisionMeasurementConsumer(drive::addVisionMeasurement);
-    FlywheelPrototypeControls.setupSmartDashboardControl(intakeFlywheel);
-    FlywheelPrototypeControls.setupController(intakeFlywheel, mainController);
+    FlywheelPrototypeControls.setupSmartDashboardControl(topIntakeFlywheel);
+    FlywheelPrototypeControls.setupController(topIntakeFlywheel, mainController);
+    FlywheelPrototypeControls.setupSmartDashboardControl(bottomIntakeFlywheel);
+    FlywheelPrototypeControls.setupControllerTwo(bottomIntakeFlywheel, mainController);
     if (null != this.autoChooser) {
       SmartDashboard.putData("Autonomous", this.autoChooser);
     }
