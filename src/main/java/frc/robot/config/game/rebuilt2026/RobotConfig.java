@@ -43,8 +43,9 @@ import java.util.Properties;
 public class RobotConfig {
   public DriveBase drive;
   public SendableChooser<Command> autoChooser;
-  public FlywheelMotorSubsystem prototypeMotor1;
-  public FlywheelMotorSubsystem prototypeMotor2;
+  public FlywheelMotorSubsystem shooterFlywheel;
+  public FlywheelMotorSubsystem indexerFlywheel;
+
   // TODO: Add VisionSubsystem Declaration
 
   // Controls
@@ -63,8 +64,8 @@ public class RobotConfig {
     if (Robot.isSimulation()) {
       drive.setPose(new Pose2d(new Translation2d(1, 1), new Rotation2d()));
     }
-    prototypeMotor1 = createFlywheel(robotProperties, "prototypeMotor1");
-    prototypeMotor2 = createFlywheel(robotProperties, "prototypeMotor2");
+    shooterFlywheel = createFlywheel(robotProperties, "shooterFlywheel");
+    indexerFlywheel = createFlywheel(robotProperties, "indexerFlywheel");
   }
 
   public RobotConfig(boolean stubDrive, boolean stubAuto, boolean stubVision) {
@@ -94,10 +95,10 @@ public class RobotConfig {
     DriveControls.setupController(drive, mainController);
     // Send vision-based odometry measurements to drive's odometry calculations
     // vision.setVisionMeasurementConsumer(drive::addVisionMeasurement);
-    FlywheelPrototypeControls.setupSmartDashboardControl(prototypeMotor1);
-    FlywheelPrototypeControls.setupSmartDashboardControl(prototypeMotor2);
-    FlywheelPrototypeControls.setupController(prototypeMotor1, mainController);
-    FlywheelPrototypeControls.setupControllerTwo(prototypeMotor2, mainController);
+    FlywheelPrototypeControls.setupSmartDashboardControl(shooterFlywheel);
+    FlywheelPrototypeControls.setupSmartDashboardControl(indexerFlywheel);
+    FlywheelPrototypeControls.setupController(shooterFlywheel, mainController);
+    FlywheelPrototypeControls.setupControllerTwo(indexerFlywheel, mainController);
     if (null != this.autoChooser) {
       SmartDashboard.putData("Autonomous", this.autoChooser);
     }
