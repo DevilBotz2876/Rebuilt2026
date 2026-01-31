@@ -24,7 +24,7 @@ public class IntakeControls {
         new MotorBringUpCommand(
             (Motor) topFlywheel,
             () -> {
-              if (!SmartDashboard.getString("Selected Subsystem", "UNKNOWN")
+              if (!SmartDashboard.getString("Selected Subsystems/Selected", "UNKNOWN")
                   .equals(topFlywheelSubsystem.getName())) {
                 return 0.0;
               }
@@ -54,7 +54,7 @@ public class IntakeControls {
         new MotorBringUpCommand(
             (Motor) bottomFlywheel,
             () -> {
-              if (!SmartDashboard.getString("Selected Subsystem", "UNKNOWN")
+              if (!SmartDashboard.getString("Selected Subsystems/Selected", "UNKNOWN")
                   .equals(bottomFlywheelSubsystem.getName())) {
                 return 0.0;
               }
@@ -76,10 +76,10 @@ public class IntakeControls {
 
   public static void setupSmartDashboardControl(Flywheel flywheel) {
     SubsystemBase flywheelSubsystem = (SubsystemBase) flywheel;
-    SmartDashboard.putString("Selected Subsystem", "UNKNOWN");
+    SmartDashboard.putString("Selected Subsystems/Selected", "UNKNOWN");
     SmartDashboard.putData(
-        "Select " + flywheelSubsystem.getName(),
+        "Selected Subsystems/Select " + flywheelSubsystem.getName(),
         new InstantCommand(
-            () -> SmartDashboard.putString("Selected Subsystem", flywheelSubsystem.getName())));
+            () -> SmartDashboard.putString("Selected Subsystems/Selected", flywheelSubsystem.getName())));
   }
 }
