@@ -13,9 +13,6 @@ import frc.robot.subsystems.interfaces.Motor;
 public class FlywheelPrototypeControls {
   static int returnFactor;
 
-  // static int mode = 0;
-  // mode 0 is for voltage input, mode 1 is for speed input
-
   public static void setupController(Flywheel motor, CommandXboxController controller) {
     SubsystemBase motorSubsystem = (SubsystemBase) motor;
 
