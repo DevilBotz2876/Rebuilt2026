@@ -80,6 +80,8 @@ public class IntakeControls {
     SmartDashboard.putData(
         "Selected Subsystems/Select " + flywheelSubsystem.getName(),
         new InstantCommand(
-            () -> SmartDashboard.putString("Selected Subsystems/Selected", flywheelSubsystem.getName())));
+            () ->
+                SmartDashboard.putString(
+                    "Selected Subsystems/Selected", flywheelSubsystem.getName())));
   }
 }
