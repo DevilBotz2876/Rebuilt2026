@@ -7,12 +7,9 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.function.ToIntFunction;
-
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -102,24 +99,26 @@ public class CameraPhoton extends CameraBase {
     return camera;
   }
 
-  private VisionPoseMeasurement createMeasurement(
-      PhotonPipelineResult result) {
+  private VisionPoseMeasurement createMeasurement(PhotonPipelineResult result) {
     VisionPoseMeasurement measurement = new VisionPoseMeasurement();
     Optional<EstimatedRobotPose> estPose = photonPoseEstimator.estimateCoprocMultiTagPose(result);
-    if(estPose.isEmpty()) {
+    if (estPose.isEmpty()) {
       estPose = photonPoseEstimator.estimateLowestAmbiguityPose(result);
     }
 
-    measurement.targetIds = estPose.get().targetsUsed.stream().mapToInt(new ToIntFunction<PhotonTrackedTarget>() {
-      public int applyAsInt(PhotonTrackedTarget value) {
-        return value.fiducialId;
-      };
-    }).toArray();
+    measurement.targetIds =
+        estPose.get().targetsUsed.stream()
+            .mapToInt(
+                new ToIntFunction<PhotonTrackedTarget>() {
+                  public int applyAsInt(PhotonTrackedTarget value) {
+                    return value.fiducialId;
+                  }
+                })
+            .toArray();
     measurement.timestamp = estPose.get().timestampSeconds;
 
     Transform3d robotToCamera = getRobotToCamera();
-    measurement.robotPose =
-        estPose.get().estimatedPose.toPose2d();
+    measurement.robotPose = estPose.get().estimatedPose.toPose2d();
 
     // robot to camera + camera to target = robot to target
     // TODO: Determine best start location for calculated distance

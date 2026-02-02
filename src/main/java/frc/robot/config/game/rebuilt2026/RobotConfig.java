@@ -1,20 +1,20 @@
 package frc.robot.config.game.rebuilt2026;
 
+import static edu.wpi.first.units.Units.Degrees;
+
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.system.plant.DCMotor;
-import static edu.wpi.first.units.Units.Degrees;
-
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -34,7 +34,6 @@ import frc.robot.io.implementations.motor.MotorIOSparkMax.SparkMaxSettings;
 import frc.robot.io.implementations.motor.MotorIOStub;
 import frc.robot.io.implementations.motor.MotorIOTalonFx;
 import frc.robot.io.implementations.motor.MotorIOTalonFx.TalonFxSettings;
-import frc.robot.config.game.rebuilt2026.tunerConstants.TunerConstants;
 import frc.robot.subsystems.controls.drive.DriveControls;
 import frc.robot.subsystems.implementations.drive.DriveBase;
 import frc.robot.subsystems.implementations.drive.DriveSwerveCTRE;
@@ -42,14 +41,12 @@ import frc.robot.subsystems.implementations.motor.ArmMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.ElevatorMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.FlywheelMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.SimpleMotorSubsystem;
+import frc.robot.subsystems.implementations.vision.VisionSubsystem;
+import frc.robot.subsystems.implementations.vision.camera.CameraPhoton;
 import frc.robot.subsystems.interfaces.Arm.ArmSettings;
 import frc.robot.subsystems.interfaces.Elevator.ElevatorSettings;
 import frc.robot.subsystems.interfaces.Flywheel.FlywheelSettings;
 import frc.robot.subsystems.interfaces.SimpleMotor.SimpleMotorSettings;
-import java.util.Properties;
-import frc.robot.subsystems.implementations.drive.DriveSwerveCTRE;
-import frc.robot.subsystems.implementations.vision.VisionSubsystem;
-import frc.robot.subsystems.implementations.vision.camera.CameraPhoton;
 import frc.robot.subsystems.interfaces.Vision.Camera.CameraSettings;
 import java.util.Optional;
 import java.util.Properties;
@@ -94,7 +91,8 @@ public class RobotConfig {
     //         "left",
     //         new Transform3d(
     //             new Translation3d(
-    //                 Units.inchesToMeters(10.75), Units.inchesToMeters(14.5), Units.inchesToMeters(7 + 35)),
+    //                 Units.inchesToMeters(10.75), Units.inchesToMeters(14.5),
+    // Units.inchesToMeters(7 + 35)),
     //             new Rotation3d(
     //                 Angle.ofBaseUnits(0, Degrees),
     //                 Angle.ofBaseUnits(5, Degrees),
@@ -108,7 +106,7 @@ public class RobotConfig {
                 new Translation3d(
                     Units.inchesToMeters(14.5),
                     Units.inchesToMeters(0.0),
-                    Units.inchesToMeters(1.765+2+ 18)),
+                    Units.inchesToMeters(1.765 + 2 + 18)),
                 new Rotation3d(
                     Angle.ofBaseUnits(0, Degrees),
                     Angle.ofBaseUnits(5, Degrees),
@@ -120,7 +118,8 @@ public class RobotConfig {
     //         "right",
     //         new Transform3d(
     //             new Translation3d(
-    //                 Units.inchesToMeters(10), Units.inchesToMeters(-14.5), Units.inchesToMeters(7 + 35)),
+    //                 Units.inchesToMeters(10), Units.inchesToMeters(-14.5), Units.inchesToMeters(7
+    // + 35)),
     //             new Rotation3d(
     //                 Angle.ofBaseUnits(0, Degrees),
     //                 Angle.ofBaseUnits(5, Degrees),
