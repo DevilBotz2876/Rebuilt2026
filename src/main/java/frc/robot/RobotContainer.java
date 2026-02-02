@@ -22,7 +22,7 @@ public class RobotContainer {
     // get configuration from robot_config.properties
     try {
       String configPath = "";
-      if (Robot.isReal()) {
+      if (Robot.isReal())  {
         configPath = "/home/lvuser/deploy";
       } else {
         configPath = "src/main/deploy";
