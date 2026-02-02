@@ -10,19 +10,19 @@ import frc.robot.subsystems.interfaces.Motor;
 
 public class ShooterControls {
   public static void setupVoltageController(
-      Flywheel shooterFlywheel, Flywheel indexerFlywheel, CommandXboxController controller) {
+      Flywheel shooter, Flywheel indexer, CommandXboxController controller) {
 
     /*
-     * Top Flywheel
-     * Right Trigger: Stop(0 volts)
-     * When top flywheel is selected
+     * Shooter
+     * Left Trigger: Stop(0 volts)
+     * When Shooter is selected
      *  Up D-PAD: increase volts
      *  Down D-PAD: decrease volts
      */
-    SubsystemBase shooterFlywheelSubsystem = (SubsystemBase) shooterFlywheel;
+    SubsystemBase shooterFlywheelSubsystem = (SubsystemBase) shooter;
     shooterFlywheelSubsystem.setDefaultCommand(
         new MotorBringUpCommand(
-            (Motor) shooterFlywheel,
+            (Motor) shooter,
             () -> {
               if (!SmartDashboard.getString("Selected Subsystems/Selected", "UNKNOWN")
                   .equals(shooterFlywheelSubsystem.getName())) {
@@ -40,19 +40,20 @@ public class ShooterControls {
     controller
         .leftTrigger()
         .onTrue(
-            new InstantCommand(() -> ((Motor) shooterFlywheel).runVoltage(0.0), shooterFlywheelSubsystem));
+            new InstantCommand(
+                () -> ((Motor) shooter).runVoltage(0.0), shooterFlywheelSubsystem));
 
     /*
-     * Bottom Flywheel
-     * Right Bumper: Stop (0 volts)
-     * When bottom flywheel is selected
+     * Indexer
+     * Left Bumper: Stop (0 volts)
+     * When Indexer is selected
      *  Up D-PAD: increase volts
      *  Down D-PAD: decrease volts
      */
-    SubsystemBase indexerFlywheelSubsystem = (SubsystemBase) indexerFlywheel;
+    SubsystemBase indexerFlywheelSubsystem = (SubsystemBase) indexer;
     indexerFlywheelSubsystem.setDefaultCommand(
         new MotorBringUpCommand(
-            (Motor) indexerFlywheel,
+            (Motor) indexer,
             () -> {
               if (!SmartDashboard.getString("Selected Subsystems/Selected", "UNKNOWN")
                   .equals(indexerFlywheelSubsystem.getName())) {
@@ -71,7 +72,7 @@ public class ShooterControls {
         .leftBumper()
         .onTrue(
             new InstantCommand(
-                () -> ((Motor) indexerFlywheel).runVoltage(0.0), indexerFlywheelSubsystem));
+                () -> ((Motor) indexer).runVoltage(0.0), indexerFlywheelSubsystem));
   }
 
   public static void setupSmartDashboardControl(Flywheel flywheel) {
@@ -80,6 +81,8 @@ public class ShooterControls {
     SmartDashboard.putData(
         "Selected Subsystems/Select " + flywheelSubsystem.getName(),
         new InstantCommand(
-            () -> SmartDashboard.putString("Selected Subsystems/Selected", flywheelSubsystem.getName())));
+            () ->
+                SmartDashboard.putString(
+                    "Selected Subsystems/Selected", flywheelSubsystem.getName())));
   }
 }

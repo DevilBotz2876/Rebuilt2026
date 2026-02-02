@@ -99,7 +99,7 @@ public class RobotConfig {
     ShooterControls.setupVoltageController(shooterFlywheel, indexerFlywheel, assistController);
     FlywheelPrototypeControls.setupSmartDashboardControl(shooterFlywheel);
     FlywheelPrototypeControls.setupSmartDashboardControl(indexerFlywheel);
-    
+
     if (null != this.autoChooser) {
       SmartDashboard.putData("Autonomous", this.autoChooser);
     }
