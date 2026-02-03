@@ -27,6 +27,7 @@ import frc.robot.io.implementations.motor.MotorIOTalonFx;
 import frc.robot.io.implementations.motor.MotorIOTalonFx.TalonFxSettings;
 import frc.robot.subsystems.controls.drive.DriveControls;
 import frc.robot.subsystems.controls.flywheel.IntakeControls;
+import frc.robot.subsystems.controls.flywheel.ConveyorControls;
 import frc.robot.subsystems.controls.flywheel.FlywheelPrototypeControls;
 import frc.robot.subsystems.controls.flywheel.ShooterControls;
 import frc.robot.subsystems.implementations.drive.DriveBase;
@@ -50,6 +51,7 @@ public class RobotConfig {
   public FlywheelMotorSubsystem shooterFlywheel;
   public FlywheelMotorSubsystem indexerFlywheel;
 
+  public FlywheelMotorSubsystem conveyorFlywheel;
   // TODO: Add VisionSubsystem Declaration
 
   // Controls
@@ -74,6 +76,7 @@ public class RobotConfig {
     bottomIntakeFlywheel = createFlywheel(robotProperties, "bottomIntakeFlywheel");
     shooterFlywheel = createFlywheel(robotProperties, "shooterFlywheel");
     indexerFlywheel = createFlywheel(robotProperties, "indexerFlywheel");
+    conveyorFlywheel = createFlywheel(robotProperties, "conveyorFlywheel");
   }
 
   public RobotConfig(boolean stubDrive, boolean stubAuto, boolean stubVision) {
@@ -101,6 +104,7 @@ public class RobotConfig {
       // this.autoChooser = AutoBuilder.buildAutoChooser("Sit Still");
     }
     DriveControls.setupController(drive, mainController);
+    ConveyorControls.setupController(conveyorFlywheel, mainController);
     // Send vision-based odometry measurements to drive's odometry calculations
     // vision.setVisionMeasurementConsumer(drive::addVisionMeasurement);
     IntakeControls.setupVoltageController(
@@ -122,6 +126,7 @@ public class RobotConfig {
   private SimpleMotorSubsystem createSimpleMotor(Properties robotProperties, String name) {
     SimpleMotorSettings simpleMotorSettings = new SimpleMotorSettings();
     String simpleMotorSettingsPrefix = name + ".simpleMotorSettings";
+    
 
     simpleMotorSettings.color =
         new Color8Bit(
