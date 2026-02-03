@@ -102,7 +102,7 @@ public class RobotConfig {
       // this.autoChooser = AutoBuilder.buildAutoChooser("Sit Still");
     }
     DriveControls.setupController(drive, mainController);
-    ConveyorControls.setupController(conveyorFlywheel, mainController);
+    
     // Send vision-based odometry measurements to drive's odometry calculations
     // vision.setVisionMeasurementConsumer(drive::addVisionMeasurement);
     IntakeControls.setupVoltageController(
@@ -112,9 +112,11 @@ public class RobotConfig {
     // mainController);
     IntakeControls.setupSmartDashboardControl(topIntakeFlywheel);
     IntakeControls.setupSmartDashboardControl(bottomIntakeFlywheel);
-    ShooterControls.setupVoltageController(shooterFlywheel, indexerFlywheel, assistController);
+    ShooterControls.setupVoltageController(shooterFlywheel, indexerFlywheel, mainController);
     ShooterControls.setupSmartDashboardControl(shooterFlywheel);
     ShooterControls.setupSmartDashboardControl(indexerFlywheel);
+    ConveyorControls.setupController(conveyorFlywheel, mainController);
+    ShooterControls.setupSmartDashboardControl(conveyorFlywheel);
 
     if (null != this.autoChooser) {
       SmartDashboard.putData("Autonomous", this.autoChooser);
@@ -410,6 +412,8 @@ public class RobotConfig {
     switch (motor) {
       case "KrakenX60":
         return DCMotor.getKrakenX60(1);
+      case "Neo550":
+        return DCMotor.getNeo550(1);
       // more motors if needed
       default:
         return DCMotor.getKrakenX60(1);
