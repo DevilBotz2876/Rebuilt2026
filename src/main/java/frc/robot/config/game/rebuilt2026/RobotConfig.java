@@ -26,6 +26,7 @@ import frc.robot.io.implementations.motor.MotorIOStub;
 import frc.robot.io.implementations.motor.MotorIOTalonFx;
 import frc.robot.io.implementations.motor.MotorIOTalonFx.TalonFxSettings;
 import frc.robot.subsystems.controls.drive.DriveControls;
+import frc.robot.subsystems.controls.flywheel.ConveyorControls;
 import frc.robot.subsystems.controls.flywheel.FlywheelPrototypeControls;
 import frc.robot.subsystems.implementations.drive.DriveBase;
 import frc.robot.subsystems.implementations.drive.DriveSwerveCTRE;
@@ -90,6 +91,7 @@ public class RobotConfig {
       // this.autoChooser = AutoBuilder.buildAutoChooser("Sit Still");
     }
     DriveControls.setupController(drive, mainController);
+    ConveyorControls.setupController(conveyorFlywheel, mainController);
     // Send vision-based odometry measurements to drive's odometry calculations
     // vision.setVisionMeasurementConsumer(drive::addVisionMeasurement);
     if (null != this.autoChooser) {
@@ -100,6 +102,7 @@ public class RobotConfig {
   private SimpleMotorSubsystem createSimpleMotor(Properties robotProperties, String name) {
     SimpleMotorSettings simpleMotorSettings = new SimpleMotorSettings();
     String simpleMotorSettingsPrefix = name + ".simpleMotorSettings";
+    
 
     simpleMotorSettings.color =
         new Color8Bit(
