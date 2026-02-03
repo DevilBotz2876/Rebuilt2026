@@ -166,6 +166,7 @@ tasks.addRule("Pattern: DBBuildDir-<PROFILE>: builds the robot with the given pr
                 temp.load(new FileInputStream(file))
                 properties(temp)
             }
+            property("robot.name", configDirName.toUpperCase())
         }
     }
 }
