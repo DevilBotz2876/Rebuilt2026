@@ -40,8 +40,7 @@ public class ShooterControls {
     controller
         .leftTrigger()
         .onTrue(
-            new InstantCommand(
-                () -> ((Motor) shooter).runVoltage(0.0), shooterFlywheelSubsystem));
+            new InstantCommand(() -> ((Motor) shooter).runVoltage(0.0), shooterFlywheelSubsystem));
 
     /*
      * Indexer
@@ -71,8 +70,7 @@ public class ShooterControls {
     controller
         .leftBumper()
         .onTrue(
-            new InstantCommand(
-                () -> ((Motor) indexer).runVoltage(0.0), indexerFlywheelSubsystem));
+            new InstantCommand(() -> ((Motor) indexer).runVoltage(0.0), indexerFlywheelSubsystem));
   }
 
   public static void setupSmartDashboardControl(Flywheel flywheel) {

@@ -158,7 +158,7 @@ tasks.addRule("Pattern: DBBuildDir-<PROFILE>: builds the robot with the given pr
             destinationFile = file("src/main/resources/" + configDirName + ".properties")
 
             // configDir = file(configFile.absolutePath)
-            
+
             // copy all properties in dir to destination file
             Properties robotConfig = new Properties()
             fileTree(configDir).each { file ->

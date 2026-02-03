@@ -9,8 +9,7 @@ import frc.robot.subsystems.interfaces.Flywheel;
 import frc.robot.subsystems.interfaces.Motor;
 
 public class ConveyorControls {
-  public static void setupController(
-      Flywheel conveyorFlywheel, CommandXboxController controller) {
+  public static void setupController(Flywheel conveyorFlywheel, CommandXboxController controller) {
 
     SubsystemBase conveyorFlywheelSubsystem = (SubsystemBase) conveyorFlywheel;
     conveyorFlywheelSubsystem.setDefaultCommand(
@@ -33,5 +32,7 @@ public class ConveyorControls {
     controller
         .b()
         .onTrue(
-            new InstantCommand(() -> ((Motor) conveyorFlywheel).runVoltage(0.0), conveyorFlywheelSubsystem));
-}}
+            new InstantCommand(
+                () -> ((Motor) conveyorFlywheel).runVoltage(0.0), conveyorFlywheelSubsystem));
+  }
+}

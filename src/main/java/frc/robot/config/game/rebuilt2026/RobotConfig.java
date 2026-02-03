@@ -26,9 +26,8 @@ import frc.robot.io.implementations.motor.MotorIOStub;
 import frc.robot.io.implementations.motor.MotorIOTalonFx;
 import frc.robot.io.implementations.motor.MotorIOTalonFx.TalonFxSettings;
 import frc.robot.subsystems.controls.drive.DriveControls;
-import frc.robot.subsystems.controls.flywheel.IntakeControls;
 import frc.robot.subsystems.controls.flywheel.ConveyorControls;
-import frc.robot.subsystems.controls.flywheel.FlywheelPrototypeControls;
+import frc.robot.subsystems.controls.flywheel.IntakeControls;
 import frc.robot.subsystems.controls.flywheel.ShooterControls;
 import frc.robot.subsystems.implementations.drive.DriveBase;
 import frc.robot.subsystems.implementations.drive.DriveSwerveCTRE;
@@ -71,7 +70,6 @@ public class RobotConfig {
       drive.setPose(new Pose2d(new Translation2d(1, 1), new Rotation2d()));
     }
 
-    
     topIntakeFlywheel = createFlywheel(robotProperties, "topIntakeFlywheel");
     bottomIntakeFlywheel = createFlywheel(robotProperties, "bottomIntakeFlywheel");
     shooterFlywheel = createFlywheel(robotProperties, "shooterFlywheel");
@@ -126,7 +124,6 @@ public class RobotConfig {
   private SimpleMotorSubsystem createSimpleMotor(Properties robotProperties, String name) {
     SimpleMotorSettings simpleMotorSettings = new SimpleMotorSettings();
     String simpleMotorSettingsPrefix = name + ".simpleMotorSettings";
-    
 
     simpleMotorSettings.color =
         new Color8Bit(
