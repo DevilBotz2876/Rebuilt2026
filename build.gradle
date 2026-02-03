@@ -147,6 +147,29 @@ tasks.addRule("Pattern: DBBuild-<PROFILE>: builds the robot with the given profi
     }
 }
 
+tasks.addRule("Pattern: DBBuildDir-<PROFILE>: builds the robot with the given profile. Requires a corresponding .properties file in \"src/main/resources\".") { String taskName ->
+    if (taskName.startsWith("DBBuildDir-")){
+        def configDirName = taskName - "DBBuildDir-"
+        task(taskName, type: WriteProperties) {
+            File configDir
+            configDir = file("src/main/resources/" + configDirName + "/")
+
+            // set destination file to same name as configDirName
+            destinationFile = file("src/main/resources/" + configDirName + ".properties")
+
+            // configDir = file(configFile.absolutePath)
+            
+            // copy all properties in dir to destination file
+            Properties robotConfig = new Properties()
+            fileTree(configDir).each { file ->
+                Properties temp = new Properties()
+                temp.load(new FileInputStream(file))
+                properties(temp)
+            }
+        }
+    }
+}
+
 tasks.register("clean-profiles"){
     group = "DevilBotz"
     println "Deleting .properties files..."
