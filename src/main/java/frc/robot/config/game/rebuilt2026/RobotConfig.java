@@ -27,6 +27,8 @@ import frc.robot.io.implementations.motor.MotorIOTalonFx;
 import frc.robot.io.implementations.motor.MotorIOTalonFx.TalonFxSettings;
 import frc.robot.subsystems.controls.drive.DriveControls;
 import frc.robot.subsystems.controls.flywheel.IntakeControls;
+import frc.robot.subsystems.controls.flywheel.FlywheelPrototypeControls;
+import frc.robot.subsystems.controls.flywheel.ShooterControls;
 import frc.robot.subsystems.implementations.drive.DriveBase;
 import frc.robot.subsystems.implementations.drive.DriveSwerveCTRE;
 import frc.robot.subsystems.implementations.motor.ArmMotorSubsystem;
@@ -45,6 +47,9 @@ public class RobotConfig {
   public SendableChooser<Command> autoChooser;
   public FlywheelMotorSubsystem topIntakeFlywheel;
   public FlywheelMotorSubsystem bottomIntakeFlywheel;
+  public FlywheelMotorSubsystem shooterFlywheel;
+  public FlywheelMotorSubsystem indexerFlywheel;
+
   // TODO: Add VisionSubsystem Declaration
 
   // Controls
@@ -65,6 +70,8 @@ public class RobotConfig {
     }
     topIntakeFlywheel = createFlywheel(robotProperties, "topIntakeFlywheel");
     bottomIntakeFlywheel = createFlywheel(robotProperties, "bottomIntakeFlywheel");
+    shooterFlywheel = createFlywheel(robotProperties, "shooterFlywheel");
+    indexerFlywheel = createFlywheel(robotProperties, "indexerFlywheel");
   }
 
   public RobotConfig(boolean stubDrive, boolean stubAuto, boolean stubVision) {
@@ -101,6 +108,10 @@ public class RobotConfig {
     // mainController);
     IntakeControls.setupSmartDashboardControl(topIntakeFlywheel);
     IntakeControls.setupSmartDashboardControl(bottomIntakeFlywheel);
+    ShooterControls.setupVoltageController(shooterFlywheel, indexerFlywheel, assistController);
+    ShooterControls.setupSmartDashboardControl(shooterFlywheel);
+    ShooterControls.setupSmartDashboardControl(indexerFlywheel);
+
     if (null != this.autoChooser) {
       SmartDashboard.putData("Autonomous", this.autoChooser);
     }
