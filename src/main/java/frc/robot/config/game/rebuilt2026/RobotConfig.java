@@ -68,6 +68,8 @@ public class RobotConfig {
     if (Robot.isSimulation()) {
       drive.setPose(new Pose2d(new Translation2d(1, 1), new Rotation2d()));
     }
+
+    
     topIntakeFlywheel = createFlywheel(robotProperties, "topIntakeFlywheel");
     bottomIntakeFlywheel = createFlywheel(robotProperties, "bottomIntakeFlywheel");
     shooterFlywheel = createFlywheel(robotProperties, "shooterFlywheel");
