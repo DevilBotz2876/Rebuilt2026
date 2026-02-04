@@ -102,7 +102,7 @@ public class RobotConfig {
       // this.autoChooser = AutoBuilder.buildAutoChooser("Sit Still");
     }
     DriveControls.setupController(drive, mainController);
-    
+
     // Send vision-based odometry measurements to drive's odometry calculations
     // vision.setVisionMeasurementConsumer(drive::addVisionMeasurement);
     IntakeControls.setupVoltageController(
