@@ -8,6 +8,7 @@ import frc.robot.commands.common.motor.MotorBringUpCommand;
 import frc.robot.subsystems.interfaces.Flywheel;
 import frc.robot.subsystems.interfaces.Motor;
 
+// set the default commands for the shooter subsystems
 public class ShooterControls {
   public static void setupVoltageController(
       Flywheel shooter, Flywheel indexer, CommandXboxController controller) {
@@ -71,16 +72,5 @@ public class ShooterControls {
         .leftBumper()
         .onTrue(
             new InstantCommand(() -> ((Motor) indexer).runVoltage(0.0), indexerFlywheelSubsystem));
-  }
-
-  public static void setupSmartDashboardControl(Flywheel flywheel) {
-    SubsystemBase flywheelSubsystem = (SubsystemBase) flywheel;
-    SmartDashboard.putString("Selected Subsystems/Selected", "UNKNOWN");
-    SmartDashboard.putData(
-        "Selected Subsystems/Select " + flywheelSubsystem.getName(),
-        new InstantCommand(
-            () ->
-                SmartDashboard.putString(
-                    "Selected Subsystems/Selected", flywheelSubsystem.getName())));
   }
 }

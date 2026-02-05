@@ -25,6 +25,7 @@ import frc.robot.io.implementations.motor.MotorIOSparkMax.SparkMaxSettings;
 import frc.robot.io.implementations.motor.MotorIOStub;
 import frc.robot.io.implementations.motor.MotorIOTalonFx;
 import frc.robot.io.implementations.motor.MotorIOTalonFx.TalonFxSettings;
+import frc.robot.subsystems.controls.combination.DriverControls;
 import frc.robot.subsystems.controls.drive.DriveControls;
 import frc.robot.subsystems.controls.flywheel.ConveyorControls;
 import frc.robot.subsystems.controls.flywheel.IntakeControls;
@@ -105,18 +106,16 @@ public class RobotConfig {
 
     // Send vision-based odometry measurements to drive's odometry calculations
     // vision.setVisionMeasurementConsumer(drive::addVisionMeasurement);
-    IntakeControls.setupVoltageController(
-        topIntakeFlywheel,
-        bottomIntakeFlywheel,
-        mainController); // .setupVoltageController(topIntakeFlywheel, bottomIntakeFlywheel,
-    // mainController);
-    IntakeControls.setupSmartDashboardControl(topIntakeFlywheel);
-    IntakeControls.setupSmartDashboardControl(bottomIntakeFlywheel);
+    IntakeControls.setupVoltageController(topIntakeFlywheel, bottomIntakeFlywheel, mainController);
     ShooterControls.setupVoltageController(shooterFlywheel, indexerFlywheel, mainController);
-    ShooterControls.setupSmartDashboardControl(shooterFlywheel);
-    ShooterControls.setupSmartDashboardControl(indexerFlywheel);
     ConveyorControls.setupController(conveyorFlywheel, mainController);
-    ShooterControls.setupSmartDashboardControl(conveyorFlywheel);
+
+    
+    DriverControls.setupSmartDashboardControl(topIntakeFlywheel);
+    DriverControls.setupSmartDashboardControl(bottomIntakeFlywheel);
+    DriverControls.setupSmartDashboardControl(shooterFlywheel);
+    DriverControls.setupSmartDashboardControl(indexerFlywheel);
+    DriverControls.setupSmartDashboardControl(conveyorFlywheel);
 
     if (null != this.autoChooser) {
       SmartDashboard.putData("Autonomous", this.autoChooser);

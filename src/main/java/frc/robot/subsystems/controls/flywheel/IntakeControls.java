@@ -8,6 +8,7 @@ import frc.robot.commands.common.motor.MotorBringUpCommand;
 import frc.robot.subsystems.interfaces.Flywheel;
 import frc.robot.subsystems.interfaces.Motor;
 
+// set the default commands for the intake subsystems
 public class IntakeControls {
   public static void setupVoltageController(
       Flywheel topFlywheel, Flywheel bottomFlywheel, CommandXboxController controller) {
@@ -72,16 +73,5 @@ public class IntakeControls {
         .onTrue(
             new InstantCommand(
                 () -> ((Motor) bottomFlywheel).runVoltage(0.0), bottomFlywheelSubsystem));
-  }
-
-  public static void setupSmartDashboardControl(Flywheel flywheel) {
-    SubsystemBase flywheelSubsystem = (SubsystemBase) flywheel;
-    SmartDashboard.putString("Selected Subsystems/Selected", "UNKNOWN");
-    SmartDashboard.putData(
-        "Selected Subsystems/Select " + flywheelSubsystem.getName(),
-        new InstantCommand(
-            () ->
-                SmartDashboard.putString(
-                    "Selected Subsystems/Selected", flywheelSubsystem.getName())));
   }
 }
