@@ -1,0 +1,1 @@
+sh gradlew DBBuildDir-$1
