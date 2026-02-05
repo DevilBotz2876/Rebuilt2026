@@ -188,3 +188,5 @@ compile_commands.json
 
 src/main/deploy/robot_config.properties
 *.wpilog
+
+simgui-ds.json
