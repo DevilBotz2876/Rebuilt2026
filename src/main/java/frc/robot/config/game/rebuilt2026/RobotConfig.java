@@ -110,12 +110,12 @@ public class RobotConfig {
     ShooterControls.setupVoltageController(shooterFlywheel, indexerFlywheel, mainController);
     ConveyorControls.setupController(conveyorFlywheel, mainController);
 
-    
-    DriverControls.setupSmartDashboardControl(topIntakeFlywheel);
-    DriverControls.setupSmartDashboardControl(bottomIntakeFlywheel);
-    DriverControls.setupSmartDashboardControl(shooterFlywheel);
-    DriverControls.setupSmartDashboardControl(indexerFlywheel);
-    DriverControls.setupSmartDashboardControl(conveyorFlywheel);
+
+    DriverControls.setupFlywheelSmartDashboardControl(topIntakeFlywheel);
+    DriverControls.setupFlywheelSmartDashboardControl(bottomIntakeFlywheel);
+    DriverControls.setupFlywheelSmartDashboardControl(shooterFlywheel);
+    DriverControls.setupFlywheelSmartDashboardControl(indexerFlywheel);
+    DriverControls.setupFlywheelSmartDashboardControl(conveyorFlywheel);
 
     if (null != this.autoChooser) {
       SmartDashboard.putData("Autonomous", this.autoChooser);
