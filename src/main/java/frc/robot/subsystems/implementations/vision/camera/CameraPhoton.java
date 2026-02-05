@@ -9,8 +9,11 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import java.util.List;
 import org.photonvision.PhotonCamera;
+import org.photonvision.estimation.CameraTargetRelation;
 import org.photonvision.targeting.MultiTargetPNPResult;
 import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
+import org.photonvision.targeting.TargetCorner;
 
 public class CameraPhoton extends CameraBase {
   private final PhotonCamera camera;
@@ -39,8 +42,26 @@ public class CameraPhoton extends CameraBase {
 
     PhotonPipelineResult result = results.get(results.size() - 1); // get latest result
     this.poseMeasurements = new VisionPoseMeasurement[1];
+    result.hasTargets();
 
+    // idk what ts prints
+    //look for values that are coordinates or something
+    if (result.hasTargets()) {
+      for (PhotonTrackedTarget target : result.getTargets()) {
+        System.out.println("Id: " + target.objDetectId);
+        System.out.println("Area: " + target.getArea());
+        System.out.println("Targets or something" + result.getTargets());
+        
+    }
+      //System.out.println("  Bounding Box X: " + TargetCorner.getMinX());
+      //System.out.println("  Bounding Box Y: " + TargetCorner.getMinY());
+      inputs.targetIds = new int[0];
+      poseMeasurements[0] = new VisionPoseMeasurement();
+      return;
+    }
+    
     // no tags
+    /* 
     if (!result.hasTargets()) {
       inputs.targetIds = new int[0];
       poseMeasurements[0] = new VisionPoseMeasurement();
@@ -66,8 +87,8 @@ public class CameraPhoton extends CameraBase {
           new Pose3d(aprilTagPose.getTranslation(), aprilTagPose.getRotation())
               .plus(result.getBestTarget().bestCameraToTarget.inverse())
               .toPose2d();
-      inputs.targetIds = new int[1];
-    }
+      inputs.targetIds = new int[1]; 
+    } */
 
     inputs.cameraDistanceToTargetMeters =
         result
