@@ -42,12 +42,10 @@ public class CameraPhoton extends CameraBase {
 
     PhotonPipelineResult result = results.get(results.size() - 1); // get latest result
     this.poseMeasurements = new VisionPoseMeasurement[1];
-    result.hasTargets();
 
-    // idk what ts prints
-    //look for values that are coordinates or something
     if (result.hasTargets()) {
       for (PhotonTrackedTarget target : result.getTargets()) {
+        // test out different things
         System.out.println("Id: " + target.objDetectId);
         System.out.println("Area: " + target.getArea());
         System.out.println("Targets or something" + result.getTargets());
@@ -59,7 +57,8 @@ public class CameraPhoton extends CameraBase {
       poseMeasurements[0] = new VisionPoseMeasurement();
       return;
     }
-    
+
+    /* 
     // no tags
     /* 
     if (!result.hasTargets()) {
@@ -67,7 +66,8 @@ public class CameraPhoton extends CameraBase {
       poseMeasurements[0] = new VisionPoseMeasurement();
       return;
     }
-
+    
+     
     // 2+ tags
     if (result.multitagResult.isPresent()) {
       MultiTargetPNPResult multitagResult = result.multitagResult.get();
@@ -87,8 +87,9 @@ public class CameraPhoton extends CameraBase {
           new Pose3d(aprilTagPose.getTranslation(), aprilTagPose.getRotation())
               .plus(result.getBestTarget().bestCameraToTarget.inverse())
               .toPose2d();
-      inputs.targetIds = new int[1]; 
-    } */
+      inputs.targetIds = new int[1];
+    }
+      */
 
     inputs.cameraDistanceToTargetMeters =
         result
