@@ -11,27 +11,35 @@ import frc.robot.subsystems.interfaces.Flywheel;
 import frc.robot.subsystems.interfaces.Motor;
 
 public class DriverControls {
-    public static void setupController(Drive drive, Flywheel topIntake, Flywheel bottomIntake, Flywheel shooter, Flywheel indexer, Flywheel conveyor) {}
+  public static void setupController(
+      Drive drive,
+      Flywheel topIntake,
+      Flywheel bottomIntake,
+      Flywheel shooter,
+      Flywheel indexer,
+      Flywheel conveyor) {
 
+    // Command shoot = new SequentialCommandGroup(null)
+  }
 
-    public static void setupFlywheelSmartDashboardControl(Flywheel flywheel) {
-        SubsystemBase flywheelSubsystem = (SubsystemBase) flywheel;
-        setupMotorSmartDashboardControl(flywheelSubsystem, (Motor) flywheel);
-        setupSmartDashboardVoltageControl(flywheelSubsystem, (Motor) flywheel);
-        setupSmartDashboardSpeedControl(flywheelSubsystem, flywheel);
-    }
+  public static void setupFlywheelSmartDashboardControl(Flywheel flywheel) {
+    SubsystemBase flywheelSubsystem = (SubsystemBase) flywheel;
+    setupMotorSmartDashboardControl(flywheelSubsystem, (Motor) flywheel);
+    setupSmartDashboardVoltageControl(flywheelSubsystem, (Motor) flywheel);
+    setupSmartDashboardSpeedControl(flywheelSubsystem, flywheel);
+  }
 
-    private static void setupMotorSmartDashboardControl(SubsystemBase motorSubsystem, Motor motor) {
-        SmartDashboard.putString("Selected Subsystems/Selected", "UNKNOWN");
-        SmartDashboard.putData(
-            "Selected Subsystems/Select " + motorSubsystem.getName(),
-            new InstantCommand(
-                () ->
-                    SmartDashboard.putString(
-                        "Selected Subsystems/Selected", motorSubsystem.getName())));
-    }
+  private static void setupMotorSmartDashboardControl(SubsystemBase motorSubsystem, Motor motor) {
+    SmartDashboard.putString("Selected Subsystems/Selected", "UNKNOWN");
+    SmartDashboard.putData(
+        "Selected Subsystems/Select " + motorSubsystem.getName(),
+        new InstantCommand(
+            () ->
+                SmartDashboard.putString(
+                    "Selected Subsystems/Selected", motorSubsystem.getName())));
+  }
 
-    private static void setupSmartDashboardVoltageControl(SubsystemBase motorSubsystem, Motor motor) {
+  private static void setupSmartDashboardVoltageControl(SubsystemBase motorSubsystem, Motor motor) {
     SmartDashboard.putData(
         motorSubsystem.getName() + "/Commands/Run at x Volts/Run -10.0 Volts",
         new MotorRunVoltageCommand((Motor) motor, () -> -10.0));
@@ -59,10 +67,10 @@ public class DriverControls {
     SmartDashboard.putData(
         motorSubsystem.getName() + "/Commands/Run at set Voltage",
         new MotorPitCommand((Motor) motor, motorSubsystem.getName() + "/Commands/Set Voltage"));
+  }
 
-    
-    }
-    private static void setupSmartDashboardSpeedControl(SubsystemBase flywheelSubsystem, Flywheel flywheel) {
+  private static void setupSmartDashboardSpeedControl(
+      SubsystemBase flywheelSubsystem, Flywheel flywheel) {
 
     SmartDashboard.putNumber(flywheelSubsystem.getName() + "/Commands/Set Speed", 0.0);
     SmartDashboard.putData(

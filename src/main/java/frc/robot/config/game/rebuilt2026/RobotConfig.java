@@ -110,7 +110,6 @@ public class RobotConfig {
     ShooterControls.setupVoltageController(shooterFlywheel, indexerFlywheel, mainController);
     ConveyorControls.setupController(conveyorFlywheel, mainController);
 
-
     DriverControls.setupFlywheelSmartDashboardControl(topIntakeFlywheel);
     DriverControls.setupFlywheelSmartDashboardControl(bottomIntakeFlywheel);
     DriverControls.setupFlywheelSmartDashboardControl(shooterFlywheel);
