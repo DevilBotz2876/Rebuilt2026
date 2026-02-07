@@ -4,6 +4,8 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.interfaces.Flywheel;
+import frc.robot.subsystems.interfaces.Motor;
+
 import java.util.function.DoubleSupplier;
 
 public class FlywheelCommand extends Command {
@@ -28,8 +30,11 @@ public class FlywheelCommand extends Command {
     double currentSpeed = speed.getAsDouble();
 
     targetVelocity += currentSpeed * flywheel.getSettings().maxVelocityInRPMs / 50;
-    targetVelocity = MathUtil.clamp(targetVelocity, 0, flywheel.getSettings().maxVelocityInRPMs);
+    targetVelocity = MathUtil.clamp(targetVelocity, -flywheel.getSettings().maxVelocityInRPMs, flywheel.getSettings().maxVelocityInRPMs);
 
+    if(targetVelocity == 0) {
+      ((Motor) flywheel).runVoltage(0.0);
+    }
     flywheel.setTargetVelocity(targetVelocity);
   }
 }
