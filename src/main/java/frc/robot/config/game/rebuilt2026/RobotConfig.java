@@ -27,17 +27,13 @@ import frc.robot.io.implementations.motor.MotorIOTalonFx;
 import frc.robot.io.implementations.motor.MotorIOTalonFx.TalonFxSettings;
 import frc.robot.subsystems.controls.combination.DriverControls;
 import frc.robot.subsystems.controls.drive.DriveControls;
-import frc.robot.subsystems.controls.flywheel.ConveyorControls;
 import frc.robot.subsystems.controls.flywheel.FlywheelControls;
-import frc.robot.subsystems.controls.flywheel.IntakeControls;
-import frc.robot.subsystems.controls.flywheel.ShooterControls;
 import frc.robot.subsystems.implementations.drive.DriveBase;
 import frc.robot.subsystems.implementations.drive.DriveSwerveCTRE;
 import frc.robot.subsystems.implementations.motor.ArmMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.ElevatorMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.FlywheelMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.SimpleMotorSubsystem;
-import frc.robot.subsystems.interfaces.Flywheel;
 import frc.robot.subsystems.interfaces.Arm.ArmSettings;
 import frc.robot.subsystems.interfaces.Elevator.ElevatorSettings;
 import frc.robot.subsystems.interfaces.Flywheel.FlywheelSettings;
@@ -61,10 +57,11 @@ public class RobotConfig {
   public CommandXboxController assistController = new CommandXboxController(1);
 
   public RobotConfig(Properties robotProperties) {
-    // if (robotProperties.containsKey("robot.drive")) {
+    if (robotProperties.containsKey("robot.drive")) {
       if (robotProperties.getProperty("robot.drive").equals("ctre")) {
         drive = new DriveSwerveCTRE(new TunerConstants(robotProperties));
-      } else {
+      }
+    } else {
       drive = new DriveBase("Stub");
     }
 
@@ -113,7 +110,14 @@ public class RobotConfig {
     FlywheelControls.setupController(shooterFlywheel, mainController);
     FlywheelControls.setupController(conveyorFlywheel, mainController);
 
-    DriverControls.setupMainController(drive, topIntakeFlywheel, bottomIntakeFlywheel, shooterFlywheel, indexerFlywheel, conveyorFlywheel, mainController);
+    DriverControls.setupMainController(
+        drive,
+        topIntakeFlywheel,
+        bottomIntakeFlywheel,
+        shooterFlywheel,
+        indexerFlywheel,
+        conveyorFlywheel,
+        mainController);
 
     DriverControls.setupFlywheelSmartDashboardControl(topIntakeFlywheel);
     DriverControls.setupFlywheelSmartDashboardControl(bottomIntakeFlywheel);
