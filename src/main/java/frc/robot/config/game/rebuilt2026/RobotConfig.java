@@ -1,5 +1,6 @@
 package frc.robot.config.game.rebuilt2026;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
@@ -27,10 +28,7 @@ import frc.robot.io.implementations.motor.MotorIOTalonFx;
 import frc.robot.io.implementations.motor.MotorIOTalonFx.TalonFxSettings;
 import frc.robot.subsystems.controls.combination.DriverControls;
 import frc.robot.subsystems.controls.drive.DriveControls;
-import frc.robot.subsystems.controls.flywheel.ConveyorControls;
 import frc.robot.subsystems.controls.flywheel.FlywheelControls;
-import frc.robot.subsystems.controls.flywheel.IntakeControls;
-import frc.robot.subsystems.controls.flywheel.ShooterControls;
 import frc.robot.subsystems.implementations.drive.DriveBase;
 import frc.robot.subsystems.implementations.drive.DriveSwerveCTRE;
 import frc.robot.subsystems.implementations.motor.ArmMotorSubsystem;
@@ -239,6 +237,7 @@ public class RobotConfig {
         TalonFxSettings talonSettings = new TalonFxSettings();
         talonSettings.canId =
             Integer.parseInt(robotProperties.getProperty(name + ".talonFX.setting.id"));
+        talonSettings.supplyCurrentLimitAmps = Double.parseDouble(robotProperties.getProperty(name + ".talonFX.setting.supplyCurrentLimitAmps", "40.0"));
         return new FlywheelMotorSubsystem(
             new MotorIOTalonFx(IOSettings, talonSettings), name, flywheelSettings);
 
@@ -421,5 +420,20 @@ public class RobotConfig {
       default:
         return DCMotor.getKrakenX60(1);
     }
+  }
+
+  private TalonFxSettings getTalonFxSettings(Properties robotProperties, String subsystemName) {
+    TalonFxSettings talonSettings = new TalonFxSettings();
+    talonSettings.canId =
+        Integer.parseInt(robotProperties.getProperty(subsystemName + ".talonFX.setting.id"));
+    talonSettings.supplyCurrentLimitAmps = Double.parseDouble(robotProperties.getProperty(subsystemName + ".talonFX.setting.supplyCurrentLimitAmps", "70.0"));
+    talonSettings.supplyCurrentLowerLimitAmps = Double.parseDouble(robotProperties.getProperty(subsystemName + ".talonFX.setting.supplyCurrentLowerLimitAmps", "40.0"));
+    talonSettings.supplyCurrentLowerTimeSeconds = Double.parseDouble(robotProperties.getProperty(subsystemName + ".talonFX.setting.supplyCurrentLowerTimeSeconds", "1.0"));
+
+    talonSettings.statorCurrentLimitAmps = Double.parseDouble(robotProperties.getProperty(subsystemName + ".talonFX.setting.statorCurrentLimitAmps", "120.0"));
+    talonSettings.peakForwardVoltage = MathUtil.clamp(Double.parseDouble(robotProperties.getProperty(subsystemName + ".talonFX.setting.peakForwardVoltage", "12")), 0.0, 12.0);
+    talonSettings.peakReverseVoltage = MathUtil.clamp(Double.parseDouble(robotProperties.getProperty(subsystemName + ".talonFX.setting.peakReverseVoltage", "12")), -12.0, 0);
+
+    return talonSettings;
   }
 }

@@ -10,6 +10,14 @@ import edu.wpi.first.units.Units;
 public class MotorIOTalonFx extends MotorIOBase {
   public static class TalonFxSettings {
     public int canId = 0;
+    public double supplyCurrentLimitAmps = 70.0;
+    public double supplyCurrentLowerLimitAmps = 40.0;
+    public double supplyCurrentLowerTimeSeconds = 1.0;
+
+    public double statorCurrentLimitAmps = 120.0;
+
+    public double peakForwardVoltage = 12.0;
+    public double peakReverseVoltage = -12.0;
   }
 
   MotorIOBaseSettings motorSettings;
@@ -28,17 +36,17 @@ public class MotorIOTalonFx extends MotorIOBase {
      * lower to 40 A if we're at 70 A for over 1 second */
 
     currentLimitsConfigs
-        .withSupplyCurrentLowerLimit(Units.Amps.of(70)) // Default limit of 70 A
+        .withSupplyCurrentLowerLimit(Units.Amps.of(talonFxSettings.supplyCurrentLowerLimitAmps)) // Default limit of 70 A
         .withSupplyCurrentLimit(
-            Units.Amps.of(40)) // Reduce the limit to 40 A if we've limited to 70 A...
-        .withSupplyCurrentLowerTime(Units.Seconds.of(1.0)) // ...for at least 1 second
+            Units.Amps.of(talonFxSettings.supplyCurrentLimitAmps)) // Reduce the limit to 40 A if we've limited to 70 A...
+        .withSupplyCurrentLowerTime(Units.Seconds.of(talonFxSettings.supplyCurrentLowerTimeSeconds)) // ...for at least 1 second
         .withSupplyCurrentLimitEnable(true); // And enable it
 
     currentLimitsConfigs
         .withStatorCurrentLimit(Units.Amps.of(120)) // Limit stator current to 120 A
         .withStatorCurrentLimitEnable(true); // And enable it
 
-    // // Peak output of 12 V
+    // Peak output of 12 V
     toConfigure
         .Voltage
         .withPeakForwardVoltage(Units.Volts.of(12))
