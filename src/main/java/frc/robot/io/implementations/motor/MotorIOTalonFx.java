@@ -5,7 +5,9 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.units.Units;
+import java.util.Properties;
 
 public class MotorIOTalonFx extends MotorIOBase {
   public static class TalonFxSettings {
@@ -18,6 +20,53 @@ public class MotorIOTalonFx extends MotorIOBase {
 
     public double peakForwardVoltage = 12.0;
     public double peakReverseVoltage = -12.0;
+
+    /**
+     * Created and returns the TalonFxSettings from the properties using the subsystem name as a
+     * prefix.
+     *
+     * @param properties the properties that include the talon setting
+     * @param subsystemName the name of the subsystem that is used in the properties
+     * @return a TalonFxSettings set with values matching properties
+     */
+    public static TalonFxSettings getSettings(Properties properties, String subsystemName) {
+      TalonFxSettings talonSettings = new TalonFxSettings();
+      talonSettings.canId =
+          Integer.parseInt(properties.getProperty(subsystemName + ".talonFXSettings.id"));
+      talonSettings.supplyCurrentLimitAmps =
+          Double.parseDouble(
+              properties.getProperty(
+                  subsystemName + ".talonFXSettings.supplyCurrentLimitAmps", "70.0"));
+      talonSettings.supplyCurrentLowerLimitAmps =
+          Double.parseDouble(
+              properties.getProperty(
+                  subsystemName + ".talonFXSettings.supplyCurrentLowerLimitAmps", "40.0"));
+      talonSettings.supplyCurrentLowerTimeSeconds =
+          Double.parseDouble(
+              properties.getProperty(
+                  subsystemName + ".talonFXSettings.supplyCurrentLowerTimeSeconds", "1.0"));
+
+      talonSettings.statorCurrentLimitAmps =
+          Double.parseDouble(
+              properties.getProperty(
+                  subsystemName + ".talonFXSettings.statorCurrentLimitAmps", "120.0"));
+      talonSettings.peakForwardVoltage =
+          MathUtil.clamp(
+              Double.parseDouble(
+                  properties.getProperty(
+                      subsystemName + ".talonFXSettings.peakForwardVoltage", "12")),
+              0.0,
+              12.0);
+      talonSettings.peakReverseVoltage =
+          MathUtil.clamp(
+              Double.parseDouble(
+                  properties.getProperty(
+                      subsystemName + ".talonFXSettings.peakReverseVoltage", "12")),
+              -12.0,
+              0);
+
+      return talonSettings;
+    }
   }
 
   MotorIOBaseSettings motorSettings;

@@ -10,11 +10,42 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
+import java.util.Properties;
 
 /** A "SparkMax" controller implementation of a MotorIO */
 public class MotorIOSparkMax extends MotorIOBase {
   public static class SparkMaxSettings {
     public int canId = 0;
+    public int stallCurrentLimitAmps = 60; // the current Limit at 0 RPM
+    public int freeCurrentLimitAmps = 40; // the current Limit at free speed (5700RPM for NEO).
+    public int secondaryCurrentLimitAmps = 0; //
+
+    /**
+     * Created and returns the SparkMaxSettings from the properties using the subsystem name as a
+     * prefix.
+     *
+     * @param properties the properties that include the talon setting
+     * @param subsystemName the name of the subsystem that is used in the properties
+     * @return a TalonFxSettings set with values matching properties
+     */
+    public static SparkMaxSettings getSettings(Properties properties, String subsystemName) {
+      SparkMaxSettings sparkMaxSettings = new SparkMaxSettings();
+
+      sparkMaxSettings.stallCurrentLimitAmps =
+          Integer.parseInt(
+              properties.getProperty(subsystemName + ".sparkMaxSettings.stallCurrentLimitAmps"));
+
+      sparkMaxSettings.freeCurrentLimitAmps =
+          Integer.parseInt(
+              properties.getProperty(subsystemName + ".sparkMaxSettings.freeCurrentLimitAmps"));
+
+      sparkMaxSettings.secondaryCurrentLimitAmps =
+          Integer.parseInt(
+              properties.getProperty(
+                  subsystemName + ".sparkMaxSettings.secondaryCurrentLimitAmps"));
+
+      return sparkMaxSettings;
+    }
   }
 
   MotorIOBaseSettings motorSettings;
@@ -37,8 +68,9 @@ public class MotorIOSparkMax extends MotorIOBase {
 
     motorConfig
         .inverted(motorSettings.motor.inverted)
-        .smartCurrentLimit(60, 40)
-        .secondaryCurrentLimit(0)
+        .smartCurrentLimit(
+            sparkMaxSettings.stallCurrentLimitAmps, sparkMaxSettings.freeCurrentLimitAmps)
+        .secondaryCurrentLimit(sparkMaxSettings.secondaryCurrentLimitAmps)
         .idleMode(SparkBaseConfig.IdleMode.kBrake);
 
     motorConfig.closedLoop.pid(

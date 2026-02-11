@@ -1,6 +1,5 @@
 package frc.robot.config.game.rebuilt2026;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
@@ -131,6 +130,7 @@ public class RobotConfig {
     }
   }
 
+  // TODO make static in each subsystem
   private SimpleMotorSubsystem createSimpleMotor(Properties robotProperties, String name) {
     SimpleMotorSettings simpleMotorSettings = new SimpleMotorSettings();
     String simpleMotorSettingsPrefix = name + ".simpleMotorSettings";
@@ -185,16 +185,12 @@ public class RobotConfig {
 
     switch (robotProperties.getProperty(name + ".motor.motorController")) {
       case "talonFX":
-        TalonFxSettings talonSettings = new TalonFxSettings();
-        talonSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".talonFXSettings.id"));
+        TalonFxSettings talonSettings = TalonFxSettings.getSettings(robotProperties, name);
         return new SimpleMotorSubsystem(
             new MotorIOTalonFx(IOSettings, talonSettings), name, simpleMotorSettings);
 
       case "sparkMax":
-        SparkMaxSettings sparkMaxSettings = new SparkMaxSettings();
-        sparkMaxSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".sparkMaxSettings.id"));
+        SparkMaxSettings sparkMaxSettings = SparkMaxSettings.getSettings(robotProperties, name);
         return new SimpleMotorSubsystem(
             new MotorIOSparkMax(IOSettings, sparkMaxSettings), name, simpleMotorSettings);
 
@@ -241,9 +237,7 @@ public class RobotConfig {
 
     switch (robotProperties.getProperty(name + ".motor.motorController")) {
       case "talonFX":
-        TalonFxSettings talonSettings = new TalonFxSettings();
-        talonSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".talonFXSettings.id"));
+        TalonFxSettings talonSettings = TalonFxSettings.getSettings(robotProperties, name);
         talonSettings.supplyCurrentLimitAmps =
             Double.parseDouble(
                 robotProperties.getProperty(
@@ -252,9 +246,7 @@ public class RobotConfig {
             new MotorIOTalonFx(IOSettings, talonSettings), name, flywheelSettings);
 
       case "sparkMax":
-        SparkMaxSettings sparkMaxSettings = new SparkMaxSettings();
-        sparkMaxSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".sparkMaxSettings.id"));
+        SparkMaxSettings sparkMaxSettings = SparkMaxSettings.getSettings(robotProperties, name);
         return new FlywheelMotorSubsystem(
             new MotorIOSparkMax(IOSettings, sparkMaxSettings), name, flywheelSettings);
 
@@ -310,16 +302,12 @@ public class RobotConfig {
 
     switch (robotProperties.getProperty(name + ".motor.motorController")) {
       case "talonFX":
-        TalonFxSettings talonSettings = new TalonFxSettings();
-        talonSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".talonFXSettings.id"));
+        TalonFxSettings talonSettings = TalonFxSettings.getSettings(robotProperties, name);
         return new ArmMotorSubsystem(
             new MotorIOTalonFx(IOSettings, talonSettings), name, armSettings);
 
       case "sparkMax":
-        SparkMaxSettings sparkMaxSettings = new SparkMaxSettings();
-        sparkMaxSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".sparkMaxSettings.id"));
+        SparkMaxSettings sparkMaxSettings = SparkMaxSettings.getSettings(robotProperties, name);
         return new ArmMotorSubsystem(
             new MotorIOSparkMax(IOSettings, sparkMaxSettings), name, armSettings);
 
@@ -380,16 +368,12 @@ public class RobotConfig {
 
     switch (robotProperties.getProperty(name + ".motor.motorController")) {
       case "talonFX":
-        TalonFxSettings talonSettings = new TalonFxSettings();
-        talonSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".talonFXSettings.id"));
+        TalonFxSettings talonSettings = TalonFxSettings.getSettings(robotProperties, name);
         return new ElevatorMotorSubsystem(
             new MotorIOTalonFx(IOSettings, talonSettings), name, elevatorSettings);
 
       case "sparkMax":
-        SparkMaxSettings sparkMaxSettings = new SparkMaxSettings();
-        sparkMaxSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".sparkMaxSettings.id"));
+        SparkMaxSettings sparkMaxSettings = SparkMaxSettings.getSettings(robotProperties, name);
         return new ElevatorMotorSubsystem(
             new MotorIOSparkMax(IOSettings, sparkMaxSettings), name, elevatorSettings);
 
@@ -430,44 +414,5 @@ public class RobotConfig {
       default:
         return DCMotor.getKrakenX60(1);
     }
-  }
-
-  private TalonFxSettings getTalonFxSettings(Properties robotProperties, String subsystemName) {
-    TalonFxSettings talonSettings = new TalonFxSettings();
-    talonSettings.canId =
-        Integer.parseInt(robotProperties.getProperty(subsystemName + ".talonFXSettings.id"));
-    talonSettings.supplyCurrentLimitAmps =
-        Double.parseDouble(
-            robotProperties.getProperty(
-                subsystemName + ".talonFXSettings.supplyCurrentLimitAmps", "70.0"));
-    talonSettings.supplyCurrentLowerLimitAmps =
-        Double.parseDouble(
-            robotProperties.getProperty(
-                subsystemName + ".talonFXSettings.supplyCurrentLowerLimitAmps", "40.0"));
-    talonSettings.supplyCurrentLowerTimeSeconds =
-        Double.parseDouble(
-            robotProperties.getProperty(
-                subsystemName + ".talonFXSettings.supplyCurrentLowerTimeSeconds", "1.0"));
-
-    talonSettings.statorCurrentLimitAmps =
-        Double.parseDouble(
-            robotProperties.getProperty(
-                subsystemName + ".talonFXSettings.statorCurrentLimitAmps", "120.0"));
-    talonSettings.peakForwardVoltage =
-        MathUtil.clamp(
-            Double.parseDouble(
-                robotProperties.getProperty(
-                    subsystemName + ".talonFXSettings.peakForwardVoltage", "12")),
-            0.0,
-            12.0);
-    talonSettings.peakReverseVoltage =
-        MathUtil.clamp(
-            Double.parseDouble(
-                robotProperties.getProperty(
-                    subsystemName + ".talonFXSettings.peakReverseVoltage", "12")),
-            -12.0,
-            0);
-
-    return talonSettings;
   }
 }
