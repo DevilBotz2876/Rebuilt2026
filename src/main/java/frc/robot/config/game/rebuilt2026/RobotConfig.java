@@ -186,14 +186,14 @@ public class RobotConfig {
       case "talonFX":
         TalonFxSettings talonSettings = new TalonFxSettings();
         talonSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".talonFX.setting.id"));
+            Integer.parseInt(robotProperties.getProperty(name + ".talonFXSettings.id"));
         return new SimpleMotorSubsystem(
             new MotorIOTalonFx(IOSettings, talonSettings), name, simpleMotorSettings);
 
       case "sparkMax":
         SparkMaxSettings sparkMaxSettings = new SparkMaxSettings();
         sparkMaxSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".sparkMax.setting.id"));
+            Integer.parseInt(robotProperties.getProperty(name + ".sparkMaxSettings.id"));
         return new SimpleMotorSubsystem(
             new MotorIOSparkMax(IOSettings, sparkMaxSettings), name, simpleMotorSettings);
 
@@ -242,14 +242,14 @@ public class RobotConfig {
       case "talonFX":
         TalonFxSettings talonSettings = new TalonFxSettings();
         talonSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".talonFX.setting.id"));
+            Integer.parseInt(robotProperties.getProperty(name + ".talonFXSettings.id"));
         return new FlywheelMotorSubsystem(
             new MotorIOTalonFx(IOSettings, talonSettings), name, flywheelSettings);
 
       case "sparkMax":
         SparkMaxSettings sparkMaxSettings = new SparkMaxSettings();
         sparkMaxSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".sparkMax.setting.id"));
+            Integer.parseInt(robotProperties.getProperty(name + ".sparkMaxSettings.id"));
         return new FlywheelMotorSubsystem(
             new MotorIOSparkMax(IOSettings, sparkMaxSettings), name, flywheelSettings);
 
@@ -307,14 +307,14 @@ public class RobotConfig {
       case "talonFX":
         TalonFxSettings talonSettings = new TalonFxSettings();
         talonSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".talonFX.setting.id"));
+            Integer.parseInt(robotProperties.getProperty(name + ".talonFXSettings.id"));
         return new ArmMotorSubsystem(
             new MotorIOTalonFx(IOSettings, talonSettings), name, armSettings);
 
       case "sparkMax":
         SparkMaxSettings sparkMaxSettings = new SparkMaxSettings();
         sparkMaxSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".sparkMax.setting.id"));
+            Integer.parseInt(robotProperties.getProperty(name + ".sparkMaxSettings.id"));
         return new ArmMotorSubsystem(
             new MotorIOSparkMax(IOSettings, sparkMaxSettings), name, armSettings);
 
@@ -377,14 +377,14 @@ public class RobotConfig {
       case "talonFX":
         TalonFxSettings talonSettings = new TalonFxSettings();
         talonSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".talonFX.setting.id"));
+            Integer.parseInt(robotProperties.getProperty(name + ".talonFXSettings.id"));
         return new ElevatorMotorSubsystem(
             new MotorIOTalonFx(IOSettings, talonSettings), name, elevatorSettings);
 
       case "sparkMax":
         SparkMaxSettings sparkMaxSettings = new SparkMaxSettings();
         sparkMaxSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".sparkMax.setting.id"));
+            Integer.parseInt(robotProperties.getProperty(name + ".sparkMaxSettings.id"));
         return new ElevatorMotorSubsystem(
             new MotorIOSparkMax(IOSettings, sparkMaxSettings), name, elevatorSettings);
 
