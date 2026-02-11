@@ -35,7 +35,6 @@ import frc.robot.subsystems.implementations.motor.ArmMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.ElevatorMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.FlywheelMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.SimpleMotorSubsystem;
-import frc.robot.subsystems.interfaces.Flywheel;
 import frc.robot.subsystems.interfaces.Arm.ArmSettings;
 import frc.robot.subsystems.interfaces.Elevator.ElevatorSettings;
 import frc.robot.subsystems.interfaces.Flywheel.FlywheelSettings;
@@ -60,9 +59,9 @@ public class RobotConfig {
 
   public RobotConfig(Properties robotProperties) {
     // if (robotProperties.containsKey("robot.drive")) {
-      if (robotProperties.getProperty("robot.drive").equals("ctre")) {
-        drive = new DriveSwerveCTRE(new TunerConstants(robotProperties));
-      } else {
+    if (robotProperties.getProperty("robot.drive").equals("ctre")) {
+      drive = new DriveSwerveCTRE(new TunerConstants(robotProperties));
+    } else {
       drive = new DriveBase("Stub");
     }
 
@@ -111,7 +110,14 @@ public class RobotConfig {
     FlywheelControls.setupController(shooterFlywheel, mainController);
     FlywheelControls.setupController(conveyorFlywheel, mainController);
 
-    DriverControls.setupMainController(drive, topIntakeFlywheel, bottomIntakeFlywheel, shooterFlywheel, indexerFlywheel, conveyorFlywheel, mainController);
+    DriverControls.setupMainController(
+        drive,
+        topIntakeFlywheel,
+        bottomIntakeFlywheel,
+        shooterFlywheel,
+        indexerFlywheel,
+        conveyorFlywheel,
+        mainController);
 
     DriverControls.setupFlywheelSmartDashboardControl(topIntakeFlywheel);
     DriverControls.setupFlywheelSmartDashboardControl(bottomIntakeFlywheel);
@@ -237,7 +243,10 @@ public class RobotConfig {
         TalonFxSettings talonSettings = new TalonFxSettings();
         talonSettings.canId =
             Integer.parseInt(robotProperties.getProperty(name + ".talonFX.setting.id"));
-        talonSettings.supplyCurrentLimitAmps = Double.parseDouble(robotProperties.getProperty(name + ".talonFX.setting.supplyCurrentLimitAmps", "40.0"));
+        talonSettings.supplyCurrentLimitAmps =
+            Double.parseDouble(
+                robotProperties.getProperty(
+                    name + ".talonFX.setting.supplyCurrentLimitAmps", "40.0"));
         return new FlywheelMotorSubsystem(
             new MotorIOTalonFx(IOSettings, talonSettings), name, flywheelSettings);
 
@@ -426,13 +435,37 @@ public class RobotConfig {
     TalonFxSettings talonSettings = new TalonFxSettings();
     talonSettings.canId =
         Integer.parseInt(robotProperties.getProperty(subsystemName + ".talonFX.setting.id"));
-    talonSettings.supplyCurrentLimitAmps = Double.parseDouble(robotProperties.getProperty(subsystemName + ".talonFX.setting.supplyCurrentLimitAmps", "70.0"));
-    talonSettings.supplyCurrentLowerLimitAmps = Double.parseDouble(robotProperties.getProperty(subsystemName + ".talonFX.setting.supplyCurrentLowerLimitAmps", "40.0"));
-    talonSettings.supplyCurrentLowerTimeSeconds = Double.parseDouble(robotProperties.getProperty(subsystemName + ".talonFX.setting.supplyCurrentLowerTimeSeconds", "1.0"));
+    talonSettings.supplyCurrentLimitAmps =
+        Double.parseDouble(
+            robotProperties.getProperty(
+                subsystemName + ".talonFX.setting.supplyCurrentLimitAmps", "70.0"));
+    talonSettings.supplyCurrentLowerLimitAmps =
+        Double.parseDouble(
+            robotProperties.getProperty(
+                subsystemName + ".talonFX.setting.supplyCurrentLowerLimitAmps", "40.0"));
+    talonSettings.supplyCurrentLowerTimeSeconds =
+        Double.parseDouble(
+            robotProperties.getProperty(
+                subsystemName + ".talonFX.setting.supplyCurrentLowerTimeSeconds", "1.0"));
 
-    talonSettings.statorCurrentLimitAmps = Double.parseDouble(robotProperties.getProperty(subsystemName + ".talonFX.setting.statorCurrentLimitAmps", "120.0"));
-    talonSettings.peakForwardVoltage = MathUtil.clamp(Double.parseDouble(robotProperties.getProperty(subsystemName + ".talonFX.setting.peakForwardVoltage", "12")), 0.0, 12.0);
-    talonSettings.peakReverseVoltage = MathUtil.clamp(Double.parseDouble(robotProperties.getProperty(subsystemName + ".talonFX.setting.peakReverseVoltage", "12")), -12.0, 0);
+    talonSettings.statorCurrentLimitAmps =
+        Double.parseDouble(
+            robotProperties.getProperty(
+                subsystemName + ".talonFX.setting.statorCurrentLimitAmps", "120.0"));
+    talonSettings.peakForwardVoltage =
+        MathUtil.clamp(
+            Double.parseDouble(
+                robotProperties.getProperty(
+                    subsystemName + ".talonFX.setting.peakForwardVoltage", "12")),
+            0.0,
+            12.0);
+    talonSettings.peakReverseVoltage =
+        MathUtil.clamp(
+            Double.parseDouble(
+                robotProperties.getProperty(
+                    subsystemName + ".talonFX.setting.peakReverseVoltage", "12")),
+            -12.0,
+            0);
 
     return talonSettings;
   }

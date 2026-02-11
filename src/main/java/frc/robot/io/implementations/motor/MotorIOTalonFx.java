@@ -36,10 +36,16 @@ public class MotorIOTalonFx extends MotorIOBase {
      * lower to 40 A if we're at 70 A for over 1 second */
 
     currentLimitsConfigs
-        .withSupplyCurrentLowerLimit(Units.Amps.of(talonFxSettings.supplyCurrentLowerLimitAmps)) // Default limit of 70 A
+        .withSupplyCurrentLowerLimit(
+            Units.Amps.of(talonFxSettings.supplyCurrentLowerLimitAmps)) // Default limit of 70 A
         .withSupplyCurrentLimit(
-            Units.Amps.of(talonFxSettings.supplyCurrentLimitAmps)) // Reduce the limit to 40 A if we've limited to 70 A...
-        .withSupplyCurrentLowerTime(Units.Seconds.of(talonFxSettings.supplyCurrentLowerTimeSeconds)) // ...for at least 1 second
+            Units.Amps.of(
+                talonFxSettings
+                    .supplyCurrentLimitAmps)) // Reduce the limit to 40 A if we've limited to 70
+        // A...
+        .withSupplyCurrentLowerTime(
+            Units.Seconds.of(
+                talonFxSettings.supplyCurrentLowerTimeSeconds)) // ...for at least 1 second
         .withSupplyCurrentLimitEnable(true); // And enable it
 
     currentLimitsConfigs
