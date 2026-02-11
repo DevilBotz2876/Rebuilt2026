@@ -58,9 +58,10 @@ public class RobotConfig {
   public CommandXboxController assistController = new CommandXboxController(1);
 
   public RobotConfig(Properties robotProperties) {
-    // if (robotProperties.containsKey("robot.drive")) {
-    if (robotProperties.getProperty("robot.drive").equals("ctre")) {
-      drive = new DriveSwerveCTRE(new TunerConstants(robotProperties));
+    if (robotProperties.containsKey("robot.drive")) {
+      if (robotProperties.getProperty("robot.drive").equals("ctre")) {
+        drive = new DriveSwerveCTRE(new TunerConstants(robotProperties));
+      }
     } else {
       drive = new DriveBase("Stub");
     }
@@ -186,14 +187,14 @@ public class RobotConfig {
       case "talonFX":
         TalonFxSettings talonSettings = new TalonFxSettings();
         talonSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".talonFX.setting.id"));
+            Integer.parseInt(robotProperties.getProperty(name + ".talonFXSettings.id"));
         return new SimpleMotorSubsystem(
             new MotorIOTalonFx(IOSettings, talonSettings), name, simpleMotorSettings);
 
       case "sparkMax":
         SparkMaxSettings sparkMaxSettings = new SparkMaxSettings();
         sparkMaxSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".sparkMax.setting.id"));
+            Integer.parseInt(robotProperties.getProperty(name + ".sparkMaxSettings.id"));
         return new SimpleMotorSubsystem(
             new MotorIOSparkMax(IOSettings, sparkMaxSettings), name, simpleMotorSettings);
 
@@ -242,18 +243,18 @@ public class RobotConfig {
       case "talonFX":
         TalonFxSettings talonSettings = new TalonFxSettings();
         talonSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".talonFX.setting.id"));
+            Integer.parseInt(robotProperties.getProperty(name + ".talonFXSettings.id"));
         talonSettings.supplyCurrentLimitAmps =
             Double.parseDouble(
                 robotProperties.getProperty(
-                    name + ".talonFX.setting.supplyCurrentLimitAmps", "40.0"));
+                    name + ".talonFXSettings.supplyCurrentLimitAmps", "40.0"));
         return new FlywheelMotorSubsystem(
             new MotorIOTalonFx(IOSettings, talonSettings), name, flywheelSettings);
 
       case "sparkMax":
         SparkMaxSettings sparkMaxSettings = new SparkMaxSettings();
         sparkMaxSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".sparkMax.setting.id"));
+            Integer.parseInt(robotProperties.getProperty(name + ".sparkMaxSettings.id"));
         return new FlywheelMotorSubsystem(
             new MotorIOSparkMax(IOSettings, sparkMaxSettings), name, flywheelSettings);
 
@@ -311,14 +312,14 @@ public class RobotConfig {
       case "talonFX":
         TalonFxSettings talonSettings = new TalonFxSettings();
         talonSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".talonFX.setting.id"));
+            Integer.parseInt(robotProperties.getProperty(name + ".talonFXSettings.id"));
         return new ArmMotorSubsystem(
             new MotorIOTalonFx(IOSettings, talonSettings), name, armSettings);
 
       case "sparkMax":
         SparkMaxSettings sparkMaxSettings = new SparkMaxSettings();
         sparkMaxSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".sparkMax.setting.id"));
+            Integer.parseInt(robotProperties.getProperty(name + ".sparkMaxSettings.id"));
         return new ArmMotorSubsystem(
             new MotorIOSparkMax(IOSettings, sparkMaxSettings), name, armSettings);
 
@@ -381,14 +382,14 @@ public class RobotConfig {
       case "talonFX":
         TalonFxSettings talonSettings = new TalonFxSettings();
         talonSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".talonFX.setting.id"));
+            Integer.parseInt(robotProperties.getProperty(name + ".talonFXSettings.id"));
         return new ElevatorMotorSubsystem(
             new MotorIOTalonFx(IOSettings, talonSettings), name, elevatorSettings);
 
       case "sparkMax":
         SparkMaxSettings sparkMaxSettings = new SparkMaxSettings();
         sparkMaxSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".sparkMax.setting.id"));
+            Integer.parseInt(robotProperties.getProperty(name + ".sparkMaxSettings.id"));
         return new ElevatorMotorSubsystem(
             new MotorIOSparkMax(IOSettings, sparkMaxSettings), name, elevatorSettings);
 
@@ -434,36 +435,36 @@ public class RobotConfig {
   private TalonFxSettings getTalonFxSettings(Properties robotProperties, String subsystemName) {
     TalonFxSettings talonSettings = new TalonFxSettings();
     talonSettings.canId =
-        Integer.parseInt(robotProperties.getProperty(subsystemName + ".talonFX.setting.id"));
+        Integer.parseInt(robotProperties.getProperty(subsystemName + ".talonFXSettings.id"));
     talonSettings.supplyCurrentLimitAmps =
         Double.parseDouble(
             robotProperties.getProperty(
-                subsystemName + ".talonFX.setting.supplyCurrentLimitAmps", "70.0"));
+                subsystemName + ".talonFXSettings.supplyCurrentLimitAmps", "70.0"));
     talonSettings.supplyCurrentLowerLimitAmps =
         Double.parseDouble(
             robotProperties.getProperty(
-                subsystemName + ".talonFX.setting.supplyCurrentLowerLimitAmps", "40.0"));
+                subsystemName + ".talonFXSettings.supplyCurrentLowerLimitAmps", "40.0"));
     talonSettings.supplyCurrentLowerTimeSeconds =
         Double.parseDouble(
             robotProperties.getProperty(
-                subsystemName + ".talonFX.setting.supplyCurrentLowerTimeSeconds", "1.0"));
+                subsystemName + ".talonFXSettings.supplyCurrentLowerTimeSeconds", "1.0"));
 
     talonSettings.statorCurrentLimitAmps =
         Double.parseDouble(
             robotProperties.getProperty(
-                subsystemName + ".talonFX.setting.statorCurrentLimitAmps", "120.0"));
+                subsystemName + ".talonFXSettings.statorCurrentLimitAmps", "120.0"));
     talonSettings.peakForwardVoltage =
         MathUtil.clamp(
             Double.parseDouble(
                 robotProperties.getProperty(
-                    subsystemName + ".talonFX.setting.peakForwardVoltage", "12")),
+                    subsystemName + ".talonFXSettings.peakForwardVoltage", "12")),
             0.0,
             12.0);
     talonSettings.peakReverseVoltage =
         MathUtil.clamp(
             Double.parseDouble(
                 robotProperties.getProperty(
-                    subsystemName + ".talonFX.setting.peakReverseVoltage", "12")),
+                    subsystemName + ".talonFXSettings.peakReverseVoltage", "12")),
             -12.0,
             0);
 
