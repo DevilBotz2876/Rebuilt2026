@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -16,10 +17,14 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+
 public class Robot extends LoggedRobot {
+
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+
+  double voltage_scale_factor = 5/RobotController.getVoltage5V();
 
   @Override
   public void robotInit() {
@@ -114,6 +119,7 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void teleopInit() {
+    
     DevilBotState.setState(State.TELEOP);
 
     if (m_autonomousCommand != null) {
@@ -122,7 +128,19 @@ public class Robot extends LoggedRobot {
   }
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    //Calculate a scale factor for the range reading based on the RoboRIO's current 5V Rail voltage
+//voltage_scale_factor allows us to compensate for differences in supply voltage
+
+
+//Formula to calculate range in Centimeters:
+double currentDistanceCentimeters = m_robotContainer.ultrasonicSensor.getValue() * voltage_scale_factor * 0.125;
+
+//Formula to calculate range in Inches:
+double currentDistanceInches = m_robotContainer.ultrasonicSensor.getValue() * voltage_scale_factor * 0.0492;
+
+System.out.println(currentDistanceCentimeters + ", " + currentDistanceInches);
+  }
 
   @Override
   public void teleopExit() {}

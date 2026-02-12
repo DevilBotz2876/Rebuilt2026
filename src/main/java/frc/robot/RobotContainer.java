@@ -10,14 +10,20 @@ import frc.robot.config.game.rebuilt2026.*;
 import frc.robot.util.Elastic;
 import java.io.FileReader;
 import java.util.Properties;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.RobotController;
+
 
 public class RobotContainer {
   public RobotConfig robotConfig;
+
+  public AnalogInput ultrasonicSensor = new AnalogInput(0);
 
   public RobotContainer() {
     // Load robot name from configuration file
     // Check if the robot is running in simulation
     Properties robotProperties = new Properties();
+   
 
     // get configuration from robot_config.properties
     try {
