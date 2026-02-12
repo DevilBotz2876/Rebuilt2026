@@ -1,5 +1,8 @@
 package frc.robot.subsystems.controls.combination;
 
+import java.util.Properties;
+
+import edu.wpi.first.networktables.PubSub;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -17,13 +20,24 @@ import frc.robot.subsystems.interfaces.Motor;
 public class DriverControls {
   public static class DriverControlsSettings {
     // launch
-    public static double shooterLaunchRPM = 3666.0;
-    public static double indexerLaunchRPM = 1000.0;
-    public static double conveyorLaunchRPM = 1000.0;
+    public double shooterLaunchRPM = 3666.0;
+    public double indexerLaunchRPM = 1000.0;
+    public double conveyorLaunchRPM = 1000.0;
 
     // intake
-    public static double intakeRPM = 2000.0;
-    public static double conveyorReverseRPM = -200.0;
+    public double intakeRPM = 2000.0;
+    public double conveyorReverseRPM = -200.0;
+
+    public static DriverControlsSettings getDriverControlsSettings(Properties properties) {
+        DriverControlsSettings settings = new DriverControlsSettings();
+        settings.shooterLaunchRPM = Double.parseDouble(properties.getProperty("driverControls.shooterLaunchRPM"));
+        settings.indexerLaunchRPM= Double.parseDouble(properties.getProperty("driverControls.indexerLaunchRPM"));
+        settings.conveyorLaunchRPM = Double.parseDouble(properties.getProperty("driverControls.conveyorLaunchRPM"));
+
+        settings.intakeRPM = Double.parseDouble(properties.getProperty("driverControls.intakeRPM"));
+        settings.conveyorReverseRPM = Double.parseDouble(properties.getProperty("driverControls.conveyorReverseRPM"));
+        return settings;
+    }
   }
 
   public static void setupMainController(
@@ -33,7 +47,8 @@ public class DriverControls {
       Flywheel shooter,
       Flywheel indexer,
       Flywheel conveyor,
-      CommandXboxController controller) {
+      CommandXboxController controller, 
+      DriverControlsSettings settings) {
 
     // Commands to stop subsystem
     Command stopShooter = new MotorRunVoltageCommand((Motor) shooter, () -> 0.0);
@@ -45,16 +60,16 @@ public class DriverControls {
     // Launching related commands
     Command launchSequentialParallel =
         new SequentialCommandGroup(
-            new FlywheelToVelocity(shooter, () -> DriverControlsSettings.shooterLaunchRPM),
+            new FlywheelToVelocity(shooter, () -> settings.shooterLaunchRPM),
             new ParallelCommandGroup(
-                new FlywheelToVelocity(indexer, () -> DriverControlsSettings.indexerLaunchRPM),
-                new FlywheelToVelocity(conveyor, () -> DriverControlsSettings.conveyorLaunchRPM)));
+                new FlywheelToVelocity(indexer, () -> settings.indexerLaunchRPM),
+                new FlywheelToVelocity(conveyor, () -> settings.conveyorLaunchRPM)));
 
     Command launchAllSequential =
         new SequentialCommandGroup(
-            new FlywheelToVelocity(shooter, () -> DriverControlsSettings.shooterLaunchRPM),
-            new FlywheelToVelocity(indexer, () -> DriverControlsSettings.indexerLaunchRPM),
-            new FlywheelToVelocity(conveyor, () -> DriverControlsSettings.conveyorLaunchRPM));
+            new FlywheelToVelocity(shooter, () -> settings.shooterLaunchRPM),
+            new FlywheelToVelocity(indexer, () -> settings.indexerLaunchRPM),
+            new FlywheelToVelocity(conveyor, () -> settings.conveyorLaunchRPM));
 
     Command stopLaunch = stopShooter.alongWith(stopIndexer, stopConveyor);
 
@@ -62,14 +77,14 @@ public class DriverControls {
 
     Command intakeIn =
         new ParallelCommandGroup(
-            new FlywheelToVelocity(topIntake, () -> DriverControlsSettings.intakeRPM),
-            new FlywheelToVelocity(bottomIntake, () -> DriverControlsSettings.intakeRPM));
+            new FlywheelToVelocity(topIntake, () -> settings.intakeRPM),
+            new FlywheelToVelocity(bottomIntake, () -> settings.intakeRPM));
 
     Command intakeOut =
         new ParallelCommandGroup(
-            new FlywheelToVelocity(topIntake, () -> -DriverControlsSettings.intakeRPM),
-            new FlywheelToVelocity(bottomIntake, () -> -DriverControlsSettings.intakeRPM),
-            new FlywheelToVelocity(conveyor, () -> DriverControlsSettings.conveyorReverseRPM));
+            new FlywheelToVelocity(topIntake, () -> -settings.intakeRPM),
+            new FlywheelToVelocity(bottomIntake, () -> -settings.intakeRPM),
+            new FlywheelToVelocity(conveyor, () -> settings.conveyorReverseRPM));
 
     Command stopIntake = stopTopIntake.alongWith(stopBottomIntake);
 

@@ -26,6 +26,7 @@ import frc.robot.io.implementations.motor.MotorIOStub;
 import frc.robot.io.implementations.motor.MotorIOTalonFx;
 import frc.robot.io.implementations.motor.MotorIOTalonFx.TalonFxSettings;
 import frc.robot.subsystems.controls.combination.DriverControls;
+import frc.robot.subsystems.controls.combination.DriverControls.DriverControlsSettings;
 import frc.robot.subsystems.controls.drive.DriveControls;
 import frc.robot.subsystems.controls.flywheel.FlywheelControls;
 import frc.robot.subsystems.implementations.drive.DriveBase;
@@ -50,6 +51,7 @@ public class RobotConfig {
   public FlywheelMotorSubsystem indexerFlywheel;
 
   public FlywheelMotorSubsystem conveyorFlywheel;
+  public Properties properties;
   // TODO: Add VisionSubsystem Declaration
 
   // Controls
@@ -74,6 +76,8 @@ public class RobotConfig {
     shooterFlywheel = createFlywheel(robotProperties, "shooterFlywheel");
     indexerFlywheel = createFlywheel(robotProperties, "indexerFlywheel");
     conveyorFlywheel = createFlywheel(robotProperties, "conveyorFlywheel");
+
+    properties = robotProperties;
   }
 
   public RobotConfig(boolean stubDrive, boolean stubAuto, boolean stubVision) {
@@ -117,7 +121,7 @@ public class RobotConfig {
         shooterFlywheel,
         indexerFlywheel,
         conveyorFlywheel,
-        mainController);
+        mainController, DriverControlsSettings.getDriverControlsSettings(properties));
 
     DriverControls.setupFlywheelSmartDashboardControl(topIntakeFlywheel);
     DriverControls.setupFlywheelSmartDashboardControl(bottomIntakeFlywheel);
