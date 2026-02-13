@@ -4,6 +4,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.interfaces.Flywheel;
+import frc.robot.subsystems.interfaces.Motor;
 import java.util.function.DoubleSupplier;
 
 public class FlywheelToVelocity extends Command {
@@ -30,7 +31,11 @@ public class FlywheelToVelocity extends Command {
 
   @Override
   public void execute() {
+    // stop the flywheel if target velo is zero
     flywheel.setTargetVelocity(targetVelocity);
+    if(targetVelocity == 0.0) {
+      ((Motor) flywheel).runVoltage(0.0);
+    }
   }
 
   @Override

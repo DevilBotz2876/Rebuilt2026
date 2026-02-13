@@ -35,9 +35,10 @@ public class FlywheelCommand extends Command {
             -flywheel.getSettings().maxVelocityInRPMs,
             flywheel.getSettings().maxVelocityInRPMs);
 
-    if (targetVelocity == 0) {
-      ((Motor) flywheel).runVoltage(0.0);
-    }
     flywheel.setTargetVelocity(targetVelocity);
+    if (targetVelocity == 0.0) {
+      ((Motor) flywheel).runVoltage(0.0);
+      return;
+    }
   }
 }
