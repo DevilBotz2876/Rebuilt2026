@@ -18,13 +18,13 @@ import java.util.Properties;
 public class DriverControls {
   public static class DriverControlsSettings {
     // launch
-    public double shooterLaunchRPM = 3666.0;
-    public double indexerLaunchRPM = 1000.0;
-    public double conveyorLaunchRPM = 1000.0;
+    public double shooterLaunchRPM;
+    public double indexerLaunchRPM;
+    public double conveyorLaunchRPM;
 
     // intake
-    public double intakeRPM = 2000.0;
-    public double conveyorReverseRPM = -200.0;
+    public double intakeRPM;
+    public double conveyorReverseRPM;
 
     public static DriverControlsSettings getDriverControlsSettings(Properties properties) {
       DriverControlsSettings settings = new DriverControlsSettings();
