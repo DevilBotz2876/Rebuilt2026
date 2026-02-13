@@ -29,7 +29,6 @@ import frc.robot.subsystems.controls.combination.DriverControls;
 import frc.robot.subsystems.controls.combination.DriverControls.DriverControlsSettings;
 import frc.robot.subsystems.controls.drive.DriveControls;
 import frc.robot.subsystems.controls.flywheel.ConveyorControls;
-import frc.robot.subsystems.controls.flywheel.FlywheelControls;
 import frc.robot.subsystems.controls.flywheel.IntakeControls;
 import frc.robot.subsystems.controls.flywheel.ShooterControls;
 import frc.robot.subsystems.implementations.drive.DriveBase;
@@ -116,7 +115,8 @@ public class RobotConfig {
 
     IntakeControls.setupSpeedController(topIntakeFlywheel, bottomIntakeFlywheel, mainController);
     ShooterControls.setupSpeedController(shooterFlywheel, indexerFlywheel, mainController);
-    ConveyorControls.setupSpeedController(conveyorFlywheel, mainController);;
+    ConveyorControls.setupSpeedController(conveyorFlywheel, mainController);
+    ;
 
     DriverControls.setupMainController(
         drive,
@@ -125,7 +125,8 @@ public class RobotConfig {
         shooterFlywheel,
         indexerFlywheel,
         conveyorFlywheel,
-        mainController, DriverControlsSettings.getDriverControlsSettings(properties));
+        mainController,
+        DriverControlsSettings.getDriverControlsSettings(properties));
 
     DriverControls.setupFlywheelSmartDashboardControl(topIntakeFlywheel);
     DriverControls.setupFlywheelSmartDashboardControl(bottomIntakeFlywheel);

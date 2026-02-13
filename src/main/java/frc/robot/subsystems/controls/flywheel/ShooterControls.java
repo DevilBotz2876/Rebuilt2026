@@ -104,10 +104,7 @@ public class ShooterControls {
               return 0.0;
             }));
 
-    controller
-        .leftTrigger()
-        .onTrue(
-            new FlywheelToVelocity(shooter, () -> 0.0));
+    controller.leftTrigger().onTrue(new FlywheelToVelocity(shooter, () -> 0.0));
 
     /*
      * Indexer
@@ -134,9 +131,6 @@ public class ShooterControls {
               return 0.0;
             }));
 
-    controller
-        .leftBumper()
-        .onTrue(
-            new FlywheelToVelocity(indexer, () -> 0.0));
+    controller.leftBumper().onTrue(new FlywheelToVelocity(indexer, () -> 0.0));
   }
 }

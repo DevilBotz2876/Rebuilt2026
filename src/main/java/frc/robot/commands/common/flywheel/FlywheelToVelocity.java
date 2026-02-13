@@ -33,7 +33,7 @@ public class FlywheelToVelocity extends Command {
   public void execute() {
     // stop the flywheel if target velo is zero
     flywheel.setTargetVelocity(targetVelocity);
-    if(targetVelocity == 0.0) {
+    if (targetVelocity == 0.0) {
       ((Motor) flywheel).runVoltage(0.0);
     }
   }
