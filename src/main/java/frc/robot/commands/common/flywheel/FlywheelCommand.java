@@ -12,6 +12,13 @@ public class FlywheelCommand extends Command {
   DoubleSupplier speed;
   double targetVelocity;
 
+  /**
+   * Sets a flywheel to it's current RPM and incremnts by a speed * the flywheel max velocity / 50
+   * each cycle. This command does not end without being interupted.
+   *
+   * @param flywheel
+   * @param speed A double between -1 and 1
+   */
   public FlywheelCommand(Flywheel flywheel, DoubleSupplier speed) {
     this.flywheel = flywheel;
     this.speed = speed;
