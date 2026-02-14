@@ -26,6 +26,12 @@ public class DriverControls {
     public double intakeRPM;
     public double conveyorReverseRPM;
 
+    /**
+     * Creates a DriverControlsSettings and sets the varibles to equal the matching property value.
+     *
+     * @param properties The robot's proerties
+     * @return DriverControlsSettings with values matching the Properties
+     */
     public static DriverControlsSettings getDriverControlsSettings(Properties properties) {
       DriverControlsSettings settings = new DriverControlsSettings();
       settings.shooterLaunchRPM =
