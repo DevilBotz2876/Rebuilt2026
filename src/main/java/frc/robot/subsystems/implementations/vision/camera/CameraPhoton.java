@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.function.ToIntFunction;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
@@ -18,10 +19,29 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class CameraPhoton extends CameraBase {
+
+  public static CameraPhoton createCameraPhoton(Properties properties, String name) {
+
+    Transform3d robotToCamera =  new Transform3d(
+      new Translation3d(
+        Double.parseDouble(properties.getProperty(name + ".robotToCamera.xMeters")),
+        Double.parseDouble(properties.getProperty(name + ".robotToCamera.yMeters")),
+        Double.parseDouble(properties.getProperty(name + ".robotToCamera.zMeters"))
+      ),
+      new Rotation3d(
+      Double.parseDouble(properties.getProperty(name + "robotToCamera.rollDegrees")), 
+      Double.parseDouble(properties.getProperty(name + "robotToCamera.pitchDegrees")),
+      Double.parseDouble(properties.getProperty(name + "robotToCamera.yawDegrees"))
+      
+      )
+      );
+    return new CameraPhoton(name, robotToCamera, null, null);
+  }
   private final PhotonCamera camera;
   private final AprilTagFieldLayout tagLayout;
   private VisionPoseMeasurement[] poseMeasurements;
   private final PhotonPoseEstimator photonPoseEstimator;
+
 
   public CameraPhoton(
       String name,
