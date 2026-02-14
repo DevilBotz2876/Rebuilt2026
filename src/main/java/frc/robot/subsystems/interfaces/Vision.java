@@ -11,6 +11,30 @@ import java.util.Properties;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface Vision {
+  public static class VisionSettings {
+    public double timestampToleranceSeconds = 10;
+    // maximum distance between robot and tag for poseMeasurement to be valid to be considered
+    public double maximumSingleTagDistanceMeters = 2.0; // need to tune to robot
+    public double maximumMultiTagDistanceMeters = 3.9; // need to tune to robot
+    // show if pose measurement is valid, reason (and matching pose if there is one) and
+    // poseMeasurement data at
+    // AdvantageKit/RealOutputs/Vision/'cameraName'/PoseMeasurements/'poseIndex'/
+    public boolean visionLoggingDebug = true;
+
+    public static VisionSettings getSettings(Properties properties) {
+      VisionSettings settings = new VisionSettings();
+      settings.timestampToleranceSeconds =
+          Double.parseDouble(properties.getProperty("vision.settings.timestampToleranceSeconds"));
+      settings.maximumSingleTagDistanceMeters =
+          Double.parseDouble(properties.getProperty("vision.settings.timestampToleranceSeconds"));
+      settings.maximumMultiTagDistanceMeters =
+          Double.parseDouble(properties.getProperty("vision.settings.timestampToleranceSeconds"));
+      settings.visionLoggingDebug =
+          Boolean.parseBoolean(properties.getProperty("vision.settings.timestampToleranceSeconds"));
+      return settings;
+    }
+  }
+
   @FunctionalInterface
   interface VisionMeasurementConsumer {
     void add(Pose2d robotPose, double timestamp, Matrix<N3, N1> stdDevs);
@@ -30,7 +54,7 @@ public interface Vision {
       public int resWidth;
       public int resHeight;
 
-      public static CameraSettings getCameraSettings(Properties properties, String name) {
+      public static CameraSettings getSettings(Properties properties, String name) {
         CameraSettings settings = new CameraSettings();
         settings.fps = Integer.parseInt(properties.getProperty(name + ".settings.fps"));
         settings.resWidth = Integer.parseInt(properties.getProperty(name + ".settings.resWidth"));

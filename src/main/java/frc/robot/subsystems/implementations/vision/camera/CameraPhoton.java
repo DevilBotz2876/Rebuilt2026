@@ -34,7 +34,7 @@ public class CameraPhoton extends CameraBase {
                 Double.parseDouble(properties.getProperty(name + "robotToCamera.pitchDegrees")),
                 Double.parseDouble(properties.getProperty(name + "robotToCamera.yawDegrees"))));
 
-    CameraSettings settings = CameraSettings.getCameraSettings(properties, name);
+    CameraSettings settings = CameraSettings.getSettings(properties, name);
 
     return new CameraPhoton(name, robotToCamera, settings, layout);
   }

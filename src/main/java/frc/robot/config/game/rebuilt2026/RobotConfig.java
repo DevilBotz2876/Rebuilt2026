@@ -42,6 +42,7 @@ import frc.robot.subsystems.interfaces.Arm.ArmSettings;
 import frc.robot.subsystems.interfaces.Elevator.ElevatorSettings;
 import frc.robot.subsystems.interfaces.Flywheel.FlywheelSettings;
 import frc.robot.subsystems.interfaces.SimpleMotor.SimpleMotorSettings;
+import frc.robot.subsystems.interfaces.Vision.VisionSettings;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -404,23 +405,27 @@ public class RobotConfig {
   }
 
   private VisionSubsystem createVisionSubsystem(Properties robotProperties) {
+    VisionSettings settings = VisionSettings.getSettings(robotProperties);
+
     if (Boolean.parseBoolean(robotProperties.getProperty("vision.addDrivetrain"))) {
       vision =
           new VisionSubsystem(
               AprilTagFieldLayout.loadField(
                   AprilTagFields.valueOf(robotProperties.getProperty("vision.fieldlayout"))),
-              Optional.of(drive::addVisionMeasurement));
+              Optional.of(drive::addVisionMeasurement),
+              settings);
     } else {
       vision =
           new VisionSubsystem(
               AprilTagFieldLayout.loadField(
                   AprilTagFields.valueOf(robotProperties.getProperty("vision.fieldlayout"))),
-              Optional.empty());
+              Optional.empty(),
+              settings);
     }
 
     String[] cameraNames = robotProperties.getProperty("vision.cameras").split(", ");
     for (String cameraName : cameraNames) {
-      switch (robotProperties.getProperty(cameraName + ".cameratype")) {
+      switch (robotProperties.getProperty(cameraName + ".cameraType")) {
         case "photon":
           vision.addCamera(
               CameraPhoton.createCameraPhoton(

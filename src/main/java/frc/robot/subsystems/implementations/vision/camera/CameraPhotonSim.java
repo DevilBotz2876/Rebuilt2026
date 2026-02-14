@@ -30,7 +30,7 @@ public class CameraPhotonSim extends CameraPhoton {
                 Double.parseDouble(properties.getProperty(name + ".robotToCamera.pitchDegrees")),
                 Double.parseDouble(properties.getProperty(name + ".robotToCamera.yawDegrees"))));
 
-    CameraSettings settings = CameraSettings.getCameraSettings(properties, name);
+    CameraSettings settings = CameraSettings.getSettings(properties, name);
 
     return new CameraPhotonSim(name, robotToCamera, settings, layout, poseSupplier);
   }

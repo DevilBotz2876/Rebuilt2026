@@ -38,21 +38,17 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
   private AprilTagFieldLayout fieldLayout;
   private Optional<VisionMeasurementConsumer> visionMeasurementConsumer;
 
-  // maximum allowed time between 2 poseMeasurements to still be considered valid, need to tune
-  private final double TIMESTAMP_TOLERANCE_SECONDS = 10;
-  // maximum distance between robot and tag for poseMeasurement to be valid to be considered
-  private final double MAXIMUM_SINGLE_TAG_DISTANCE_METERS = 2.0; // need to tune to robot
-  // show if pose measurement is valid, reason (and matching pose if there is one) and
-  // poseMeasurement data at
-  // AdvantageKit/RealOutputs/Vision/'cameraName'/PoseMeasurements/'poseIndex'/
-  private final boolean VISION_LOGGING_DEBUG = true;
+  private VisionSettings settings;
 
   public VisionSubsystem(
-      AprilTagFieldLayout layout, Optional<VisionMeasurementConsumer> visionMeasurementConsumer) {
+      AprilTagFieldLayout layout,
+      Optional<VisionMeasurementConsumer> visionMeasurementConsumer,
+      VisionSettings settings) {
     fieldLayout = layout;
     cameras = new LinkedList<>();
     cameraInputs = new LinkedList<>();
     this.visionMeasurementConsumer = visionMeasurementConsumer;
+    this.settings = settings;
   }
 
   @Override
@@ -68,16 +64,18 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
       for (VisionPoseMeasurement poseMeasurement :
           cameras.get(cameraIndex).getVisionPoseMeasurements()) {
 
-        // more than one tag then valid for estimation
-        if (poseMeasurement.targetIds.length >= 2) {
+        // more than one tag then then the mesurment is valid for estimation
+        if (poseMeasurement.targetIds.length >= 2
+            && poseMeasurement.robotToBestTargetDistanceInMeters
+                <= settings.maximumMultiTagDistanceMeters) {
           validPoseMeasurements.add(poseMeasurement);
           continue;
         } else {
 
-          // one tag seen but is close then valid for estimation
-          if (poseMeasurement.robotToBestTargetDistanceInMeters != -1
+          // one tag seen and is close than max distance then mesurment is valid for estimation
+          if (poseMeasurement.targetIds.length == 1
               && poseMeasurement.robotToBestTargetDistanceInMeters
-                  <= MAXIMUM_SINGLE_TAG_DISTANCE_METERS) {
+                  <= settings.maximumSingleTagDistanceMeters) {
             validPoseMeasurements.add(poseMeasurement);
             continue;
           }
@@ -105,7 +103,7 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
     }
 
     // debug info on measurements
-    if (VISION_LOGGING_DEBUG) {
+    if (settings.visionLoggingDebug) {
       for (int cameraIndex = 0; cameraIndex < cameras.size(); cameraIndex++) {
         for (int i = 0; i < cameras.get(cameraIndex).getVisionPoseMeasurements().length; i++) {
           VisionPoseMeasurement poseMeasurement =
@@ -114,11 +112,13 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
           String reason = "";
           String matchDebug = "N/A";
 
-          if (poseMeasurement.targetIds.length >= 2) {
-            reason = "MultiTag with IDs:" + Arrays.toString(poseMeasurement.targetIds);
-          } else if (poseMeasurement.robotToBestTargetDistanceInMeters != -1
+          if (poseMeasurement.targetIds.length >= 2
               && poseMeasurement.robotToBestTargetDistanceInMeters
-                  <= MAXIMUM_SINGLE_TAG_DISTANCE_METERS) {
+                  <= settings.maximumMultiTagDistanceMeters) {
+            reason = "MultiTag with IDs:" + Arrays.toString(poseMeasurement.targetIds);
+          } else if (poseMeasurement.targetIds.length == 1
+              && poseMeasurement.robotToBestTargetDistanceInMeters
+                  <= settings.maximumSingleTagDistanceMeters) {
             reason =
                 "Single tag with distance of : "
                     + poseMeasurement.robotToBestTargetDistanceInMeters;
@@ -223,7 +223,7 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
           }
         }
         // debug information on measurements
-        if (VISION_LOGGING_DEBUG) {
+        if (settings.visionLoggingDebug) {
           Logger.recordOutput(
               "Vision/"
                   + camera.getName()
@@ -293,7 +293,7 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
         for (VisionPoseMeasurement possiblePoseMeasurementMatch : posesAtSeenTag) {
           // if the measurements are at different times, then dont comapare
           if (Math.abs(poseMeasurement.timestamp - possiblePoseMeasurementMatch.timestamp)
-              > TIMESTAMP_TOLERANCE_SECONDS) {
+              > settings.timestampToleranceSeconds) {
             continue;
           }
           MatchingMeasurementInfo info =
