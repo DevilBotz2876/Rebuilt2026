@@ -121,7 +121,8 @@ public class DriverControls {
     setupSmartDashboardVoltageControl(flywheelSubsystem, (Motor) flywheel);
     setupSmartDashboardSpeedControl(flywheelSubsystem, flywheel);
   }
-    public static void setupArmSmartDashboardControl(Arm arm) {
+
+  public static void setupArmSmartDashboardControl(Arm arm) {
     SubsystemBase armSubsystem = (SubsystemBase) arm;
     setupMotorSmartDashboardControl(armSubsystem, (Motor) arm);
     setupSmartDashboardVoltageControl(armSubsystem, (Motor) arm);
