@@ -1,0 +1,1 @@
+./gradlew DBBuildDir-%1

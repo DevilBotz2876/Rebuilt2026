@@ -11,6 +11,7 @@ public class ArmToPosition extends Command {
   DoubleSupplier positionDegrees;
   double targetPositionDegrees;
 
+  /** Sets position of a arm in degrees. */
   public ArmToPosition(Arm arm, DoubleSupplier positionDegrees) {
     this.arm = arm;
     this.positionDegrees = positionDegrees;
