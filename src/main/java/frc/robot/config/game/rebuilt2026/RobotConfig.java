@@ -25,7 +25,7 @@ import frc.robot.io.implementations.motor.MotorIOSparkMax.SparkMaxSettings;
 import frc.robot.io.implementations.motor.MotorIOStub;
 import frc.robot.io.implementations.motor.MotorIOTalonFx;
 import frc.robot.io.implementations.motor.MotorIOTalonFx.TalonFxSettings;
-import frc.robot.subsystems.controls.arm.ArmControls;
+import frc.robot.subsystems.controls.arm.IntakeArmControls;
 import frc.robot.subsystems.controls.combination.DriverControls;
 import frc.robot.subsystems.controls.combination.DriverControls.DriverControlsSettings;
 import frc.robot.subsystems.controls.drive.DriveControls;
@@ -119,7 +119,7 @@ public class RobotConfig {
     IntakeControls.setupSpeedController(topIntakeFlywheel, bottomIntakeFlywheel, mainController);
     ShooterControls.setupSpeedController(shooterFlywheel, indexerFlywheel, mainController);
     ConveyorControls.setupSpeedController(conveyorFlywheel, mainController);
-    ArmControls.setupController(armMotor, mainController);
+    IntakeArmControls.setupController(armMotor, mainController);
     ;
 
     DriverControls.setupMainController(
@@ -137,6 +137,7 @@ public class RobotConfig {
     DriverControls.setupFlywheelSmartDashboardControl(shooterFlywheel);
     DriverControls.setupFlywheelSmartDashboardControl(indexerFlywheel);
     DriverControls.setupFlywheelSmartDashboardControl(conveyorFlywheel);
+    DriverControls.setupArmSmartDashboardControl(armMotor);
 
     if (null != this.autoChooser) {
       SmartDashboard.putData("Autonomous", this.autoChooser);
@@ -423,7 +424,7 @@ public class RobotConfig {
         new PIDController(
             Double.parseDouble(robotProperties.getProperty(IOSettingsPrefix + ".pid.kp")),
             Double.parseDouble(robotProperties.getProperty(IOSettingsPrefix + ".pid.ki")),
-            Double.parseDouble(robotProperties.getProperty(IOSettingsPrefix + ".pid.kp")));
+            Double.parseDouble(robotProperties.getProperty(IOSettingsPrefix + ".pid.kd")));
 
     return IOSettings;
   }

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.common.flywheel.FlywheelToVelocity;
 import frc.robot.commands.common.motor.MotorPitCommand;
 import frc.robot.commands.common.motor.MotorRunVoltageCommand;
+import frc.robot.subsystems.interfaces.Arm;
 import frc.robot.subsystems.interfaces.Drive;
 import frc.robot.subsystems.interfaces.Flywheel;
 import frc.robot.subsystems.interfaces.Motor;
@@ -119,6 +120,11 @@ public class DriverControls {
     setupMotorSmartDashboardControl(flywheelSubsystem, (Motor) flywheel);
     setupSmartDashboardVoltageControl(flywheelSubsystem, (Motor) flywheel);
     setupSmartDashboardSpeedControl(flywheelSubsystem, flywheel);
+  }
+    public static void setupArmSmartDashboardControl(Arm arm) {
+    SubsystemBase armSubsystem = (SubsystemBase) arm;
+    setupMotorSmartDashboardControl(armSubsystem, (Motor) arm);
+    setupSmartDashboardVoltageControl(armSubsystem, (Motor) arm);
   }
 
   private static void setupMotorSmartDashboardControl(SubsystemBase motorSubsystem, Motor motor) {

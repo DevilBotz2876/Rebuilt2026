@@ -3,12 +3,13 @@ package frc.robot.subsystems.controls.arm;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.common.arm.ArmCommand;
 import frc.robot.commands.common.arm.ArmToPosition;
 import frc.robot.commands.common.motor.MotorRunVoltageCommand;
 import frc.robot.subsystems.interfaces.Arm;
 import frc.robot.subsystems.interfaces.Motor;
 
-public class ArmControls {
+public class IntakeArmControls {
   // Right Bumper = Increase Rotation CW
   // Left Bumper = Increase Rotation CCW
   public static void setupController(Arm arm, CommandXboxController controller) {
@@ -16,13 +17,16 @@ public class ArmControls {
     armSubsystem.setDefaultCommand(
         // new MotorBringUpCommand(
         //     (Motor) arm,
-        new MotorRunVoltageCommand(
-            (Motor) arm,
+        new ArmCommand(
+            (Arm) arm,
             () -> {
-              if (controller.rightBumper().getAsBoolean()) {
-                return 12.0;
-              } else if (controller.leftBumper().getAsBoolean()) {
-                return -12.0;
+              if (!SmartDashboard.getString("Selected Subsystems/Selected", "UNKNOWN")
+                  .equals(armSubsystem.getName()))
+                  return 0.0;
+              if (controller.pov(0).getAsBoolean()) {
+                return 1.0;
+              } else if (controller.pov(180).getAsBoolean()) {
+                return -1.0;
               }
               return 0.0;
             }));
