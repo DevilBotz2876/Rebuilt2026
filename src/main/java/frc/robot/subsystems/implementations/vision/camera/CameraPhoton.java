@@ -20,28 +20,29 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class CameraPhoton extends CameraBase {
 
-  public static CameraPhoton createCameraPhoton(Properties properties, String name) {
+  public static CameraPhoton createCameraPhoton(
+      Properties properties, String name, AprilTagFieldLayout layout) {
 
-    Transform3d robotToCamera =  new Transform3d(
-      new Translation3d(
-        Double.parseDouble(properties.getProperty(name + ".robotToCamera.xMeters")),
-        Double.parseDouble(properties.getProperty(name + ".robotToCamera.yMeters")),
-        Double.parseDouble(properties.getProperty(name + ".robotToCamera.zMeters"))
-      ),
-      new Rotation3d(
-      Double.parseDouble(properties.getProperty(name + "robotToCamera.rollDegrees")), 
-      Double.parseDouble(properties.getProperty(name + "robotToCamera.pitchDegrees")),
-      Double.parseDouble(properties.getProperty(name + "robotToCamera.yawDegrees"))
-      
-      )
-      );
-    return new CameraPhoton(name, robotToCamera, null, null);
+    Transform3d robotToCamera =
+        new Transform3d(
+            new Translation3d(
+                Double.parseDouble(properties.getProperty(name + ".robotToCamera.xMeters")),
+                Double.parseDouble(properties.getProperty(name + ".robotToCamera.yMeters")),
+                Double.parseDouble(properties.getProperty(name + ".robotToCamera.zMeters"))),
+            new Rotation3d(
+                Double.parseDouble(properties.getProperty(name + "robotToCamera.rollDegrees")),
+                Double.parseDouble(properties.getProperty(name + "robotToCamera.pitchDegrees")),
+                Double.parseDouble(properties.getProperty(name + "robotToCamera.yawDegrees"))));
+
+    CameraSettings settings = CameraSettings.getCameraSettings(properties, name);
+
+    return new CameraPhoton(name, robotToCamera, settings, layout);
   }
+
   private final PhotonCamera camera;
   private final AprilTagFieldLayout tagLayout;
   private VisionPoseMeasurement[] poseMeasurements;
   private final PhotonPoseEstimator photonPoseEstimator;
-
 
   public CameraPhoton(
       String name,

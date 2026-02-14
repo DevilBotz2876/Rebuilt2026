@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import java.util.List;
+import java.util.Properties;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface Vision {
@@ -28,6 +29,15 @@ public interface Vision {
       public int fps;
       public int resWidth;
       public int resHeight;
+
+      public static CameraSettings getCameraSettings(Properties properties, String name) {
+        CameraSettings settings = new CameraSettings();
+        settings.fps = Integer.parseInt(properties.getProperty(name + ".settings.fps"));
+        settings.resWidth = Integer.parseInt(properties.getProperty(name + ".settings.resWidth"));
+        settings.resHeight = Integer.parseInt(properties.getProperty(name + ".settings.resHeight"));
+
+        return settings;
+      }
     }
 
     public class VisionPoseMeasurement {

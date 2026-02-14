@@ -3,13 +3,38 @@ package frc.robot.subsystems.implementations.vision.camera;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
+import java.util.Properties;
 import java.util.function.Supplier;
 import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
 
 public class CameraPhotonSim extends CameraPhoton {
+  public static CameraPhotonSim createCameraPhotonSim(
+      Properties properties,
+      String name,
+      AprilTagFieldLayout layout,
+      Supplier<Pose2d> poseSupplier) {
+
+    Transform3d robotToCamera =
+        new Transform3d(
+            new Translation3d(
+                Double.parseDouble(properties.getProperty(name + ".robotToCamera.xMeters")),
+                Double.parseDouble(properties.getProperty(name + ".robotToCamera.yMeters")),
+                Double.parseDouble(properties.getProperty(name + ".robotToCamera.zMeters"))),
+            new Rotation3d(
+                Double.parseDouble(properties.getProperty(name + ".robotToCamera.rollDegrees")),
+                Double.parseDouble(properties.getProperty(name + ".robotToCamera.pitchDegrees")),
+                Double.parseDouble(properties.getProperty(name + ".robotToCamera.yawDegrees"))));
+
+    CameraSettings settings = CameraSettings.getCameraSettings(properties, name);
+
+    return new CameraPhotonSim(name, robotToCamera, settings, layout, poseSupplier);
+  }
+
   private final SimCameraProperties simCameraProperties;
   private final PhotonCameraSim simCamera;
   private static VisionSystemSim simVision;

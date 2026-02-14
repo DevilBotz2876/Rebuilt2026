@@ -1,7 +1,5 @@
 package frc.robot.config.game.rebuilt2026;
 
-import static edu.wpi.first.units.Units.Degrees;
-
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.ArmFeedforward;
@@ -10,13 +8,8 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color8Bit;
@@ -42,12 +35,13 @@ import frc.robot.subsystems.implementations.motor.ElevatorMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.FlywheelMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.SimpleMotorSubsystem;
 import frc.robot.subsystems.implementations.vision.VisionSubsystem;
+import frc.robot.subsystems.implementations.vision.camera.CameraBase;
 import frc.robot.subsystems.implementations.vision.camera.CameraPhoton;
+import frc.robot.subsystems.implementations.vision.camera.CameraPhotonSim;
 import frc.robot.subsystems.interfaces.Arm.ArmSettings;
 import frc.robot.subsystems.interfaces.Elevator.ElevatorSettings;
 import frc.robot.subsystems.interfaces.Flywheel.FlywheelSettings;
 import frc.robot.subsystems.interfaces.SimpleMotor.SimpleMotorSettings;
-import frc.robot.subsystems.interfaces.Vision.Camera.CameraSettings;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -74,102 +68,8 @@ public class RobotConfig {
     if (Robot.isSimulation()) {
       drive.setPose(new Pose2d(new Translation2d(1, 1), new Rotation2d()));
     }
-    // prototypeMotor1 = createFlywheel(robotProperties, "prototypeMotor1");
-    // prototypeMotor2 = createFlywheel(robotProperties, "prototypeMotor2");
-    vision =
-        new VisionSubsystem(
-            AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltAndymark),
-            Optional.of(drive::addVisionMeasurement));
 
-    CameraSettings simCameraSettings = new CameraSettings();
-    simCameraSettings.fps = 30;
-    simCameraSettings.resWidth = 800;
-    simCameraSettings.resHeight = 600;
-    // "sim" camera that +12 inch along x axis and pitch of -45 degrees
-    // vision.addCamera(
-    //     new CameraPhoton(
-    //         "left",
-    //         new Transform3d(
-    //             new Translation3d(
-    //                 Units.inchesToMeters(10.75), Units.inchesToMeters(14.5),
-    // Units.inchesToMeters(7 + 35)),
-    //             new Rotation3d(
-    //                 Angle.ofBaseUnits(0, Degrees),
-    //                 Angle.ofBaseUnits(5, Degrees),
-    //                 Angle.ofBaseUnits(-22 + 180, Degrees))),
-    //         simCameraSettings,
-    //         vision.getFieldLayout()));
-    vision.addCamera(
-        new CameraPhoton(
-            "front",
-            new Transform3d(
-                new Translation3d(
-                    Units.inchesToMeters(14.5),
-                    Units.inchesToMeters(0.0),
-                    Units.inchesToMeters(1.765 + 2 + 18)),
-                new Rotation3d(
-                    Angle.ofBaseUnits(0, Degrees),
-                    Angle.ofBaseUnits(5, Degrees),
-                    Angle.ofBaseUnits(0, Degrees))),
-            simCameraSettings,
-            vision.getFieldLayout()));
-    // vision.addCamera(
-    //     new CameraPhoton(
-    //         "right",
-    //         new Transform3d(
-    //             new Translation3d(
-    //                 Units.inchesToMeters(10), Units.inchesToMeters(-14.5), Units.inchesToMeters(7
-    // + 35)),
-    //             new Rotation3d(
-    //                 Angle.ofBaseUnits(0, Degrees),
-    //                 Angle.ofBaseUnits(5, Degrees),
-    //                 Angle.ofBaseUnits(22 + 180, Degrees))),
-    //         simCameraSettings,
-    //         vision.getFieldLayout()));
-    // vision.addCamera(
-    //     new CameraPhoton(
-    //         "other1",
-    //         new Transform3d(
-    //             new Translation3d(0, 0, 0),
-    //             new Rotation3d(
-    //                 Angle.ofBaseUnits(0, Degrees),
-    //                 Angle.ofBaseUnits(0, Degrees),
-    //                 Angle.ofBaseUnits(0, Degrees))),
-    //         simCameraSettings,
-    //         vision.getFieldLayout()));
-    // vision.addCamera(
-    //     new CameraPhoton(
-    //         "other2",
-    //         new Transform3d(
-    //             new Translation3d(0, 0, 0),
-    //             new Rotation3d(
-    //                 Angle.ofBaseUnits(0, Degrees),
-    //                 Angle.ofBaseUnits(0, Degrees),
-    //                 Angle.ofBaseUnits(0, Degrees))),
-    //         simCameraSettings,
-    //         vision.getFieldLayout()));
-    // vision.addCamera(
-    //     new CameraPhoton(
-    //         "other3",
-    //         new Transform3d(
-    //             new Translation3d(0, 0, 0),
-    //             new Rotation3d(
-    //                 Angle.ofBaseUnits(0, Degrees),
-    //                 Angle.ofBaseUnits(0, Degrees),
-    //                 Angle.ofBaseUnits(0, Degrees))),
-    //         simCameraSettings,
-    //         vision.getFieldLayout()));
-    // vision.addCamera(
-    //     new CameraPhoton(
-    //         "other4",
-    //         new Transform3d(
-    //             new Translation3d(0, 0, 0),
-    //             new Rotation3d(
-    //                 Angle.ofBaseUnits(0, Degrees),
-    //                 Angle.ofBaseUnits(0, Degrees),
-    //                 Angle.ofBaseUnits(0, Degrees))),
-    //         simCameraSettings,
-    //         vision.getFieldLayout()));
+    vision = createVisionSubsystem(robotProperties);
   }
 
   public RobotConfig(boolean stubDrive, boolean stubAuto, boolean stubVision) {
@@ -501,5 +401,41 @@ public class RobotConfig {
       default:
         return DCMotor.getKrakenX60(1);
     }
+  }
+
+  private VisionSubsystem createVisionSubsystem(Properties robotProperties) {
+    if (Boolean.parseBoolean(robotProperties.getProperty("vision.addDrivetrain"))) {
+      vision =
+          new VisionSubsystem(
+              AprilTagFieldLayout.loadField(
+                  AprilTagFields.valueOf(robotProperties.getProperty("vision.fieldlayout"))),
+              Optional.of(drive::addVisionMeasurement));
+    } else {
+      vision =
+          new VisionSubsystem(
+              AprilTagFieldLayout.loadField(
+                  AprilTagFields.valueOf(robotProperties.getProperty("vision.fieldlayout"))),
+              Optional.empty());
+    }
+
+    String[] cameraNames = robotProperties.getProperty("vision.cameras").split(", ");
+    for (String cameraName : cameraNames) {
+      switch (robotProperties.getProperty(cameraName + ".cameratype")) {
+        case "photon":
+          vision.addCamera(
+              CameraPhoton.createCameraPhoton(
+                  robotProperties, cameraName, vision.getFieldLayout()));
+          break;
+        case "photonSim":
+          vision.addCamera(
+              CameraPhotonSim.createCameraPhotonSim(
+                  robotProperties, cameraName, vision.getFieldLayout(), () -> drive.getPose()));
+          break;
+        default:
+          vision.addCamera(CameraBase.createCameraBase(robotProperties, cameraName));
+          break;
+      }
+    }
+    return vision;
   }
 }
