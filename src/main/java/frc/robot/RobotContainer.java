@@ -4,14 +4,22 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.config.game.rebuilt2026.*;
 import frc.robot.util.Elastic;
 import java.io.FileReader;
 import java.util.Properties;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.RobotController;
+
 
 public class RobotContainer {
+  public AnalogInput ultrasonicSensor = new AnalogInput(0);
+  
   public RobotConfig robotConfig;
 
   public RobotContainer() {

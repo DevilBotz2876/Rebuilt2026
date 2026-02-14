@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -122,8 +123,16 @@ public class Robot extends LoggedRobot {
   }
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+  double voltage_scale_factor = 5/RobotController.getVoltage5V();
+  double currentDistanceCentimeters = m_robotContainer.ultrasonicSensor.getValue() * voltage_scale_factor * 0.125;
+  double currentDistanceInches = m_robotContainer.ultrasonicSensor.getValue() * voltage_scale_factor * 0.0492;
 
+  System.out.println(currentDistanceInches);
+
+  }  
+
+  
   @Override
   public void teleopExit() {}
 
