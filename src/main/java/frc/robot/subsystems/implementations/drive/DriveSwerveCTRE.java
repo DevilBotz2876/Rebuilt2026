@@ -38,6 +38,8 @@ public class DriveSwerveCTRE extends DriveBase {
   // The field and robot centric swerve request
   private final SwerveRequest.FieldCentric driveFieldCentric;
   private final SwerveRequest.RobotCentric driveRobotCentric;
+  private final SwerveRequest.ApplyRobotSpeeds pathApplyRobotSpeeds; // the speeds for pathplanner
+
 
   DriveIO io = new DriveIO();
   private final DriveIOInputsAutoLogged inputs = new DriveIOInputsAutoLogged();
@@ -71,7 +73,7 @@ public class DriveSwerveCTRE extends DriveBase {
             .withDriveRequestType(
                 DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
 
-
+    pathApplyRobotSpeeds = new SwerveRequest.ApplyRobotSpeeds();
 
     // SETUP PATHPLANNER
     RobotConfig config = null;
@@ -87,18 +89,16 @@ public class DriveSwerveCTRE extends DriveBase {
       AutoBuilder.configure(
               this::getPose, // Robot pose supplier
               this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
-              () -> {
-                return drivetrain.getKinematics().toChassisSpeeds(drivetrain.getState().ModuleStates);
-              }, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+              () ->  drivetrain.getState().Speeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
               (speeds, feedforwards) -> {drivetrain.setControl(
-            driveRobotCentric
-                .withVelocityX(speeds.vxMetersPerSecond)
-                .withVelocityY(speeds.vyMetersPerSecond)
-                .withRotationalRate(speeds.omegaRadiansPerSecond));
+            pathApplyRobotSpeeds.withSpeeds(ChassisSpeeds.discretize(speeds, 0.020))
+                        .withWheelForceFeedforwardsX(feedforwards.robotRelativeForcesXNewtons())
+                        .withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesYNewtons())
+);
               }, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
               new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-                      new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                      new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+                      new PIDConstants(10.0, 0.0, 0.0), // Translation PID constants
+                      new PIDConstants(7.0, 0.0, 0.0) // Rotation PID constants
               ),
               config, // The robot configuration
               () -> {

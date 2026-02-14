@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot;
 import frc.robot.config.game.rebuilt2026.tunerConstants.TunerConstants;
@@ -43,6 +44,9 @@ import frc.robot.subsystems.interfaces.Flywheel.FlywheelSettings;
 import frc.robot.subsystems.interfaces.SimpleMotor.SimpleMotorSettings;
 import java.util.Properties;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 /* Put all constants here with reasonable defaults */
 public class RobotConfig {
   public DriveBase drive;
@@ -64,9 +68,11 @@ public class RobotConfig {
     if (robotProperties.containsKey("robot.drive")) {
       if (robotProperties.getProperty("robot.drive").equals("ctre")) {
         drive = new DriveSwerveCTRE(new TunerConstants(robotProperties));
+        autoChooser = AutoBuilder.buildAutoChooser("Sit Still");
       }
     } else {
       drive = new DriveBase("Stub");
+      autoChooser = new SendableChooser<>();
     }
 
     if (Robot.isSimulation()) {
@@ -80,23 +86,6 @@ public class RobotConfig {
     conveyorFlywheel = createFlywheel(robotProperties, "conveyorFlywheel");
 
     properties = robotProperties;
-  }
-
-  public RobotConfig(boolean stubDrive, boolean stubAuto, boolean stubVision) {
-    if (stubDrive) {
-      drive = new DriveBase("Stub");
-    }
-
-    if (stubAuto) {
-      autoChooser = new SendableChooser<>();
-      autoChooser.setDefaultOption("No Auto Routines Specified", Commands.none());
-    }
-
-    // TODO: Add VisionSubsystem Initialization
-
-    if (stubVision) {
-      // TODO: Add VisionSubsystem Settings
-    }
   }
 
   public void configureBindings() {
@@ -137,6 +126,10 @@ public class RobotConfig {
     if (null != this.autoChooser) {
       SmartDashboard.putData("Autonomous", this.autoChooser);
     }
+  }
+
+  private void registerNamedCommands() {
+    NamedCommands.registerCommand("Dynamic Drive to Hub (radius)", new WaitCommand(1.));
   }
 
   private SimpleMotorSubsystem createSimpleMotor(Properties robotProperties, String name) {
