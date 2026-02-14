@@ -1,0 +1,1 @@
+sh gradlew DBBuildPathPlanner-$1

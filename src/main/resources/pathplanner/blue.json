@@ -4,7 +4,8 @@
   "holonomicMode": true,
   "pathFolders": [
     "blue",
-    "red"
+    "red",
+    "sim"
   ],
   "autoFolders": [],
   "defaultMaxVel": 4.8,
@@ -29,7 +30,7 @@
   "blModuleY": 0.2460625,
   "brModuleX": -0.2460625,
   "brModuleY": -0.2460625,
-  "bumperOffsetX": 0.0,
+  "bumperOffsetX": 1.0,
   "bumperOffsetY": 0.0,
   "robotFeatures": []
 }
