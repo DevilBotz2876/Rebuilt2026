@@ -19,7 +19,6 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
-
   private RobotContainer m_robotContainer;
 
   @Override
@@ -124,12 +123,7 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void teleopPeriodic() {
-  double voltage_scale_factor = 5/RobotController.getVoltage5V();
-  double currentDistanceCentimeters = m_robotContainer.ultrasonicSensor.getValue() * voltage_scale_factor * 0.125;
-  double currentDistanceInches = m_robotContainer.ultrasonicSensor.getValue() * voltage_scale_factor * 0.0492;
-
-  System.out.println(currentDistanceInches);
-
+    m_robotContainer.UltrasonicSensorCalculations();
   }  
 
   

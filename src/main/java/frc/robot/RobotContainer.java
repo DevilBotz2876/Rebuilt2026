@@ -8,16 +8,30 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.config.game.rebuilt2026.*;
 import frc.robot.util.Elastic;
 import java.io.FileReader;
 import java.util.Properties;
+
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.NT4Publisher;
+
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.RobotController;
 
 
 public class RobotContainer {
+  public void UltrasonicSensorCalculations(){
+    double voltage_scale_factor = 5/RobotController.getVoltage5V();
+    double currentDistanceCentimeters = ultrasonicSensor.getValue() * voltage_scale_factor * 0.125;
+    double currentDistanceInches = ultrasonicSensor.getValue() * voltage_scale_factor * 0.0492;
+    System.out.println(currentDistanceInches);
+    Logger.addDataReceiver(new NT4Publisher());
+    SmartDashboard.putNumber("Measured Distnace", currentDistanceCentimeters);
+
+  }
   public AnalogInput ultrasonicSensor = new AnalogInput(0);
   
   public RobotConfig robotConfig;
