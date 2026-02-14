@@ -14,6 +14,7 @@ import frc.robot.config.game.rebuilt2026.*;
 import frc.robot.util.Elastic;
 import java.io.FileReader;
 import java.util.Properties;
+import edu.wpi.first.networktables.*;
 
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
@@ -23,14 +24,19 @@ import edu.wpi.first.wpilibj.RobotController;
 
 
 public class RobotContainer {
-  public void UltrasonicSensorCalculations(){
+  //NetworkTable table = NetworkTableInstance.getDefault().getTable("Measured Distance Inches");
+  //NetworkTableEntry entry = table.getEntry("MyNumber");
+  public double UltrasonicSensorCalculations(/*NetworkTableEntry entry*/){
     double voltage_scale_factor = 5/RobotController.getVoltage5V();
     double currentDistanceCentimeters = ultrasonicSensor.getValue() * voltage_scale_factor * 0.125;
     double currentDistanceInches = ultrasonicSensor.getValue() * voltage_scale_factor * 0.0492;
     System.out.println(currentDistanceInches);
-    Logger.addDataReceiver(new NT4Publisher());
-    SmartDashboard.putNumber("Measured Distnace", currentDistanceCentimeters);
-
+    return currentDistanceInches;
+    //SmartDashboard.putNumber("Measured Distance Inches", currentDistanceInches);
+    //NetworkTable table = NetworkTableInstance.getDefault().getTable("Measured Distance Inches");
+    //NetworkTableEntry entry = table.getEntry("MyNumber");
+    //entry.setDouble(currentDistanceInches);
+    
   }
   public AnalogInput ultrasonicSensor = new AnalogInput(0);
   

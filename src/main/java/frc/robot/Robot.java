@@ -40,6 +40,7 @@ public class Robot extends LoggedRobot {
       default:
         Logger.recordMetadata("GitDirty", "Unknown");
         break;
+      
     }
 
     /* Initialize AdvantageKit Logging */
@@ -82,6 +83,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    Logger.recordOutput("Measured Distance Inches", m_robotContainer.UltrasonicSensorCalculations());
   }
 
   @Override
@@ -123,7 +125,7 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void teleopPeriodic() {
-    m_robotContainer.UltrasonicSensorCalculations();
+    //m_robotContainer.UltrasonicSensorCalculations(m_robotContainer.entry);
   }  
 
   
