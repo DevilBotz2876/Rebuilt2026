@@ -25,6 +25,7 @@ import frc.robot.io.implementations.motor.MotorIOSparkMax.SparkMaxSettings;
 import frc.robot.io.implementations.motor.MotorIOStub;
 import frc.robot.io.implementations.motor.MotorIOTalonFx;
 import frc.robot.io.implementations.motor.MotorIOTalonFx.TalonFxSettings;
+import frc.robot.subsystems.controls.arm.ArmControls;
 import frc.robot.subsystems.controls.combination.DriverControls;
 import frc.robot.subsystems.controls.combination.DriverControls.DriverControlsSettings;
 import frc.robot.subsystems.controls.drive.DriveControls;
@@ -51,6 +52,7 @@ public class RobotConfig {
   public FlywheelMotorSubsystem bottomIntakeFlywheel;
   public FlywheelMotorSubsystem shooterFlywheel;
   public FlywheelMotorSubsystem indexerFlywheel;
+  public ArmMotorSubsystem armMotor;
 
   public FlywheelMotorSubsystem conveyorFlywheel;
   public Properties properties;
@@ -78,6 +80,7 @@ public class RobotConfig {
     shooterFlywheel = createFlywheel(robotProperties, "shooterFlywheel");
     indexerFlywheel = createFlywheel(robotProperties, "indexerFlywheel");
     conveyorFlywheel = createFlywheel(robotProperties, "conveyorFlywheel");
+    armMotor = createArm(robotProperties, "myArm");
 
     properties = robotProperties;
   }
@@ -116,6 +119,7 @@ public class RobotConfig {
     IntakeControls.setupSpeedController(topIntakeFlywheel, bottomIntakeFlywheel, mainController);
     ShooterControls.setupSpeedController(shooterFlywheel, indexerFlywheel, mainController);
     ConveyorControls.setupSpeedController(conveyorFlywheel, mainController);
+    ArmControls.setupController(armMotor, mainController);
     ;
 
     DriverControls.setupMainController(
