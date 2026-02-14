@@ -28,7 +28,9 @@ import frc.robot.io.implementations.motor.MotorIOTalonFx.TalonFxSettings;
 import frc.robot.subsystems.controls.combination.DriverControls;
 import frc.robot.subsystems.controls.combination.DriverControls.DriverControlsSettings;
 import frc.robot.subsystems.controls.drive.DriveControls;
-import frc.robot.subsystems.controls.flywheel.FlywheelControls;
+import frc.robot.subsystems.controls.flywheel.ConveyorControls;
+import frc.robot.subsystems.controls.flywheel.IntakeControls;
+import frc.robot.subsystems.controls.flywheel.ShooterControls;
 import frc.robot.subsystems.implementations.drive.DriveBase;
 import frc.robot.subsystems.implementations.drive.DriveSwerveCTRE;
 import frc.robot.subsystems.implementations.motor.ArmMotorSubsystem;
@@ -108,11 +110,13 @@ public class RobotConfig {
 
     // Send vision-based odometry measurements to drive's odometry calculations
     // vision.setVisionMeasurementConsumer(drive::addVisionMeasurement);
-    FlywheelControls.setupController(topIntakeFlywheel, mainController);
-    FlywheelControls.setupController(bottomIntakeFlywheel, mainController);
-    FlywheelControls.setupController(indexerFlywheel, mainController);
-    FlywheelControls.setupController(shooterFlywheel, mainController);
-    FlywheelControls.setupController(conveyorFlywheel, mainController);
+    // FlywheelControls.setupController(topIntakeFlywheel, mainController);
+    // FlywheelControls.setupController(bottomIntakeFlywheel, mainController);
+
+    IntakeControls.setupSpeedController(topIntakeFlywheel, bottomIntakeFlywheel, mainController);
+    ShooterControls.setupSpeedController(shooterFlywheel, indexerFlywheel, mainController);
+    ConveyorControls.setupSpeedController(conveyorFlywheel, mainController);
+    ;
 
     DriverControls.setupMainController(
         drive,
@@ -121,7 +125,8 @@ public class RobotConfig {
         shooterFlywheel,
         indexerFlywheel,
         conveyorFlywheel,
-        mainController, DriverControlsSettings.getDriverControlsSettings(properties));
+        mainController,
+        DriverControlsSettings.getDriverControlsSettings(properties));
 
     DriverControls.setupFlywheelSmartDashboardControl(topIntakeFlywheel);
     DriverControls.setupFlywheelSmartDashboardControl(bottomIntakeFlywheel);

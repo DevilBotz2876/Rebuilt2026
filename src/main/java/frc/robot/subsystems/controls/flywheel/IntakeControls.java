@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.common.flywheel.FlywheelCommand;
+import frc.robot.commands.common.flywheel.FlywheelToVelocity;
 import frc.robot.commands.common.motor.MotorBringUpCommand;
 import frc.robot.subsystems.interfaces.Flywheel;
 import frc.robot.subsystems.interfaces.Motor;
@@ -104,10 +105,7 @@ public class IntakeControls {
               return 0.0;
             }));
 
-    controller
-        .rightTrigger()
-        .onTrue(
-            new InstantCommand(() -> ((Motor) topFlywheel).runVoltage(0.0), topFlywheelSubsystem));
+    controller.rightTrigger().onTrue(new FlywheelToVelocity(topFlywheel, () -> 0.0));
 
     /*
      * Bottom Flywheel
@@ -134,10 +132,6 @@ public class IntakeControls {
               return 0.0;
             }));
 
-    controller
-        .rightBumper()
-        .onTrue(
-            new InstantCommand(
-                () -> ((Motor) bottomFlywheel).runVoltage(0.0), bottomFlywheelSubsystem));
+    controller.rightBumper().onTrue(new FlywheelToVelocity(bottomFlywheel, () -> 0.0));
   }
 }

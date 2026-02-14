@@ -11,6 +11,13 @@ public class ElevatorCommand extends Command {
   DoubleSupplier speed;
   double targetPosition;
 
+  /**
+   * Sets a elevator to it's current position on meters and incremnts by a speed * the elevator max
+   * velocity / 50 each cycle. This command does not end without being interupted.
+   *
+   * @param elevator
+   * @param speed A double between -1 and 1
+   */
   public ElevatorCommand(Elevator elevator, DoubleSupplier speed) {
     this.elevator = elevator;
     this.speed = speed;

@@ -1,8 +1,5 @@
 package frc.robot.subsystems.controls.combination;
 
-import java.util.Properties;
-
-import edu.wpi.first.networktables.PubSub;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -16,27 +13,38 @@ import frc.robot.commands.common.motor.MotorRunVoltageCommand;
 import frc.robot.subsystems.interfaces.Drive;
 import frc.robot.subsystems.interfaces.Flywheel;
 import frc.robot.subsystems.interfaces.Motor;
+import java.util.Properties;
 
 public class DriverControls {
   public static class DriverControlsSettings {
     // launch
-    public double shooterLaunchRPM = 3666.0;
-    public double indexerLaunchRPM = 1000.0;
-    public double conveyorLaunchRPM = 1000.0;
+    public double shooterLaunchRPM;
+    public double indexerLaunchRPM;
+    public double conveyorLaunchRPM;
 
     // intake
-    public double intakeRPM = 2000.0;
-    public double conveyorReverseRPM = -200.0;
+    public double intakeRPM;
+    public double conveyorReverseRPM;
 
+    /**
+     * Creates a DriverControlsSettings and sets the varibles to equal the matching property value.
+     *
+     * @param properties The robot's proerties
+     * @return DriverControlsSettings with values matching the Properties
+     */
     public static DriverControlsSettings getDriverControlsSettings(Properties properties) {
-        DriverControlsSettings settings = new DriverControlsSettings();
-        settings.shooterLaunchRPM = Double.parseDouble(properties.getProperty("driverControls.shooterLaunchRPM"));
-        settings.indexerLaunchRPM= Double.parseDouble(properties.getProperty("driverControls.indexerLaunchRPM"));
-        settings.conveyorLaunchRPM = Double.parseDouble(properties.getProperty("driverControls.conveyorLaunchRPM"));
+      DriverControlsSettings settings = new DriverControlsSettings();
+      settings.shooterLaunchRPM =
+          Double.parseDouble(properties.getProperty("driverControls.shooterLaunchRPM"));
+      settings.indexerLaunchRPM =
+          Double.parseDouble(properties.getProperty("driverControls.indexerLaunchRPM"));
+      settings.conveyorLaunchRPM =
+          Double.parseDouble(properties.getProperty("driverControls.conveyorLaunchRPM"));
 
-        settings.intakeRPM = Double.parseDouble(properties.getProperty("driverControls.intakeRPM"));
-        settings.conveyorReverseRPM = Double.parseDouble(properties.getProperty("driverControls.conveyorReverseRPM"));
-        return settings;
+      settings.intakeRPM = Double.parseDouble(properties.getProperty("driverControls.intakeRPM"));
+      settings.conveyorReverseRPM =
+          Double.parseDouble(properties.getProperty("driverControls.conveyorReverseRPM"));
+      return settings;
     }
   }
 
@@ -47,7 +55,7 @@ public class DriverControls {
       Flywheel shooter,
       Flywheel indexer,
       Flywheel conveyor,
-      CommandXboxController controller, 
+      CommandXboxController controller,
       DriverControlsSettings settings) {
 
     // Commands to stop subsystem
