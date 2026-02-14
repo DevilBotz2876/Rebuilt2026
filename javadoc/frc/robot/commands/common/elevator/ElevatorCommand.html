@@ -105,7 +105,10 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(frc.robot.subsystems.interfaces.Elevator,java.util.function.DoubleSupplier)" class="member-name-link">ElevatorCommand</a><wbr>(<a href="../../../subsystems/interfaces/Elevator.html" title="interface in frc.robot.subsystems.interfaces">Elevator</a>&nbsp;elevator,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/DoubleSupplier.html" title="class or interface in java.util.function" class="external-link">DoubleSupplier</a>&nbsp;speed)</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Sets a elevator to it's current position on meters and incremnts by a speed * the elevator max
+ velocity / 50 each cycle.</div>
+</div>
 </div>
 </section>
 </li>
@@ -151,6 +154,13 @@ loadScripts(document, 'script');</script>
 <h3>ElevatorCommand</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ElevatorCommand</span><wbr><span class="parameters">(<a href="../../../subsystems/interfaces/Elevator.html" title="interface in frc.robot.subsystems.interfaces">Elevator</a>&nbsp;elevator,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/DoubleSupplier.html" title="class or interface in java.util.function" class="external-link">DoubleSupplier</a>&nbsp;speed)</span></div>
+<div class="block">Sets a elevator to it's current position on meters and incremnts by a speed * the elevator max
+ velocity / 50 each cycle. This command does not end without being interupted.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>elevator</code> - </dd>
+<dd><code>speed</code> - A double between -1 and 1</dd>
+</dl>
 </section>
 </li>
 </ul>

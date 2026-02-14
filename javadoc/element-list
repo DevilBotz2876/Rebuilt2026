@@ -10,6 +10,7 @@ frc.robot.config.game.rebuilt2026.tunerConstants
 frc.robot.io.implementations.motor
 frc.robot.io.interfaces
 frc.robot.subsystems.controls.arm
+frc.robot.subsystems.controls.combination
 frc.robot.subsystems.controls.drive
 frc.robot.subsystems.controls.elevator
 frc.robot.subsystems.controls.flywheel
