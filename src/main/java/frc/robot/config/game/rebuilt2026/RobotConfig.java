@@ -27,7 +27,12 @@ import frc.robot.io.implementations.motor.MotorIOSparkMax.SparkMaxSettings;
 import frc.robot.io.implementations.motor.MotorIOStub;
 import frc.robot.io.implementations.motor.MotorIOTalonFx;
 import frc.robot.io.implementations.motor.MotorIOTalonFx.TalonFxSettings;
+import frc.robot.subsystems.controls.combination.DriverControls;
+import frc.robot.subsystems.controls.combination.DriverControls.DriverControlsSettings;
 import frc.robot.subsystems.controls.drive.DriveControls;
+import frc.robot.subsystems.controls.flywheel.ConveyorControls;
+import frc.robot.subsystems.controls.flywheel.IntakeControls;
+import frc.robot.subsystems.controls.flywheel.ShooterControls;
 import frc.robot.subsystems.implementations.drive.DriveBase;
 import frc.robot.subsystems.implementations.drive.DriveSwerveCTRE;
 import frc.robot.subsystems.implementations.motor.ArmMotorSubsystem;
@@ -51,8 +56,13 @@ public class RobotConfig {
   public DriveBase drive;
   public SendableChooser<Command> autoChooser;
   public VisionSubsystem vision;
-  //   public FlywheelMotorSubsystem prototypeMotor1;
-  //   public FlywheelMotorSubsystem prototypeMotor2;
+  public FlywheelMotorSubsystem topIntakeFlywheel;
+  public FlywheelMotorSubsystem bottomIntakeFlywheel;
+  public FlywheelMotorSubsystem shooterFlywheel;
+  public FlywheelMotorSubsystem indexerFlywheel;
+
+  public FlywheelMotorSubsystem conveyorFlywheel;
+  public Properties properties;
   // TODO: Add VisionSubsystem Declaration
 
   // Controls
@@ -70,7 +80,14 @@ public class RobotConfig {
       drive.setPose(new Pose2d(new Translation2d(1, 1), new Rotation2d()));
     }
 
+    topIntakeFlywheel = createFlywheel(robotProperties, "topIntakeFlywheel");
+    bottomIntakeFlywheel = createFlywheel(robotProperties, "bottomIntakeFlywheel");
+    shooterFlywheel = createFlywheel(robotProperties, "shooterFlywheel");
+    indexerFlywheel = createFlywheel(robotProperties, "indexerFlywheel");
+    conveyorFlywheel = createFlywheel(robotProperties, "conveyorFlywheel");
+
     vision = createVisionSubsystem(robotProperties);
+    properties = robotProperties;
   }
 
   public RobotConfig(boolean stubDrive, boolean stubAuto, boolean stubVision) {
@@ -98,12 +115,33 @@ public class RobotConfig {
       // this.autoChooser = AutoBuilder.buildAutoChooser("Sit Still");
     }
     DriveControls.setupController(drive, mainController);
+
     // Send vision-based odometry measurements to drive's odometry calculations
     // vision.setVisionMeasurementConsumer(drive::addVisionMeasurement);
-    // FlywheelPrototypeControls.setupSmartDashboardControl(prototypeMotor1);
-    // FlywheelPrototypeControls.setupSmartDashboardControl(prototypeMotor2);
-    // FlywheelPrototypeControls.setupController(prototypeMotor1, mainController);
-    // FlywheelPrototypeControls.setupControllerTwo(prototypeMotor2, mainController);
+    // FlywheelControls.setupController(topIntakeFlywheel, mainController);
+    // FlywheelControls.setupController(bottomIntakeFlywheel, mainController);
+
+    IntakeControls.setupSpeedController(topIntakeFlywheel, bottomIntakeFlywheel, mainController);
+    ShooterControls.setupSpeedController(shooterFlywheel, indexerFlywheel, mainController);
+    ConveyorControls.setupSpeedController(conveyorFlywheel, mainController);
+    ;
+
+    DriverControls.setupMainController(
+        drive,
+        topIntakeFlywheel,
+        bottomIntakeFlywheel,
+        shooterFlywheel,
+        indexerFlywheel,
+        conveyorFlywheel,
+        mainController,
+        DriverControlsSettings.getDriverControlsSettings(properties));
+
+    DriverControls.setupFlywheelSmartDashboardControl(topIntakeFlywheel);
+    DriverControls.setupFlywheelSmartDashboardControl(bottomIntakeFlywheel);
+    DriverControls.setupFlywheelSmartDashboardControl(shooterFlywheel);
+    DriverControls.setupFlywheelSmartDashboardControl(indexerFlywheel);
+    DriverControls.setupFlywheelSmartDashboardControl(conveyorFlywheel);
+
     if (null != this.autoChooser) {
       SmartDashboard.putData("Autonomous", this.autoChooser);
     }
@@ -165,14 +203,14 @@ public class RobotConfig {
       case "talonFX":
         TalonFxSettings talonSettings = new TalonFxSettings();
         talonSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".talonFX.setting.id"));
+            Integer.parseInt(robotProperties.getProperty(name + ".talonFXSettings.id"));
         return new SimpleMotorSubsystem(
             new MotorIOTalonFx(IOSettings, talonSettings), name, simpleMotorSettings);
 
       case "sparkMax":
         SparkMaxSettings sparkMaxSettings = new SparkMaxSettings();
         sparkMaxSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".sparkMax.setting.id"));
+            Integer.parseInt(robotProperties.getProperty(name + ".sparkMaxSettings.id"));
         return new SimpleMotorSubsystem(
             new MotorIOSparkMax(IOSettings, sparkMaxSettings), name, simpleMotorSettings);
 
@@ -221,14 +259,14 @@ public class RobotConfig {
       case "talonFX":
         TalonFxSettings talonSettings = new TalonFxSettings();
         talonSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".talonFX.setting.id"));
+            Integer.parseInt(robotProperties.getProperty(name + ".talonFXSettings.id"));
         return new FlywheelMotorSubsystem(
             new MotorIOTalonFx(IOSettings, talonSettings), name, flywheelSettings);
 
       case "sparkMax":
         SparkMaxSettings sparkMaxSettings = new SparkMaxSettings();
         sparkMaxSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".sparkMax.setting.id"));
+            Integer.parseInt(robotProperties.getProperty(name + ".sparkMaxSettings.id"));
         return new FlywheelMotorSubsystem(
             new MotorIOSparkMax(IOSettings, sparkMaxSettings), name, flywheelSettings);
 
@@ -286,14 +324,14 @@ public class RobotConfig {
       case "talonFX":
         TalonFxSettings talonSettings = new TalonFxSettings();
         talonSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".talonFX.setting.id"));
+            Integer.parseInt(robotProperties.getProperty(name + ".talonFXSettings.id"));
         return new ArmMotorSubsystem(
             new MotorIOTalonFx(IOSettings, talonSettings), name, armSettings);
 
       case "sparkMax":
         SparkMaxSettings sparkMaxSettings = new SparkMaxSettings();
         sparkMaxSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".sparkMax.setting.id"));
+            Integer.parseInt(robotProperties.getProperty(name + ".sparkMaxSettings.id"));
         return new ArmMotorSubsystem(
             new MotorIOSparkMax(IOSettings, sparkMaxSettings), name, armSettings);
 
@@ -356,14 +394,14 @@ public class RobotConfig {
       case "talonFX":
         TalonFxSettings talonSettings = new TalonFxSettings();
         talonSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".talonFX.setting.id"));
+            Integer.parseInt(robotProperties.getProperty(name + ".talonFXSettings.id"));
         return new ElevatorMotorSubsystem(
             new MotorIOTalonFx(IOSettings, talonSettings), name, elevatorSettings);
 
       case "sparkMax":
         SparkMaxSettings sparkMaxSettings = new SparkMaxSettings();
         sparkMaxSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".sparkMax.setting.id"));
+            Integer.parseInt(robotProperties.getProperty(name + ".sparkMaxSettings.id"));
         return new ElevatorMotorSubsystem(
             new MotorIOSparkMax(IOSettings, sparkMaxSettings), name, elevatorSettings);
 
@@ -398,6 +436,8 @@ public class RobotConfig {
     switch (motor) {
       case "KrakenX60":
         return DCMotor.getKrakenX60(1);
+      case "Neo550":
+        return DCMotor.getNeo550(1);
       // more motors if needed
       default:
         return DCMotor.getKrakenX60(1);

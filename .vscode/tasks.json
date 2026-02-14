@@ -14,6 +14,20 @@
                 "reveal": "always",
                 "panel": "new"
             }
+        },
+        {
+            "label": "Create profile from Directory",
+            "type": "shell",
+            "command": "sh scripts/dbbuilddir.sh ${input:profiles-dir-name}",
+			
+            "windows": {
+                "command": ".\\scripts\\dbbuilddir.bat ${input:profiles-dir-name}"
+            },
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
         }
 	],
 	"inputs": [
@@ -21,6 +35,11 @@
             "id": "profile",
             "description": "Build Profile. See src/main/resources for available profiles.",
             // "default": "default",
+            "type": "promptString"
+        },
+        {
+            "id": "profiles-dir-name",
+            "description": "Create Directory of Profile. See src/main/resources for available directories.",
             "type": "promptString"
         },
     ]

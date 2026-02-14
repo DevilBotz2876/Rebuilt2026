@@ -11,6 +11,13 @@ public class ArmCommand extends Command {
   DoubleSupplier speed;
   double targetPosition;
 
+  /**
+   * Sets a arm to it's current position in degrees and incremnts by a speed * the arm max velocity
+   * / 50 each cycle. This command does not end without being interupted.
+   *
+   * @param arm
+   * @param speed A double between -1 and 1
+   */
   public ArmCommand(Arm arm, DoubleSupplier speed) {
     this.arm = arm;
     this.speed = speed;

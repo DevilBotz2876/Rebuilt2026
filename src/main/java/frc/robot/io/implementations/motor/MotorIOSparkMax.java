@@ -1,7 +1,8 @@
 package frc.robot.io.implementations.motor;
 
+import com.revrobotics.PersistMode;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkBase;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
@@ -44,10 +45,7 @@ public class MotorIOSparkMax extends MotorIOBase {
         motorSettings.pid.getP(), motorSettings.pid.getI(), motorSettings.pid.getD());
 
     // Last thing we do is save all settings to flash on sparkmax
-    motor.configure(
-        motorConfig,
-        SparkBase.ResetMode.kResetSafeParameters,
-        SparkBase.PersistMode.kPersistParameters);
+    motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     encoder = motor.getEncoder();
     pid = motor.getClosedLoopController();
 

@@ -11,6 +11,7 @@ public class ElevatorToPosition extends Command {
   DoubleSupplier positionDegrees;
   double targetPositionMeters;
 
+  /** Sets position of a elevator in meters. */
   public ElevatorToPosition(Elevator elevator, DoubleSupplier positionMeters) {
     this.elevator = elevator;
     this.positionDegrees = positionMeters;
