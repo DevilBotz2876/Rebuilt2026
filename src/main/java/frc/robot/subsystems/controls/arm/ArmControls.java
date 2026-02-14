@@ -1,15 +1,11 @@
 package frc.robot.subsystems.controls.arm;
-import edu.wpi.first.util.sendable.Sendable;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.common.arm.ArmCommand;
 import frc.robot.commands.common.arm.ArmToPosition;
-import frc.robot.commands.common.flywheel.FlywheelCommand;
-import frc.robot.commands.common.motor.MotorBringUpCommand;
 import frc.robot.commands.common.motor.MotorRunVoltageCommand;
 import frc.robot.subsystems.interfaces.Arm;
-import frc.robot.subsystems.interfaces.Flywheel;
 import frc.robot.subsystems.interfaces.Motor;
 
 public class ArmControls {
@@ -20,7 +16,7 @@ public class ArmControls {
     armSubsystem.setDefaultCommand(
         // new MotorBringUpCommand(
         //     (Motor) arm,
-          new MotorRunVoltageCommand(
+        new MotorRunVoltageCommand(
             (Motor) arm,
             () -> {
               if (controller.rightBumper().getAsBoolean()) {
@@ -30,7 +26,7 @@ public class ArmControls {
               }
               return 0.0;
             }));
- SmartDashboard.putData(
+    SmartDashboard.putData(
         armSubsystem.getName() + "/Commands/Arm To -90", new ArmToPosition((Arm) arm, () -> -90));
     SmartDashboard.putData(
         armSubsystem.getName() + "/Commands/Arm To -45", new ArmToPosition((Arm) arm, () -> -45));
@@ -42,5 +38,5 @@ public class ArmControls {
         armSubsystem.getName() + "/Commands/Arm To 45", new ArmToPosition((Arm) arm, () -> 45));
     SmartDashboard.putData(
         armSubsystem.getName() + "/Commands/Arm To 75", new ArmToPosition((Arm) arm, () -> 75));
-          }
+  }
 }
