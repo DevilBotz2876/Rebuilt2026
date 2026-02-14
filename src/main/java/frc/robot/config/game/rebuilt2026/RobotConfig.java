@@ -463,7 +463,7 @@ public class RobotConfig {
               settings);
     }
 
-    String[] cameraNames = robotProperties.getProperty("vision.cameras").split(", ");
+    String[] cameraNames = robotProperties.getProperty("vision.cameras", "").split(", ");
     for (String cameraName : cameraNames) {
       switch (robotProperties.getProperty(cameraName + ".cameraType")) {
         case "photon":
