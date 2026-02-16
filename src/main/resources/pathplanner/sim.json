@@ -6,7 +6,9 @@
     "blue",
     "red"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "red"
+  ],
   "defaultMaxVel": 4.8,
   "defaultMaxAccel": 4.8,
   "defaultMaxAngVel": 540.0,
