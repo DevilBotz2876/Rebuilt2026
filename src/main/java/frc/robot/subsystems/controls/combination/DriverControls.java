@@ -79,7 +79,8 @@ public class DriverControls {
             new FlywheelToVelocity(indexer, () -> settings.indexerLaunchRPM),
             new FlywheelToVelocity(conveyor, () -> settings.conveyorLaunchRPM));
 
-    Command stopLaunch = stopShooter.alongWith(stopIndexer, stopConveyor);
+    Command stopLaunch = new ParallelCommandGroup(
+        stopShooter,stopIndexer, stopConveyor);
 
     // Intake Commands
 
@@ -94,7 +95,7 @@ public class DriverControls {
             new FlywheelToVelocity(bottomIntake, () -> -settings.intakeRPM),
             new FlywheelToVelocity(conveyor, () -> settings.conveyorReverseRPM));
 
-    Command stopIntake = stopTopIntake.alongWith(stopBottomIntake);
+    Command stopIntake = new ParallelCommandGroup(stopTopIntake, stopBottomIntake);
 
     // binding
     controller.x().whileTrue(launchSequentialParallel).onFalse(stopLaunch);

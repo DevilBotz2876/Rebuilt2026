@@ -13,9 +13,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot;
+import frc.robot.commands.common.flywheel.FlywheelToVelocity;
+import frc.robot.commands.common.motor.MotorRunVoltageCommand;
 import frc.robot.config.game.rebuilt2026.tunerConstants.TunerConstants;
 import frc.robot.io.implementations.motor.MotorIOArmStub;
 import frc.robot.io.implementations.motor.MotorIOBase.MotorIOBaseSettings;
@@ -26,7 +30,9 @@ import frc.robot.io.implementations.motor.MotorIOSparkMax.SparkMaxSettings;
 import frc.robot.io.implementations.motor.MotorIOStub;
 import frc.robot.io.implementations.motor.MotorIOTalonFx;
 import frc.robot.io.implementations.motor.MotorIOTalonFx.TalonFxSettings;
+import frc.robot.subsystems.controls.combination.AutoControls;
 import frc.robot.subsystems.controls.combination.DriverControls;
+import frc.robot.subsystems.controls.combination.AutoControls.AutoRoutineSettings;
 import frc.robot.subsystems.controls.combination.DriverControls.DriverControlsSettings;
 import frc.robot.subsystems.controls.drive.DriveControls;
 import frc.robot.subsystems.controls.flywheel.ConveyorControls;
@@ -41,7 +47,10 @@ import frc.robot.subsystems.implementations.motor.SimpleMotorSubsystem;
 import frc.robot.subsystems.interfaces.Arm.ArmSettings;
 import frc.robot.subsystems.interfaces.Elevator.ElevatorSettings;
 import frc.robot.subsystems.interfaces.Flywheel.FlywheelSettings;
+import frc.robot.subsystems.interfaces.Motor;
 import frc.robot.subsystems.interfaces.SimpleMotor.SimpleMotorSettings;
+import frc.robot.util.Elastic;
+
 import java.util.Properties;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -68,11 +77,11 @@ public class RobotConfig {
     if (robotProperties.containsKey("robot.drive")) {
       if (robotProperties.getProperty("robot.drive").equals("ctre")) {
         drive = new DriveSwerveCTRE(new TunerConstants(robotProperties));
-        autoChooser = AutoBuilder.buildAutoChooser("Sit Still");
       }
     } else {
       drive = new DriveBase("Stub");
-      autoChooser = new SendableChooser<>();
+      Elastic.sendNotification( new Elastic.Notification().withDescription("USING DRIVE BASE. UNABLE TO RUN AUTO ROUTINES"));
+    //   autoChooser = new SendableChooser<>();
     }
 
     if (Robot.isSimulation()) {
@@ -86,21 +95,24 @@ public class RobotConfig {
     conveyorFlywheel = createFlywheel(robotProperties, "conveyorFlywheel");
 
     properties = robotProperties;
+    if (robotProperties.containsKey("robot.drive")) {
+      if (robotProperties.getProperty("robot.drive").equals("ctre")) {
+        DriverControlsSettings driverSettings = DriverControlsSettings.getDriverControlsSettings(robotProperties);
+        AutoRoutineSettings autoRoutineSettings = AutoRoutineSettings.getAutoRoutineSettings(robotProperties);
+        AutoControls.registerNamedCommands(drive, topIntakeFlywheel, bottomIntakeFlywheel, shooterFlywheel, indexerFlywheel, conveyorFlywheel, autoRoutineSettings, driverSettings);
+        autoChooser = AutoBuilder.buildAutoChooserWithOptionsModifier(
+      (stream) -> {
+        stream = stream.filter(auto -> auto.getName().startsWith(properties.getProperty("robot.name").toLowerCase() + "-"));
+        return stream;
+      }
+        );
+      }
+    }
   }
 
   public void configureBindings() {
-    if (Robot.isSimulation()) {
-      // TODO: Add VisionSubsystem Simulation Support
-
-      // HACK just to verify autos are visible without connecting to robot
-      // this.autoChooser = AutoBuilder.buildAutoChooser("Sit Still");
-    }
+    DriverControlsSettings driverSettings = DriverControlsSettings.getDriverControlsSettings(properties);
     DriveControls.setupController(drive, mainController);
-
-    // Send vision-based odometry measurements to drive's odometry calculations
-    // vision.setVisionMeasurementConsumer(drive::addVisionMeasurement);
-    // FlywheelControls.setupController(topIntakeFlywheel, mainController);
-    // FlywheelControls.setupController(bottomIntakeFlywheel, mainController);
 
     IntakeControls.setupSpeedController(topIntakeFlywheel, bottomIntakeFlywheel, mainController);
     ShooterControls.setupSpeedController(shooterFlywheel, indexerFlywheel, mainController);
@@ -115,7 +127,7 @@ public class RobotConfig {
         indexerFlywheel,
         conveyorFlywheel,
         mainController,
-        DriverControlsSettings.getDriverControlsSettings(properties));
+        driverSettings);
 
     DriverControls.setupFlywheelSmartDashboardControl(topIntakeFlywheel);
     DriverControls.setupFlywheelSmartDashboardControl(bottomIntakeFlywheel);
