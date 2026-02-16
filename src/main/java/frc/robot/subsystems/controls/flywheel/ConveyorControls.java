@@ -33,7 +33,7 @@ public class ConveyorControls {
             }));
 
     controller
-        .b()
+        .pov(90)
         .onTrue(
             new InstantCommand(
                 () -> ((Motor) conveyorFlywheel).runVoltage(0.0), conveyorFlywheelSubsystem));
@@ -60,6 +60,6 @@ public class ConveyorControls {
               return 0.0;
             }));
 
-    controller.b().onTrue(new FlywheelToVelocity(conveyorFlywheel, () -> 0.0));
+    controller.pov(90).onTrue(new FlywheelToVelocity(conveyorFlywheel, () -> 0.0));
   }
 }
