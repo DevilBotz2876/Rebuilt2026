@@ -40,14 +40,14 @@ public class DriveSwerveCTRE extends DriveBase {
     new ModuleIOInputsAutoLogged()
   };
 
-  public DriveSwerveCTRE(TunerConstants tunerConstants) {
+  public DriveSwerveCTRE(TunerConstants tunerConstants, double maxSpeed, double maxAngularRate) {
     super("CTRE");
     drivetrain = tunerConstants.createDrivetrain();
-    MaxSpeed =
-        tunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    MaxAngularRate =
-        RotationsPerSecond.of(0.75)
-            .in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    MaxSpeed = maxSpeed;
+        // tunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+    MaxAngularRate = maxAngularRate;
+        // RotationsPerSecond.of(0.75)
+        //     .in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
     driveFieldCentric =
         new SwerveRequest.FieldCentric()

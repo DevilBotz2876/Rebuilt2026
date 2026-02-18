@@ -26,11 +26,11 @@ public interface Vision {
       settings.timestampToleranceSeconds =
           Double.parseDouble(properties.getProperty("vision.settings.timestampToleranceSeconds"));
       settings.maximumSingleTagDistanceMeters =
-          Double.parseDouble(properties.getProperty("vision.settings.timestampToleranceSeconds"));
+          Double.parseDouble(properties.getProperty("vision.settings.maximumSingleTagDistanceMeters"));
       settings.maximumMultiTagDistanceMeters =
-          Double.parseDouble(properties.getProperty("vision.settings.timestampToleranceSeconds"));
+          Double.parseDouble(properties.getProperty("vision.settings.maximumMultiTagDistanceMeters"));
       settings.visionLoggingDebug =
-          Boolean.parseBoolean(properties.getProperty("vision.settings.timestampToleranceSeconds"));
+          Boolean.parseBoolean(properties.getProperty("vision.settings.visionLoggingDebug"));
       return settings;
     }
   }

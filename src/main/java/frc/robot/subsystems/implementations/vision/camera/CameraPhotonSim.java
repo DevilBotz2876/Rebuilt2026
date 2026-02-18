@@ -6,6 +6,11 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Angle;
+
+import static edu.wpi.first.units.Units.Degrees;
+
 import java.util.Properties;
 import java.util.function.Supplier;
 import org.photonvision.simulation.PhotonCameraSim;
@@ -26,9 +31,9 @@ public class CameraPhotonSim extends CameraPhoton {
                 Double.parseDouble(properties.getProperty(name + ".robotToCamera.yMeters")),
                 Double.parseDouble(properties.getProperty(name + ".robotToCamera.zMeters"))),
             new Rotation3d(
-                Double.parseDouble(properties.getProperty(name + ".robotToCamera.rollDegrees")),
-                Double.parseDouble(properties.getProperty(name + ".robotToCamera.pitchDegrees")),
-                Double.parseDouble(properties.getProperty(name + ".robotToCamera.yawDegrees"))));
+                Units.degreesToRadians(Double.parseDouble(properties.getProperty(name + ".robotToCamera.rollDegrees"))),
+                Units.degreesToRadians(Double.parseDouble(properties.getProperty(name + ".robotToCamera.pitchDegrees"))),
+                Units.degreesToRadians(Double.parseDouble(properties.getProperty(name + ".robotToCamera.yawDegrees")))));
 
     CameraSettings settings = CameraSettings.getSettings(properties, name);
 

@@ -7,10 +7,19 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.AngleUnit;
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import static edu.wpi.first.units.Units.Degrees;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.function.ToIntFunction;
+
+import org.littletonrobotics.junction.Logger;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -30,9 +39,9 @@ public class CameraPhoton extends CameraBase {
                 Double.parseDouble(properties.getProperty(name + ".robotToCamera.yMeters")),
                 Double.parseDouble(properties.getProperty(name + ".robotToCamera.zMeters"))),
             new Rotation3d(
-                Double.parseDouble(properties.getProperty(name + "robotToCamera.rollDegrees")),
-                Double.parseDouble(properties.getProperty(name + "robotToCamera.pitchDegrees")),
-                Double.parseDouble(properties.getProperty(name + "robotToCamera.yawDegrees"))));
+                Units.degreesToRadians(Double.parseDouble(properties.getProperty(name + ".robotToCamera.rollDegrees"))),
+                Units.degreesToRadians(Double.parseDouble(properties.getProperty(name + ".robotToCamera.pitchDegrees"))),
+                Units.degreesToRadians(Double.parseDouble(properties.getProperty(name + ".robotToCamera.yawDegrees")))));
 
     CameraSettings settings = CameraSettings.getSettings(properties, name);
 
@@ -53,7 +62,13 @@ public class CameraPhoton extends CameraBase {
     camera = new PhotonCamera(getName());
     this.tagLayout = tagLayout;
     photonPoseEstimator = new PhotonPoseEstimator(tagLayout, robotToCamera);
-  }
+    // SmartDashboard.putNumber(getName() + "/x", robotToCamera.getX());
+    // SmartDashboard.putNumber(getName() + "/y", robotToCamera.getY());
+    // SmartDashboard.putNumber(getName() + "/z", robotToCamera.getZ());
+    // SmartDashboard.putNumber(getName() + "/roll", robotToCamera.getRotation().getX());
+    // SmartDashboard.putNumber(getName() + "/pitch", robotToCamera.getRotation().getY());
+    // SmartDashboard.putNumber(getName() + "/yaw", robotToCamera.getRotation().getZ());
+}
 
   @Override
   public void update(CameraInputs inputs) {
@@ -108,7 +123,9 @@ public class CameraPhoton extends CameraBase {
             .getDistance(Translation3d.kZero);
 
     // poseMeasurements[0] = createMeasurement(result, inputs.cameraPose, inputs.targetIds);
+    // photonPoseEstimator.setRobotToCameraTransform(new Transform3d(new Translation3d(SmartDashboard.getNumber(getName() + "/x", 0),SmartDashboard.getNumber(getName() + "/y", 0),SmartDashboard.getNumber(getName() + "/z", 0)),new Rotation3d(Units.degreesToRadians(SmartDashboard.getNumber(getName() + "/roll", 0)), Units.degreesToRadians(SmartDashboard.getNumber(getName() + "/pitch", 0)), Units.degreesToRadians(SmartDashboard.getNumber(getName() + "/yaw", 0)))));
     poseMeasurements[0] = createMeasurement(result);
+    inputs.targetIds = poseMeasurements[0].targetIds;
   }
 
   @Override
@@ -127,6 +144,10 @@ public class CameraPhoton extends CameraBase {
       estPose = photonPoseEstimator.estimateLowestAmbiguityPose(result);
     }
 
+    if (estPose.isEmpty()) {
+      return measurement;
+    }
+
     measurement.targetIds =
         estPose.get().targetsUsed.stream()
             .mapToInt(
@@ -140,7 +161,7 @@ public class CameraPhoton extends CameraBase {
 
     Transform3d robotToCamera = getRobotToCamera();
     measurement.robotPose = estPose.get().estimatedPose.toPose2d();
-
+    Logger.recordOutput("Vision/backRight/cameraPose", estPose.get().estimatedPose.plus(robotToCamera));
     // robot to camera + camera to target = robot to target
     // TODO: Determine best start location for calculated distance
     // the distance should be measured at a place that is easy to verify in person
