@@ -83,8 +83,7 @@ public class DriverControls {
 
     // Intake Commands
 
-    Command intakeIn =
-            new FlywheelToVelocity(intake, () -> settings.intakeRPM);
+    Command intakeIn = new FlywheelToVelocity(intake, () -> settings.intakeRPM);
 
     Command intakeOut =
         new ParallelCommandGroup(

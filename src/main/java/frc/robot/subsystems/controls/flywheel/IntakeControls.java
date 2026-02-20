@@ -46,8 +46,7 @@ public class IntakeControls {
             new InstantCommand(() -> ((Motor) topFlywheel).runVoltage(0.0), topFlywheelSubsystem));
   }
 
-  public static void setupSpeedController(
-      Flywheel topFlywheel, CommandXboxController controller) {
+  public static void setupSpeedController(Flywheel topFlywheel, CommandXboxController controller) {
 
     /*
      * Top Flywheel
