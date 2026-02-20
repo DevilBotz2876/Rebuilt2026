@@ -7,89 +7,6 @@
       "grid_layout": {
         "layouts": [
           {
-            "title": "Bottom Intake",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 208.0,
-            "height": 336.0,
-            "type": "List Layout",
-            "properties": {
-              "label_position": "TOP"
-            },
-            "children": [
-              {
-                "title": "Set Voltage",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/SmartDashboard/Flywheel[bottomIntakeFlywheel]/Commands/Set Voltage",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": true
-                }
-              },
-              {
-                "title": "Run at set Voltage",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 256.0,
-                "height": 128.0,
-                "type": "Command",
-                "properties": {
-                  "topic": "/SmartDashboard/Flywheel[bottomIntakeFlywheel]/Commands/Run at set Voltage",
-                  "period": 0.06,
-                  "show_type": true,
-                  "maximize_button_space": false
-                }
-              },
-              {
-                "title": "AppliedVolts",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/AdvantageKit/Flywheel[bottomIntakeFlywheel]/AppliedVolts",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "CurrentAmps",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/AdvantageKit/Flywheel[bottomIntakeFlywheel]/CurrentAmps",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "VelocityRPMs",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/AdvantageKit/Flywheel[bottomIntakeFlywheel]/VelocityRPMs",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              }
-            ]
-          },
-          {
             "title": "Top Intake",
             "x": 208.0,
             "y": 0.0,
@@ -108,7 +25,7 @@
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/SmartDashboard/Flywheel[topIntakeFlywheel]/Commands/Set Voltage",
+                  "topic": "/SmartDashboard/Flywheel[intakeFlywheel]/Commands/Set Voltage",
                   "period": 0.06,
                   "data_type": "double",
                   "show_submit_button": true
@@ -122,7 +39,7 @@
                 "height": 128.0,
                 "type": "Command",
                 "properties": {
-                  "topic": "/SmartDashboard/Flywheel[topIntakeFlywheel]/Commands/Run at set Voltage",
+                  "topic": "/SmartDashboard/Flywheel[intakeFlywheel]/Commands/Run at set Voltage",
                   "period": 0.06,
                   "show_type": true,
                   "maximize_button_space": false
@@ -136,7 +53,7 @@
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/AdvantageKit/Flywheel[topIntakeFlywheel]/AppliedVolts",
+                  "topic": "/AdvantageKit/Flywheel[intakeFlywheel]/AppliedVolts",
                   "period": 0.06,
                   "data_type": "double",
                   "show_submit_button": false
@@ -150,7 +67,7 @@
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/AdvantageKit/Flywheel[topIntakeFlywheel]/CurrentAmps",
+                  "topic": "/AdvantageKit/Flywheel[intakeFlywheel]/CurrentAmps",
                   "period": 0.06,
                   "data_type": "double",
                   "show_submit_button": false
@@ -164,7 +81,7 @@
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/AdvantageKit/Flywheel[topIntakeFlywheel]/VelocityRPMs",
+                  "topic": "/AdvantageKit/Flywheel[intakeFlywheel]/VelocityRPMs",
                   "period": 0.06,
                   "data_type": "double",
                   "show_submit_button": false

@@ -176,7 +176,7 @@
       }
     },
     {
-      "name": "Voltage Control Flywheel[topIntakeFlywheel]",
+      "name": "Voltage Control Flywheel[intakeFlywheel]",
       "grid_layout": {
         "layouts": [
           {
@@ -198,7 +198,7 @@
                 "height": 128.0,
                 "type": "Command",
                 "properties": {
-                  "topic": "/SmartDashboard/Flywheel[topIntakeFlywheel]/Commands/Run at x Volts/Run 10.0 Volts",
+                  "topic": "/SmartDashboard/Flywheel[intakeFlywheel]/Commands/Run at x Volts/Run 10.0 Volts",
                   "period": 0.06,
                   "show_type": true,
                   "maximize_button_space": false
@@ -212,7 +212,7 @@
                 "height": 128.0,
                 "type": "Command",
                 "properties": {
-                  "topic": "/SmartDashboard/Flywheel[topIntakeFlywheel]/Commands/Run at x Volts/Run 7.5 Volts",
+                  "topic": "/SmartDashboard/Flywheel[intakeFlywheel]/Commands/Run at x Volts/Run 7.5 Volts",
                   "period": 0.06,
                   "show_type": true,
                   "maximize_button_space": false
@@ -226,7 +226,7 @@
                 "height": 128.0,
                 "type": "Command",
                 "properties": {
-                  "topic": "/SmartDashboard/Flywheel[topIntakeFlywheel]/Commands/Run at x Volts/Run 5 Volts",
+                  "topic": "/SmartDashboard/Flywheel[intakeFlywheel]/Commands/Run at x Volts/Run 5 Volts",
                   "period": 0.06,
                   "show_type": true,
                   "maximize_button_space": false
@@ -240,7 +240,7 @@
                 "height": 128.0,
                 "type": "Command",
                 "properties": {
-                  "topic": "/SmartDashboard/Flywheel[topIntakeFlywheel]/Commands/Run at x Volts/Run 2.5 Volts",
+                  "topic": "/SmartDashboard/Flywheel[intakeFlywheel]/Commands/Run at x Volts/Run 2.5 Volts",
                   "period": 0.06,
                   "show_type": true,
                   "maximize_button_space": false
@@ -254,7 +254,7 @@
                 "height": 128.0,
                 "type": "Command",
                 "properties": {
-                  "topic": "/SmartDashboard/Flywheel[topIntakeFlywheel]/Commands/Run at x Volts/Run -2.5 Volts",
+                  "topic": "/SmartDashboard/Flywheel[intakeFlywheel]/Commands/Run at x Volts/Run -2.5 Volts",
                   "period": 0.06,
                   "show_type": true,
                   "maximize_button_space": false
@@ -268,7 +268,7 @@
                 "height": 128.0,
                 "type": "Command",
                 "properties": {
-                  "topic": "/SmartDashboard/Flywheel[topIntakeFlywheel]/Commands/Run at x Volts/Run -5 Volts",
+                  "topic": "/SmartDashboard/Flywheel[intakeFlywheel]/Commands/Run at x Volts/Run -5 Volts",
                   "period": 0.06,
                   "show_type": true,
                   "maximize_button_space": false
@@ -282,7 +282,7 @@
                 "height": 128.0,
                 "type": "Command",
                 "properties": {
-                  "topic": "/SmartDashboard/Flywheel[topIntakeFlywheel]/Commands/Run at x Volts/Run -7.5 Volts",
+                  "topic": "/SmartDashboard/Flywheel[intakeFlywheel]/Commands/Run at x Volts/Run -7.5 Volts",
                   "period": 0.06,
                   "show_type": true,
                   "maximize_button_space": false
@@ -296,7 +296,7 @@
                 "height": 128.0,
                 "type": "Command",
                 "properties": {
-                  "topic": "/SmartDashboard/Flywheel[topIntakeFlywheel]/Commands/Run at x Volts/Run -10.0 Volts",
+                  "topic": "/SmartDashboard/Flywheel[intakeFlywheel]/Commands/Run at x Volts/Run -10.0 Volts",
                   "period": 0.06,
                   "show_type": true,
                   "maximize_button_space": false
@@ -314,7 +314,7 @@
             "height": 128.0,
             "type": "Number Slider",
             "properties": {
-              "topic": "/SmartDashboard/Flywheel[topIntakeFlywheel]/Commands/Set Voltage",
+              "topic": "/SmartDashboard/Flywheel[intakeFlywheel]/Commands/Set Voltage",
               "period": 0.06,
               "data_type": "double",
               "min_value": -12.0,
@@ -331,7 +331,7 @@
             "height": 128.0,
             "type": "Text Display",
             "properties": {
-              "topic": "/SmartDashboard/Flywheel[topIntakeFlywheel]/Commands/Set Voltage",
+              "topic": "/SmartDashboard/Flywheel[intakeFlywheel]/Commands/Set Voltage",
               "period": 0.06,
               "data_type": "double",
               "show_submit_button": true
@@ -345,7 +345,7 @@
             "height": 128.0,
             "type": "Command",
             "properties": {
-              "topic": "/SmartDashboard/Flywheel[topIntakeFlywheel]/Commands/Run at set Voltage",
+              "topic": "/SmartDashboard/Flywheel[intakeFlywheel]/Commands/Run at set Voltage",
               "period": 0.06,
               "show_type": true,
               "maximize_button_space": false
@@ -359,7 +359,7 @@
             "height": 128.0,
             "type": "Large Text Display",
             "properties": {
-              "topic": "/AdvantageKit/Flywheel[topIntakeFlywheel]/AppliedVolts",
+              "topic": "/AdvantageKit/Flywheel[intakeFlywheel]/AppliedVolts",
               "period": 0.06,
               "data_type": "double"
             }
@@ -372,7 +372,7 @@
             "height": 128.0,
             "type": "Large Text Display",
             "properties": {
-              "topic": "/AdvantageKit/Flywheel[topIntakeFlywheel]/CurrentAmps",
+              "topic": "/AdvantageKit/Flywheel[intakeFlywheel]/CurrentAmps",
               "period": 0.06,
               "data_type": "double"
             }
@@ -385,225 +385,7 @@
             "height": 128.0,
             "type": "Large Text Display",
             "properties": {
-              "topic": "/AdvantageKit/Flywheel[topIntakeFlywheel]/VelocityRPMs",
-              "period": 0.06,
-              "data_type": "double"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "Voltage Control Flywheel[bottomIntakeFlywheel]",
-      "grid_layout": {
-        "layouts": [
-          {
-            "title": "Run at x Volts",
-            "x": 448.0,
-            "y": 0.0,
-            "width": 320.0,
-            "height": 608.0,
-            "type": "List Layout",
-            "properties": {
-              "label_position": "TOP"
-            },
-            "children": [
-              {
-                "title": "Run 10.0 Volts",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 256.0,
-                "height": 128.0,
-                "type": "Command",
-                "properties": {
-                  "topic": "/SmartDashboard/Flywheel[bottomIntakeFlywheel]/Commands/Run at x Volts/Run 10.0 Volts",
-                  "period": 0.06,
-                  "show_type": true,
-                  "maximize_button_space": false
-                }
-              },
-              {
-                "title": "Run 7.5 Volts",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 256.0,
-                "height": 128.0,
-                "type": "Command",
-                "properties": {
-                  "topic": "/SmartDashboard/Flywheel[bottomIntakeFlywheel]/Commands/Run at x Volts/Run 7.5 Volts",
-                  "period": 0.06,
-                  "show_type": true,
-                  "maximize_button_space": false
-                }
-              },
-              {
-                "title": "Run 5 Volts",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 256.0,
-                "height": 128.0,
-                "type": "Command",
-                "properties": {
-                  "topic": "/SmartDashboard/Flywheel[bottomIntakeFlywheel]/Commands/Run at x Volts/Run 5 Volts",
-                  "period": 0.06,
-                  "show_type": true,
-                  "maximize_button_space": false
-                }
-              },
-              {
-                "title": "Run 2.5 Volts",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 256.0,
-                "height": 128.0,
-                "type": "Command",
-                "properties": {
-                  "topic": "/SmartDashboard/Flywheel[bottomIntakeFlywheel]/Commands/Run at x Volts/Run 2.5 Volts",
-                  "period": 0.06,
-                  "show_type": true,
-                  "maximize_button_space": false
-                }
-              },
-              {
-                "title": "Run -2.5 Volts",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 256.0,
-                "height": 128.0,
-                "type": "Command",
-                "properties": {
-                  "topic": "/SmartDashboard/Flywheel[bottomIntakeFlywheel]/Commands/Run at x Volts/Run -2.5 Volts",
-                  "period": 0.06,
-                  "show_type": true,
-                  "maximize_button_space": false
-                }
-              },
-              {
-                "title": "Run -5 Volts",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 256.0,
-                "height": 128.0,
-                "type": "Command",
-                "properties": {
-                  "topic": "/SmartDashboard/Flywheel[bottomIntakeFlywheel]/Commands/Run at x Volts/Run -5 Volts",
-                  "period": 0.06,
-                  "show_type": true,
-                  "maximize_button_space": false
-                }
-              },
-              {
-                "title": "Run -7.5 Volts",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 256.0,
-                "height": 128.0,
-                "type": "Command",
-                "properties": {
-                  "topic": "/SmartDashboard/Flywheel[bottomIntakeFlywheel]/Commands/Run at x Volts/Run -7.5 Volts",
-                  "period": 0.06,
-                  "show_type": true,
-                  "maximize_button_space": false
-                }
-              },
-              {
-                "title": "Run -10.0 Volts",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 256.0,
-                "height": 128.0,
-                "type": "Command",
-                "properties": {
-                  "topic": "/SmartDashboard/Flywheel[bottomIntakeFlywheel]/Commands/Run at x Volts/Run -10.0 Volts",
-                  "period": 0.06,
-                  "show_type": true,
-                  "maximize_button_space": false
-                }
-              }
-            ]
-          }
-        ],
-        "containers": [
-          {
-            "title": "Set Voltage",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 320.0,
-            "height": 128.0,
-            "type": "Number Slider",
-            "properties": {
-              "topic": "/SmartDashboard/Flywheel[bottomIntakeFlywheel]/Commands/Set Voltage",
-              "period": 0.06,
-              "data_type": "double",
-              "min_value": -12.0,
-              "max_value": 12.0,
-              "divisions": 5,
-              "update_continuously": false
-            }
-          },
-          {
-            "title": "Set Voltage",
-            "x": 320.0,
-            "y": 0.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/Flywheel[bottomIntakeFlywheel]/Commands/Set Voltage",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": true
-            }
-          },
-          {
-            "title": "Run at set Voltage",
-            "x": 0.0,
-            "y": 128.0,
-            "width": 448.0,
-            "height": 128.0,
-            "type": "Command",
-            "properties": {
-              "topic": "/SmartDashboard/Flywheel[bottomIntakeFlywheel]/Commands/Run at set Voltage",
-              "period": 0.06,
-              "show_type": true,
-              "maximize_button_space": false
-            }
-          },
-          {
-            "title": "AppliedVolts",
-            "x": 768.0,
-            "y": 0.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Large Text Display",
-            "properties": {
-              "topic": "/AdvantageKit/Flywheel[bottomIntakeFlywheel]/AppliedVolts",
-              "period": 0.06,
-              "data_type": "double"
-            }
-          },
-          {
-            "title": "CurrentAmps",
-            "x": 896.0,
-            "y": 0.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Large Text Display",
-            "properties": {
-              "topic": "/AdvantageKit/Flywheel[bottomIntakeFlywheel]/CurrentAmps",
-              "period": 0.06,
-              "data_type": "double"
-            }
-          },
-          {
-            "title": "VelocityRPMs",
-            "x": 1024.0,
-            "y": 0.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Large Text Display",
-            "properties": {
-              "topic": "/AdvantageKit/Flywheel[bottomIntakeFlywheel]/VelocityRPMs",
+              "topic": "/AdvantageKit/Flywheel[intakeFlywheel]/VelocityRPMs",
               "period": 0.06,
               "data_type": "double"
             }
