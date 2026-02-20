@@ -48,11 +48,10 @@ import java.util.Properties;
 public class RobotConfig {
   public DriveBase drive;
   public SendableChooser<Command> autoChooser;
-  public FlywheelMotorSubsystem topIntakeFlywheel;
-  public FlywheelMotorSubsystem bottomIntakeFlywheel;
+  public FlywheelMotorSubsystem intakeFlywheel;
   public FlywheelMotorSubsystem shooterFlywheel;
   public FlywheelMotorSubsystem indexerFlywheel;
-  public ArmMotorSubsystem armMotor;
+  public ArmMotorSubsystem intakeArm;
 
   public FlywheelMotorSubsystem conveyorFlywheel;
   public Properties properties;
@@ -75,12 +74,11 @@ public class RobotConfig {
       drive.setPose(new Pose2d(new Translation2d(1, 1), new Rotation2d()));
     }
 
-    topIntakeFlywheel = createFlywheel(robotProperties, "topIntakeFlywheel");
-    bottomIntakeFlywheel = createFlywheel(robotProperties, "bottomIntakeFlywheel");
+    intakeFlywheel = createFlywheel(robotProperties, "intakeFlywheel");
     shooterFlywheel = createFlywheel(robotProperties, "shooterFlywheel");
     indexerFlywheel = createFlywheel(robotProperties, "indexerFlywheel");
     conveyorFlywheel = createFlywheel(robotProperties, "conveyorFlywheel");
-    armMotor = createArm(robotProperties, "myArm");
+    intakeArm = createArm(robotProperties, "intakeArm");
 
     properties = robotProperties;
   }
@@ -116,28 +114,27 @@ public class RobotConfig {
     // FlywheelControls.setupController(topIntakeFlywheel, mainController);
     // FlywheelControls.setupController(bottomIntakeFlywheel, mainController);
 
-    IntakeControls.setupSpeedController(topIntakeFlywheel, bottomIntakeFlywheel, mainController);
+    IntakeControls.setupSpeedController(intakeFlywheel, mainController);
     ShooterControls.setupSpeedController(shooterFlywheel, indexerFlywheel, mainController);
     ConveyorControls.setupSpeedController(conveyorFlywheel, mainController);
-    IntakeArmControls.setupController(armMotor, mainController);
+    IntakeArmControls.setupController(intakeArm, mainController);
     ;
 
     DriverControls.setupMainController(
         drive,
-        topIntakeFlywheel,
-        bottomIntakeFlywheel,
+        intakeFlywheel,
         shooterFlywheel,
         indexerFlywheel,
         conveyorFlywheel,
+        intakeArm,
         mainController,
         DriverControlsSettings.getDriverControlsSettings(properties));
 
-    DriverControls.setupFlywheelSmartDashboardControl(topIntakeFlywheel);
-    DriverControls.setupFlywheelSmartDashboardControl(bottomIntakeFlywheel);
+    DriverControls.setupFlywheelSmartDashboardControl(intakeFlywheel);
     DriverControls.setupFlywheelSmartDashboardControl(shooterFlywheel);
     DriverControls.setupFlywheelSmartDashboardControl(indexerFlywheel);
     DriverControls.setupFlywheelSmartDashboardControl(conveyorFlywheel);
-    DriverControls.setupArmSmartDashboardControl(armMotor);
+    DriverControls.setupArmSmartDashboardControl(intakeArm);
 
     if (null != this.autoChooser) {
       SmartDashboard.putData("Autonomous", this.autoChooser);

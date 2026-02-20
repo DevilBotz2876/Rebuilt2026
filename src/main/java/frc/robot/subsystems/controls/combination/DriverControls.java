@@ -51,11 +51,11 @@ public class DriverControls {
 
   public static void setupMainController(
       Drive drive,
-      Flywheel topIntake,
-      Flywheel bottomIntake,
+      Flywheel intake,
       Flywheel shooter,
       Flywheel indexer,
       Flywheel conveyor,
+      Arm intakeArm,
       CommandXboxController controller,
       DriverControlsSettings settings) {
 
@@ -63,8 +63,7 @@ public class DriverControls {
     Command stopShooter = new MotorRunVoltageCommand((Motor) shooter, () -> 0.0);
     Command stopIndexer = new MotorRunVoltageCommand((Motor) indexer, () -> 0.0);
     Command stopConveyor = new MotorRunVoltageCommand((Motor) conveyor, () -> 0.0);
-    Command stopTopIntake = new MotorRunVoltageCommand((Motor) topIntake, () -> 0.0);
-    Command stopBottomIntake = new MotorRunVoltageCommand((Motor) bottomIntake, () -> 0.0);
+    Command stopIntake = new MotorRunVoltageCommand((Motor) intake, () -> 0.0);
 
     // Launching related commands
     Command launchSequentialParallel =
@@ -85,17 +84,12 @@ public class DriverControls {
     // Intake Commands
 
     Command intakeIn =
-        new ParallelCommandGroup(
-            new FlywheelToVelocity(topIntake, () -> settings.intakeRPM),
-            new FlywheelToVelocity(bottomIntake, () -> settings.intakeRPM));
+            new FlywheelToVelocity(intake, () -> settings.intakeRPM);
 
     Command intakeOut =
         new ParallelCommandGroup(
-            new FlywheelToVelocity(topIntake, () -> -settings.intakeRPM),
-            new FlywheelToVelocity(bottomIntake, () -> -settings.intakeRPM),
+            new FlywheelToVelocity(intake, () -> -settings.intakeRPM),
             new FlywheelToVelocity(conveyor, () -> settings.conveyorReverseRPM));
-
-    Command stopIntake = stopTopIntake.alongWith(stopBottomIntake);
 
     // binding
     controller.x().whileTrue(launchSequentialParallel).onFalse(stopLaunch);
