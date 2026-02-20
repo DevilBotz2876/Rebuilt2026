@@ -195,16 +195,12 @@ public class RobotConfig {
 
     switch (robotProperties.getProperty(name + ".motor.motorController")) {
       case "talonFX":
-        TalonFxSettings talonSettings = new TalonFxSettings();
-        talonSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".talonFXSettings.id"));
+        TalonFxSettings talonSettings = TalonFxSettings.getSettings(robotProperties, name);
         return new SimpleMotorSubsystem(
             new MotorIOTalonFx(IOSettings, talonSettings), name, simpleMotorSettings);
 
       case "sparkMax":
-        SparkMaxSettings sparkMaxSettings = new SparkMaxSettings();
-        sparkMaxSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".sparkMaxSettings.id"));
+        SparkMaxSettings sparkMaxSettings = SparkMaxSettings.getSettings(robotProperties, name);
         return new SimpleMotorSubsystem(
             new MotorIOSparkMax(IOSettings, sparkMaxSettings), name, simpleMotorSettings);
 
@@ -251,16 +247,16 @@ public class RobotConfig {
 
     switch (robotProperties.getProperty(name + ".motor.motorController")) {
       case "talonFX":
-        TalonFxSettings talonSettings = new TalonFxSettings();
-        talonSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".talonFXSettings.id"));
+        TalonFxSettings talonSettings = TalonFxSettings.getSettings(robotProperties, name);
+        talonSettings.supplyCurrentLimitAmps =
+            Double.parseDouble(
+                robotProperties.getProperty(
+                    name + ".talonFXSettings.supplyCurrentLimitAmps", "40.0"));
         return new FlywheelMotorSubsystem(
             new MotorIOTalonFx(IOSettings, talonSettings), name, flywheelSettings);
 
       case "sparkMax":
-        SparkMaxSettings sparkMaxSettings = new SparkMaxSettings();
-        sparkMaxSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".sparkMaxSettings.id"));
+        SparkMaxSettings sparkMaxSettings = SparkMaxSettings.getSettings(robotProperties, name);
         return new FlywheelMotorSubsystem(
             new MotorIOSparkMax(IOSettings, sparkMaxSettings), name, flywheelSettings);
 
@@ -316,16 +312,12 @@ public class RobotConfig {
 
     switch (robotProperties.getProperty(name + ".motor.motorController")) {
       case "talonFX":
-        TalonFxSettings talonSettings = new TalonFxSettings();
-        talonSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".talonFXSettings.id"));
+        TalonFxSettings talonSettings = TalonFxSettings.getSettings(robotProperties, name);
         return new ArmMotorSubsystem(
             new MotorIOTalonFx(IOSettings, talonSettings), name, armSettings);
 
       case "sparkMax":
-        SparkMaxSettings sparkMaxSettings = new SparkMaxSettings();
-        sparkMaxSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".sparkMaxSettings.id"));
+        SparkMaxSettings sparkMaxSettings = SparkMaxSettings.getSettings(robotProperties, name);
         return new ArmMotorSubsystem(
             new MotorIOSparkMax(IOSettings, sparkMaxSettings), name, armSettings);
 
@@ -386,16 +378,12 @@ public class RobotConfig {
 
     switch (robotProperties.getProperty(name + ".motor.motorController")) {
       case "talonFX":
-        TalonFxSettings talonSettings = new TalonFxSettings();
-        talonSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".talonFXSettings.id"));
+        TalonFxSettings talonSettings = TalonFxSettings.getSettings(robotProperties, name);
         return new ElevatorMotorSubsystem(
             new MotorIOTalonFx(IOSettings, talonSettings), name, elevatorSettings);
 
       case "sparkMax":
-        SparkMaxSettings sparkMaxSettings = new SparkMaxSettings();
-        sparkMaxSettings.canId =
-            Integer.parseInt(robotProperties.getProperty(name + ".sparkMaxSettings.id"));
+        SparkMaxSettings sparkMaxSettings = SparkMaxSettings.getSettings(robotProperties, name);
         return new ElevatorMotorSubsystem(
             new MotorIOSparkMax(IOSettings, sparkMaxSettings), name, elevatorSettings);
 
