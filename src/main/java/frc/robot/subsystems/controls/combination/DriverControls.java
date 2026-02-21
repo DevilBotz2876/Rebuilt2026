@@ -25,6 +25,7 @@ public class DriverControls {
 
     // intake
     public double intakeRPM;
+    public double intakeReverseRPM;
     public double conveyorReverseRPM;
 
     /**
@@ -43,6 +44,8 @@ public class DriverControls {
           Double.parseDouble(properties.getProperty("driverControls.conveyorLaunchRPM"));
 
       settings.intakeRPM = Double.parseDouble(properties.getProperty("driverControls.intakeRPM"));
+      settings.intakeReverseRPM =
+          Double.parseDouble(properties.getProperty("driverControls.intakeReverseRPM"));
       settings.conveyorReverseRPM =
           Double.parseDouble(properties.getProperty("driverControls.conveyorReverseRPM"));
       return settings;
@@ -79,7 +82,15 @@ public class DriverControls {
             new FlywheelToVelocity(indexer, () -> settings.indexerLaunchRPM),
             new FlywheelToVelocity(conveyor, () -> settings.conveyorLaunchRPM));
 
-    Command stopLaunch = stopShooter.alongWith(stopIndexer, stopConveyor);
+            SmartDashboard.putNumber("ShooterRPMScore", 500);
+    Command launchAllSequentialSmartDashBoard =
+        new SequentialCommandGroup(
+            new FlywheelToVelocity(shooter, () -> SmartDashboard.getNumber("ShooterRPMScore", 300)),
+            new ParallelCommandGroup(
+                new FlywheelToVelocity(indexer, () -> settings.indexerLaunchRPM),
+                new FlywheelToVelocity(conveyor, () -> settings.conveyorLaunchRPM)));
+
+    Command stopLaunch = new ParallelCommandGroup(stopShooter.asProxy(), stopIndexer.asProxy(), stopConveyor.asProxy()).withTimeout(0.2);
 
     // Intake Commands
 
@@ -87,12 +98,12 @@ public class DriverControls {
 
     Command intakeOut =
         new ParallelCommandGroup(
-            new FlywheelToVelocity(intake, () -> -settings.intakeRPM),
+            new FlywheelToVelocity(intake, () -> settings.intakeReverseRPM),
             new FlywheelToVelocity(conveyor, () -> settings.conveyorReverseRPM));
 
     // binding
-    controller.x().whileTrue(launchSequentialParallel).onFalse(stopLaunch);
-    controller.y().whileTrue(launchAllSequential).onFalse(stopLaunch);
+    controller.x().whileTrue(launchSequentialParallel).onFalse(stopShooter).onFalse(stopIndexer).onFalse(stopConveyor);
+    controller.y().whileTrue(launchAllSequentialSmartDashBoard).onFalse(stopShooter).onFalse(stopIndexer).onFalse(stopConveyor);
 
     controller.a().whileTrue(intakeIn).onFalse(stopIntake);
     controller.b().whileTrue(intakeOut).onFalse(stopIntake);
