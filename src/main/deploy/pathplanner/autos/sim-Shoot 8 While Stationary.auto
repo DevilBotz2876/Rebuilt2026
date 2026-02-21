@@ -1,0 +1,25 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "red-Center Hub to Score Location"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Launch 8 From Known Distance"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "sim",
+  "choreoAuto": false
+}
