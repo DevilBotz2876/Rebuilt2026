@@ -82,19 +82,13 @@ public class MotorIOTalonFx extends MotorIOBase {
     CurrentLimitsConfigs currentLimitsConfigs = new CurrentLimitsConfigs();
 
     currentLimitsConfigs
-        .withSupplyCurrentLowerLimit(
-            Units.Amps.of(talonFxSettings.supplyCurrentLowerLimitAmps)) 
-        .withSupplyCurrentLimit(
-            Units.Amps.of(
-                talonFxSettings
-                    .supplyCurrentLimitAmps)) 
-        .withSupplyCurrentLowerTime(
-            Units.Seconds.of(
-                talonFxSettings.supplyCurrentLowerTimeSeconds)) 
-        .withSupplyCurrentLimitEnable(true); 
+        .withSupplyCurrentLowerLimit(Units.Amps.of(talonFxSettings.supplyCurrentLowerLimitAmps))
+        .withSupplyCurrentLimit(Units.Amps.of(talonFxSettings.supplyCurrentLimitAmps))
+        .withSupplyCurrentLowerTime(Units.Seconds.of(talonFxSettings.supplyCurrentLowerTimeSeconds))
+        .withSupplyCurrentLimitEnable(true);
 
     currentLimitsConfigs
-        .withStatorCurrentLimit(Units.Amps.of(talonFxSettings.statorCurrentLimitAmps)) 
+        .withStatorCurrentLimit(Units.Amps.of(talonFxSettings.statorCurrentLimitAmps))
         .withStatorCurrentLimitEnable(talonFxSettings.enableStatorCurrentLimit);
 
     // Peak output of 12 V
