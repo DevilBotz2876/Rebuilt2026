@@ -27,10 +27,7 @@ public class IntakeArmControls {
               }
               return 0.0;
             }));
-    SmartDashboard.putData(
-        armSubsystem.getName() + "/Commands/Arm To -90", new ArmToPosition((Arm) arm, () -> -90));
-    SmartDashboard.putData(
-        armSubsystem.getName() + "/Commands/Arm To -45", new ArmToPosition((Arm) arm, () -> -45));
+
     SmartDashboard.putData(
         armSubsystem.getName() + "/Commands/Arm To 0", new ArmToPosition((Arm) arm, () -> 0));
     SmartDashboard.putData(
