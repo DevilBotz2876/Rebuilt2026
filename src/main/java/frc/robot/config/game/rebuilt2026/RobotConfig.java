@@ -236,10 +236,6 @@ public class RobotConfig {
     switch (robotProperties.getProperty(name + ".motor.motorController")) {
       case "talonFX":
         TalonFxSettings talonSettings = TalonFxSettings.getSettings(robotProperties, name);
-        talonSettings.supplyCurrentLimitAmps =
-            Double.parseDouble(
-                robotProperties.getProperty(
-                    name + ".talonFXSettings.supplyCurrentLimitAmps", "40.0"));
         return new FlywheelMotorSubsystem(
             new MotorIOTalonFx(IOSettings, talonSettings), name, flywheelSettings);
 

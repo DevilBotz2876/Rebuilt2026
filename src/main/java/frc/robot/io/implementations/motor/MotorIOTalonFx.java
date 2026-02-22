@@ -12,15 +12,15 @@ import java.util.Properties;
 public class MotorIOTalonFx extends MotorIOBase {
   public static class TalonFxSettings {
     public int canId = 0;
-    public double supplyCurrentLimitAmps = 70.0;
-    public double supplyCurrentLowerLimitAmps = 40.0;
-    public double supplyCurrentLowerTimeSeconds = 1.0;
+    public double supplyCurrentLimitAmps;
+    public double supplyCurrentLowerLimitAmps;
+    public double supplyCurrentLowerTimeSeconds;
 
-    public double statorCurrentLimitAmps = 120.0;
+    public double statorCurrentLimitAmps;
     public boolean enableStatorCurrentLimit;
 
-    public double peakForwardVoltage = 12.0;
-    public double peakReverseVoltage = -12.0;
+    public double peakForwardVoltage;
+    public double peakReverseVoltage;
 
     /**
      * Created and returns the TalonFxSettings from the properties using the subsystem name as a
@@ -81,31 +81,27 @@ public class MotorIOTalonFx extends MotorIOBase {
     TalonFXConfiguration toConfigure = new TalonFXConfiguration();
     CurrentLimitsConfigs currentLimitsConfigs = new CurrentLimitsConfigs();
 
-    /* Configure the Talon to use a supply limit of 70 A, and
-     * lower to 40 A if we're at 70 A for over 1 second */
-
     currentLimitsConfigs
         .withSupplyCurrentLowerLimit(
-            Units.Amps.of(talonFxSettings.supplyCurrentLowerLimitAmps)) // Default limit of 70 A
+            Units.Amps.of(talonFxSettings.supplyCurrentLowerLimitAmps)) 
         .withSupplyCurrentLimit(
             Units.Amps.of(
                 talonFxSettings
-                    .supplyCurrentLimitAmps)) // Reduce the limit to 40 A if we've limited to 70
-        // A...
+                    .supplyCurrentLimitAmps)) 
         .withSupplyCurrentLowerTime(
             Units.Seconds.of(
-                talonFxSettings.supplyCurrentLowerTimeSeconds)) // ...for at least 1 second
-        .withSupplyCurrentLimitEnable(true); // And enable it
+                talonFxSettings.supplyCurrentLowerTimeSeconds)) 
+        .withSupplyCurrentLimitEnable(true); 
 
     currentLimitsConfigs
-        .withStatorCurrentLimit(Units.Amps.of(120)) // Limit stator current to 120 A
-        .withStatorCurrentLimitEnable(true); // And enable it
+        .withStatorCurrentLimit(Units.Amps.of(talonFxSettings.statorCurrentLimitAmps)) 
+        .withStatorCurrentLimitEnable(talonFxSettings.enableStatorCurrentLimit);
 
     // Peak output of 12 V
     toConfigure
         .Voltage
-        .withPeakForwardVoltage(Units.Volts.of(12))
-        .withPeakReverseVoltage(Units.Volts.of(-12));
+        .withPeakForwardVoltage(Units.Volts.of(talonFxSettings.peakForwardVoltage))
+        .withPeakReverseVoltage(Units.Volts.of(talonFxSettings.peakReverseVoltage));
 
     toConfigure.CurrentLimits = currentLimitsConfigs;
 
