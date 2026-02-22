@@ -51,9 +51,9 @@ public class RobotConfig {
   public FlywheelMotorSubsystem intakeFlywheel;
   public FlywheelMotorSubsystem shooterFlywheel;
   public FlywheelMotorSubsystem indexerFlywheel;
+  public FlywheelMotorSubsystem conveyorFlywheel;
   public ArmMotorSubsystem intakeArm;
 
-  public FlywheelMotorSubsystem conveyorFlywheel;
   public Properties properties;
   // TODO: Add VisionSubsystem Declaration
 
@@ -101,24 +101,12 @@ public class RobotConfig {
   }
 
   public void configureBindings() {
-    if (Robot.isSimulation()) {
-      // TODO: Add VisionSubsystem Simulation Support
-
-      // HACK just to verify autos are visible without connecting to robot
-      // this.autoChooser = AutoBuilder.buildAutoChooser("Sit Still");
-    }
     DriveControls.setupController(drive, mainController);
-
-    // Send vision-based odometry measurements to drive's odometry calculations
-    // vision.setVisionMeasurementConsumer(drive::addVisionMeasurement);
-    // FlywheelControls.setupController(topIntakeFlywheel, mainController);
-    // FlywheelControls.setupController(bottomIntakeFlywheel, mainController);
 
     IntakeControls.setupSpeedController(intakeFlywheel, mainController);
     ShooterControls.setupSpeedController(shooterFlywheel, indexerFlywheel, mainController);
     ConveyorControls.setupSpeedController(conveyorFlywheel, mainController);
     IntakeArmControls.setupController(intakeArm, mainController);
-    ;
 
     DriverControls.setupMainController(
         drive,

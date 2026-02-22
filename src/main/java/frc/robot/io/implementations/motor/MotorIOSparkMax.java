@@ -26,7 +26,7 @@ public class MotorIOSparkMax extends MotorIOBase {
      *
      * @param properties the properties that include the talon setting
      * @param subsystemName the name of the subsystem that is used in the properties
-     * @return a TalonFxSettings set with values matching properties
+     * @return a SparkMaxSettings with values matching the properties
      */
     public static SparkMaxSettings getSettings(Properties properties, String subsystemName) {
       SparkMaxSettings sparkMaxSettings = new SparkMaxSettings();

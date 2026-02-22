@@ -67,6 +67,7 @@ public class DriverControls {
     Command stopIndexer = new MotorRunVoltageCommand((Motor) indexer, () -> 0.0);
     Command stopConveyor = new MotorRunVoltageCommand((Motor) conveyor, () -> 0.0);
     Command stopIntake = new MotorRunVoltageCommand((Motor) intake, () -> 0.0);
+    Command stopIntakeArm = new MotorRunVoltageCommand((Motor) intakeArm, () -> 0.0);
 
     // Launching related commands
     Command launchSequentialParallel =
@@ -83,29 +84,23 @@ public class DriverControls {
             new FlywheelToVelocity(conveyor, () -> settings.conveyorLaunchRPM));
 
     SmartDashboard.putNumber("ShooterRPMScore", 4000);
-    Command launchAllSequentialSmartDashBoard =
+    Command launchSequentialParallelSmartDashBoard =
         new SequentialCommandGroup(
             new FlywheelToVelocity(shooter, () -> SmartDashboard.getNumber("ShooterRPMScore", 300)),
             new ParallelCommandGroup(
                 new FlywheelToVelocity(indexer, () -> settings.indexerLaunchRPM),
                 new FlywheelToVelocity(conveyor, () -> settings.conveyorLaunchRPM)));
 
-    Command stopLaunch =
-        new ParallelCommandGroup(
-                stopShooter.asProxy(), stopIndexer.asProxy(), stopConveyor.asProxy())
-            .withTimeout(0.2);
-
     // Intake Commands
-
     Command intakeIn = new FlywheelToVelocity(intake, () -> settings.intakeRPM);
-
-    Command DeployerMinus = new MotorRunVoltageCommand((Motor) intakeArm, () -> -0.5);
-    Command DeployerPlus = new MotorRunVoltageCommand((Motor) intakeArm, () -> 0.5);
 
     Command intakeOut =
         new ParallelCommandGroup(
             new FlywheelToVelocity(intake, () -> settings.intakeReverseRPM),
             new FlywheelToVelocity(conveyor, () -> settings.conveyorReverseRPM));
+
+    Command DeployerVoltageMinus = new MotorRunVoltageCommand((Motor) intakeArm, () -> -0.5);
+    Command DeployerVoltagePlus = new MotorRunVoltageCommand((Motor) intakeArm, () -> 0.5);
 
     // binding
     controller
@@ -114,25 +109,19 @@ public class DriverControls {
         .onFalse(stopShooter)
         .onFalse(stopIndexer)
         .onFalse(stopConveyor);
+
     controller
         .y()
-        .whileTrue(launchAllSequentialSmartDashBoard)
+        .whileTrue(launchSequentialParallelSmartDashBoard)
         .onFalse(stopShooter)
         .onFalse(stopIndexer)
         .onFalse(stopConveyor);
 
     controller.a().whileTrue(intakeIn).onFalse(stopIntake);
-    controller.b().whileTrue(intakeOut).onFalse(stopIntake);
-    controller.b().onFalse(stopConveyor);
+    controller.b().whileTrue(intakeOut).onFalse(stopIntake).onFalse(stopConveyor);
 
-    controller
-        .pov(90)
-        .whileTrue(DeployerPlus)
-        .onFalse(new MotorRunVoltageCommand((Motor) intakeArm, () -> 0.0));
-    controller
-        .pov(270)
-        .whileTrue(DeployerMinus)
-        .onFalse(new MotorRunVoltageCommand((Motor) intakeArm, () -> 0.0));
+    controller.pov(90).whileTrue(DeployerVoltagePlus).onFalse(stopIntakeArm);
+    controller.pov(270).whileTrue(DeployerVoltageMinus).onFalse(stopIntakeArm);
   }
 
   public static void setupAssistController(

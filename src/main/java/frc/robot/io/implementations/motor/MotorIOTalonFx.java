@@ -28,7 +28,7 @@ public class MotorIOTalonFx extends MotorIOBase {
      *
      * @param properties the properties that include the talon setting
      * @param subsystemName the name of the subsystem that is used in the properties
-     * @return a TalonFxSettings set with values matching properties
+     * @return a TalonFxSettings with values matching the properties
      */
     public static TalonFxSettings getSettings(Properties properties, String subsystemName) {
       TalonFxSettings talonSettings = new TalonFxSettings();
