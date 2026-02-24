@@ -1,5 +1,7 @@
 package frc.robot.config.game.rebuilt2026;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
@@ -12,14 +14,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot;
-import frc.robot.commands.common.flywheel.FlywheelToVelocity;
-import frc.robot.commands.common.motor.MotorRunVoltageCommand;
 import frc.robot.config.game.rebuilt2026.tunerConstants.TunerConstants;
 import frc.robot.io.implementations.motor.MotorIOArmStub;
 import frc.robot.io.implementations.motor.MotorIOBase.MotorIOBaseSettings;
@@ -31,8 +28,8 @@ import frc.robot.io.implementations.motor.MotorIOStub;
 import frc.robot.io.implementations.motor.MotorIOTalonFx;
 import frc.robot.io.implementations.motor.MotorIOTalonFx.TalonFxSettings;
 import frc.robot.subsystems.controls.combination.AutoControls;
-import frc.robot.subsystems.controls.combination.DriverControls;
 import frc.robot.subsystems.controls.combination.AutoControls.AutoRoutineSettings;
+import frc.robot.subsystems.controls.combination.DriverControls;
 import frc.robot.subsystems.controls.combination.DriverControls.DriverControlsSettings;
 import frc.robot.subsystems.controls.drive.DriveControls;
 import frc.robot.subsystems.controls.flywheel.ConveyorControls;
@@ -47,14 +44,9 @@ import frc.robot.subsystems.implementations.motor.SimpleMotorSubsystem;
 import frc.robot.subsystems.interfaces.Arm.ArmSettings;
 import frc.robot.subsystems.interfaces.Elevator.ElevatorSettings;
 import frc.robot.subsystems.interfaces.Flywheel.FlywheelSettings;
-import frc.robot.subsystems.interfaces.Motor;
 import frc.robot.subsystems.interfaces.SimpleMotor.SimpleMotorSettings;
 import frc.robot.util.Elastic;
-
 import java.util.Properties;
-
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
 
 /* Put all constants here with reasonable defaults */
 public class RobotConfig {
@@ -80,8 +72,10 @@ public class RobotConfig {
       }
     } else {
       drive = new DriveBase("Stub");
-      Elastic.sendNotification( new Elastic.Notification().withDescription("USING DRIVE BASE. UNABLE TO RUN AUTO ROUTINES"));
-    //   autoChooser = new SendableChooser<>();
+      Elastic.sendNotification(
+          new Elastic.Notification()
+              .withDescription("USING DRIVE BASE. UNABLE TO RUN AUTO ROUTINES"));
+      //   autoChooser = new SendableChooser<>();
     }
 
     if (Robot.isSimulation()) {
@@ -97,21 +91,37 @@ public class RobotConfig {
     properties = robotProperties;
     if (robotProperties.containsKey("robot.drive")) {
       if (robotProperties.getProperty("robot.drive").equals("ctre")) {
-        DriverControlsSettings driverSettings = DriverControlsSettings.getDriverControlsSettings(robotProperties);
-        AutoRoutineSettings autoRoutineSettings = AutoRoutineSettings.getAutoRoutineSettings(robotProperties);
-        AutoControls.registerNamedCommands(drive, topIntakeFlywheel, bottomIntakeFlywheel, shooterFlywheel, indexerFlywheel, conveyorFlywheel, autoRoutineSettings, driverSettings);
-        autoChooser = AutoBuilder.buildAutoChooserWithOptionsModifier(
-      (stream) -> {
-        stream = stream.filter(auto -> auto.getName().startsWith(properties.getProperty("robot.name").toLowerCase() + "-"));
-        return stream;
-      }
-        );
+        DriverControlsSettings driverSettings =
+            DriverControlsSettings.getDriverControlsSettings(robotProperties);
+        AutoRoutineSettings autoRoutineSettings =
+            AutoRoutineSettings.getAutoRoutineSettings(robotProperties);
+        AutoControls.registerNamedCommands(
+            drive,
+            topIntakeFlywheel,
+            bottomIntakeFlywheel,
+            shooterFlywheel,
+            indexerFlywheel,
+            conveyorFlywheel,
+            autoRoutineSettings,
+            driverSettings);
+        autoChooser =
+            AutoBuilder.buildAutoChooserWithOptionsModifier(
+                (stream) -> {
+                  stream =
+                      stream.filter(
+                          auto ->
+                              auto.getName()
+                                  .startsWith(
+                                      properties.getProperty("robot.name").toLowerCase() + "-"));
+                  return stream;
+                });
       }
     }
   }
 
   public void configureBindings() {
-    DriverControlsSettings driverSettings = DriverControlsSettings.getDriverControlsSettings(properties);
+    DriverControlsSettings driverSettings =
+        DriverControlsSettings.getDriverControlsSettings(properties);
     DriveControls.setupController(drive, mainController);
 
     IntakeControls.setupSpeedController(topIntakeFlywheel, bottomIntakeFlywheel, mainController);
