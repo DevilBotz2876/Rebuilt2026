@@ -29,7 +29,8 @@ public enum DynamicLocation {
     LEFT_NEUTRAL_ZONE_CENTER_LINE("Left Neutral Zone Center Line", 8.270494, 6.67512),
     RIGHT_NEUTRAL_ZONE_CENTER_LINE("Right Neutral Zone Center Line", 8.270494, 1.394206),
     LEFT_NEUTRAL_ZONE_OPPONENT_SIDE("Left Neutral Zone Opponent Side", 8.840, 6.67512),
-    RIGHT_NEUTRAL_ZONE_OPPONENT_SIDE("Left Neutral Zone Center Line", 8.840, 1.394206);
+    RIGHT_NEUTRAL_ZONE_OPPONENT_SIDE("Left Neutral Zone Center Line", 8.840, 1.394206),
+    HUB("Hub", 4.625594, 4.0346376);
 
     private String name;
     private double x;
