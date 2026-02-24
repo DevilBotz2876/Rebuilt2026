@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.common.flywheel.FlywheelToVelocity;
 import frc.robot.commands.common.motor.MotorPitCommand;
 import frc.robot.commands.common.motor.MotorRunVoltageCommand;
+import frc.robot.subsystems.interfaces.Arm;
 import frc.robot.subsystems.interfaces.Drive;
 import frc.robot.subsystems.interfaces.Flywheel;
 import frc.robot.subsystems.interfaces.Motor;
@@ -24,6 +25,7 @@ public class DriverControls {
 
     // intake
     public double intakeRPM;
+    public double intakeReverseRPM;
     public double conveyorReverseRPM;
 
     /**
@@ -42,6 +44,8 @@ public class DriverControls {
           Double.parseDouble(properties.getProperty("driverControls.conveyorLaunchRPM"));
 
       settings.intakeRPM = Double.parseDouble(properties.getProperty("driverControls.intakeRPM"));
+      settings.intakeReverseRPM =
+          Double.parseDouble(properties.getProperty("driverControls.intakeReverseRPM"));
       settings.conveyorReverseRPM =
           Double.parseDouble(properties.getProperty("driverControls.conveyorReverseRPM"));
       return settings;
@@ -50,11 +54,11 @@ public class DriverControls {
 
   public static void setupMainController(
       Drive drive,
-      Flywheel topIntake,
-      Flywheel bottomIntake,
+      Flywheel intake,
       Flywheel shooter,
       Flywheel indexer,
       Flywheel conveyor,
+      Arm intakeArm,
       CommandXboxController controller,
       DriverControlsSettings settings) {
 
@@ -62,8 +66,8 @@ public class DriverControls {
     Command stopShooter = new MotorRunVoltageCommand((Motor) shooter, () -> 0.0);
     Command stopIndexer = new MotorRunVoltageCommand((Motor) indexer, () -> 0.0);
     Command stopConveyor = new MotorRunVoltageCommand((Motor) conveyor, () -> 0.0);
-    Command stopTopIntake = new MotorRunVoltageCommand((Motor) topIntake, () -> 0.0);
-    Command stopBottomIntake = new MotorRunVoltageCommand((Motor) bottomIntake, () -> 0.0);
+    Command stopIntake = new MotorRunVoltageCommand((Motor) intake, () -> 0.0);
+    Command stopIntakeArm = new MotorRunVoltageCommand((Motor) intakeArm, () -> 0.0);
 
     // Launching related commands
     Command launchSequentialParallel =
@@ -79,30 +83,45 @@ public class DriverControls {
             new FlywheelToVelocity(indexer, () -> settings.indexerLaunchRPM),
             new FlywheelToVelocity(conveyor, () -> settings.conveyorLaunchRPM));
 
-    Command stopLaunch = new ParallelCommandGroup(stopShooter, stopIndexer, stopConveyor);
+    SmartDashboard.putNumber("ShooterRPMScore", 4000);
+    Command launchSequentialParallelSmartDashBoard =
+        new SequentialCommandGroup(
+            new FlywheelToVelocity(shooter, () -> SmartDashboard.getNumber("ShooterRPMScore", 300)),
+            new ParallelCommandGroup(
+                new FlywheelToVelocity(indexer, () -> settings.indexerLaunchRPM),
+                new FlywheelToVelocity(conveyor, () -> settings.conveyorLaunchRPM)));
 
     // Intake Commands
-
-    Command intakeIn =
-        new ParallelCommandGroup(
-            new FlywheelToVelocity(topIntake, () -> settings.intakeRPM),
-            new FlywheelToVelocity(bottomIntake, () -> settings.intakeRPM));
+    Command intakeIn = new FlywheelToVelocity(intake, () -> settings.intakeRPM);
 
     Command intakeOut =
         new ParallelCommandGroup(
-            new FlywheelToVelocity(topIntake, () -> -settings.intakeRPM),
-            new FlywheelToVelocity(bottomIntake, () -> -settings.intakeRPM),
+            new FlywheelToVelocity(intake, () -> settings.intakeReverseRPM),
             new FlywheelToVelocity(conveyor, () -> settings.conveyorReverseRPM));
 
-    Command stopIntake = new ParallelCommandGroup(stopTopIntake, stopBottomIntake);
+    Command DeployerVoltageMinus = new MotorRunVoltageCommand((Motor) intakeArm, () -> -0.5);
+    Command DeployerVoltagePlus = new MotorRunVoltageCommand((Motor) intakeArm, () -> 0.5);
 
     // binding
-    controller.x().whileTrue(launchSequentialParallel).onFalse(stopLaunch);
-    controller.y().whileTrue(launchAllSequential).onFalse(stopLaunch);
+    controller
+        .x()
+        .whileTrue(launchSequentialParallel)
+        .onFalse(stopShooter)
+        .onFalse(stopIndexer)
+        .onFalse(stopConveyor);
+
+    controller
+        .y()
+        .whileTrue(launchSequentialParallelSmartDashBoard)
+        .onFalse(stopShooter)
+        .onFalse(stopIndexer)
+        .onFalse(stopConveyor);
 
     controller.a().whileTrue(intakeIn).onFalse(stopIntake);
-    controller.b().whileTrue(intakeOut).onFalse(stopIntake);
-    controller.b().onFalse(stopConveyor);
+    controller.b().whileTrue(intakeOut).onFalse(stopIntake).onFalse(stopConveyor);
+
+    controller.pov(90).whileTrue(DeployerVoltagePlus).onFalse(stopIntakeArm);
+    controller.pov(270).whileTrue(DeployerVoltageMinus).onFalse(stopIntakeArm);
   }
 
   public static void setupAssistController(
@@ -119,6 +138,12 @@ public class DriverControls {
     setupMotorSmartDashboardControl(flywheelSubsystem, (Motor) flywheel);
     setupSmartDashboardVoltageControl(flywheelSubsystem, (Motor) flywheel);
     setupSmartDashboardSpeedControl(flywheelSubsystem, flywheel);
+  }
+
+  public static void setupArmSmartDashboardControl(Arm arm) {
+    SubsystemBase armSubsystem = (SubsystemBase) arm;
+    setupMotorSmartDashboardControl(armSubsystem, (Motor) arm);
+    setupSmartDashboardVoltageControl(armSubsystem, (Motor) arm);
   }
 
   private static void setupMotorSmartDashboardControl(SubsystemBase motorSubsystem, Motor motor) {

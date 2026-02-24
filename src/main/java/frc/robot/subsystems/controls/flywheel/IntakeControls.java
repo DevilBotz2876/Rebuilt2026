@@ -13,7 +13,7 @@ import frc.robot.subsystems.interfaces.Motor;
 // set the default commands for the intake subsystems
 public class IntakeControls {
   public static void setupVoltageController(
-      Flywheel topFlywheel, Flywheel bottomFlywheel, CommandXboxController controller) {
+      Flywheel topFlywheel, CommandXboxController controller) {
 
     /*
      * Top Flywheel
@@ -44,41 +44,9 @@ public class IntakeControls {
         .rightTrigger()
         .onTrue(
             new InstantCommand(() -> ((Motor) topFlywheel).runVoltage(0.0), topFlywheelSubsystem));
-
-    /*
-     * Bottom Flywheel
-     * Right Bumper: Stop (0 volts)
-     * When bottom flywheel is selected
-     *  Up D-PAD: increase volts
-     *  Down D-PAD: decrease volts
-     */
-    SubsystemBase bottomFlywheelSubsystem = (SubsystemBase) bottomFlywheel;
-    bottomFlywheelSubsystem.setDefaultCommand(
-        new MotorBringUpCommand(
-            (Motor) bottomFlywheel,
-            () -> {
-              if (!SmartDashboard.getString("Selected Subsystems/Selected", "UNKNOWN")
-                  .equals(bottomFlywheelSubsystem.getName())) {
-                return 0.0;
-              }
-
-              if (controller.pov(0).getAsBoolean()) {
-                return 1.0;
-              } else if (controller.pov(180).getAsBoolean()) {
-                return -1.0;
-              }
-              return 0.0;
-            }));
-
-    controller
-        .rightBumper()
-        .onTrue(
-            new InstantCommand(
-                () -> ((Motor) bottomFlywheel).runVoltage(0.0), bottomFlywheelSubsystem));
   }
 
-  public static void setupSpeedController(
-      Flywheel topFlywheel, Flywheel bottomFlywheel, CommandXboxController controller) {
+  public static void setupSpeedController(Flywheel topFlywheel, CommandXboxController controller) {
 
     /*
      * Top Flywheel
@@ -106,32 +74,5 @@ public class IntakeControls {
             }));
 
     controller.rightTrigger().onTrue(new FlywheelToVelocity(topFlywheel, () -> 0.0));
-
-    /*
-     * Bottom Flywheel
-     * Right Bumper: Stop (0 volts)
-     * When bottom flywheel is selected
-     *  Up D-PAD: increase volts
-     *  Down D-PAD: decrease volts
-     */
-    SubsystemBase bottomFlywheelSubsystem = (SubsystemBase) bottomFlywheel;
-    bottomFlywheelSubsystem.setDefaultCommand(
-        new FlywheelCommand(
-            bottomFlywheel,
-            () -> {
-              if (!SmartDashboard.getString("Selected Subsystems/Selected", "UNKNOWN")
-                  .equals(bottomFlywheelSubsystem.getName())) {
-                return 0.0;
-              }
-
-              if (controller.pov(0).getAsBoolean()) {
-                return 1.0;
-              } else if (controller.pov(180).getAsBoolean()) {
-                return -1.0;
-              }
-              return 0.0;
-            }));
-
-    controller.rightBumper().onTrue(new FlywheelToVelocity(bottomFlywheel, () -> 0.0));
   }
 }
