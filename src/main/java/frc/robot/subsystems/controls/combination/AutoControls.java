@@ -21,6 +21,9 @@ import frc.robot.subsystems.controls.combination.DriverControls.DriverControlsSe
 import frc.robot.subsystems.interfaces.Drive;
 import frc.robot.subsystems.interfaces.Flywheel;
 import frc.robot.subsystems.interfaces.Motor;
+import frc.robot.util.Elastic;
+import frc.robot.util.Elastic.Notification;
+
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
@@ -57,8 +60,7 @@ public class AutoControls {
 
   public static void registerNamedCommands(
       Drive drive,
-      Flywheel topIntake,
-      Flywheel bottomIntake,
+      Flywheel intake,
       Flywheel shooter,
       Flywheel indexer,
       Flywheel conveyor,
@@ -68,8 +70,7 @@ public class AutoControls {
     Command stopShooter = new MotorRunVoltageCommand((Motor) shooter, () -> 0.0);
     Command stopIndexer = new MotorRunVoltageCommand((Motor) indexer, () -> 0.0);
     Command stopConveyor = new MotorRunVoltageCommand((Motor) conveyor, () -> 0.0);
-    Command stopTopIntake = new MotorRunVoltageCommand((Motor) topIntake, () -> 0.0);
-    Command stopBottomIntake = new MotorRunVoltageCommand((Motor) bottomIntake, () -> 0.0);
+    Command stopIntake = new MotorRunVoltageCommand((Motor) intake, () -> 0.0);
 
     // Launching related commands
     Command launchSequentialParallel =
@@ -88,19 +89,12 @@ public class AutoControls {
     Command stopLaunch = stopShooter.alongWith(stopIndexer, stopConveyor);
 
     // Intake Commands
-
-    Command intakeIn =
-        new ParallelCommandGroup(
-            new FlywheelToVelocity(topIntake, () -> driverSettings.intakeRPM),
-            new FlywheelToVelocity(bottomIntake, () -> driverSettings.intakeRPM));
+    Command intakeIn = new FlywheelToVelocity(intake, () -> driverSettings.intakeRPM);
 
     Command intakeOut =
         new ParallelCommandGroup(
-            new FlywheelToVelocity(topIntake, () -> -driverSettings.intakeRPM),
-            new FlywheelToVelocity(bottomIntake, () -> -driverSettings.intakeRPM),
+            new FlywheelToVelocity(intake, () -> driverSettings.intakeReverseRPM),
             new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorReverseRPM));
-
-    Command stopIntake = stopTopIntake.alongWith(stopBottomIntake);
 
     // Auto commands
     // launch for the (time of one ball + timeout) * 8 balls
@@ -116,23 +110,15 @@ public class AutoControls {
     PathConstraints constraints = new PathConstraints(1.0, 1.0, 2 * Math.PI, 4 * Math.PI);
 
     NamedCommands.registerCommand("Launch 8 From Known Distance", launch8FuelFromKnownDistance);
-    NamedCommands.registerCommand("Launch From x Distance", new WaitCommand(1.0));
+    NamedCommands.registerCommand("Start Shooter from Radius Distance", Commands.defer(() -> new FlywheelToVelocity(shooter, () -> calcShooterSpeedFromRad()), Set.of((Subsystem) shooter)));
+    NamedCommands.registerCommand("Start Shooter from Current Distance", new WaitCommand(1.0));
     NamedCommands.registerCommand(
         "Drive to Hub (Radius)",
         Commands.defer(
             () ->
                 DynamicLocation.createPathfindingToLocationCommand(
-                    AutoControls.getGoToRadiusPose2d(), constraints, 0),
+                    AutoControls.getGoToRadiusPose2d(drive), constraints, 0),
             Set.of((Subsystem) drive)));
-    // new SequentialCommandGroup(
-    // new InstantCommand(() -> {SmartDashboard.putNumber("Auto/RadPose/x",
-    // AutoControls.getGoToRadiusPose2d().getX());
-    // SmartDashboard.putNumber("Auto/RadPose/y", AutoControls.getGoToRadiusPose2d().getY());
-    // System.out.println("x: " + AutoControls.pose.getX() + " y: " + AutoControls.pose.getY());}),
-    // DynamicLocation.createPathfindingToLocationCommand(new
-    // Pose2d(SmartDashboard.getNumber("Auto/RadPose/x", 0),
-    // SmartDashboard.getNumber("Auto/RadPose/x", 0), Rotation2d.kZero), constraints, 0))
-    // );
     NamedCommands.registerCommand(
         "Drive to Outpost",
         DynamicLocation.createPathfindingToLocationCommand(
@@ -257,10 +243,14 @@ public class AutoControls {
     NamedCommands.registerCommand("Intake Fuel from Outpost", new WaitCommand(1.0));
   }
 
-  public static Pose2d getGoToRadiusPose2d() {
+  public static Pose2d getGoToRadiusPose2d(Drive drive) {
     double radius = SmartDashboard.getNumber("Auto/rad", -1);
+    if(radius < 1.18) {
+        Elastic.sendNotification(new Notification().withTitle("INVAILD RADIUS").withDescription("The radius was less than 1.18. Will not move"));
+        return drive.getPose();
+    }
     Optional<Alliance> alliance = DriverStation.getAlliance();
-    Pose2d drivePose = AutoControls.drive.getPose();
+    Pose2d drivePose = drive.getPose();
     if (alliance.isPresent()) {
       if (alliance.get() == Alliance.Red) drivePose = FlippingUtil.flipFieldPose(drivePose);
     }
@@ -288,11 +278,24 @@ public class AutoControls {
     if (alliance.isPresent()) {
       if (alliance.get() == Alliance.Red)
         return dist1 < dist2
-            ? new Pose2d(x2, y2, Rotation2d.fromDegrees(0))
-            : new Pose2d(x1, y1, Rotation2d.fromDegrees(0));
+            ? new Pose2d(x2, y2, Rotation2d.fromRadians(getHubScoreRotation(x2, y2)))
+            : new Pose2d(x1, y1, Rotation2d.fromRadians(getHubScoreRotation(x1, y1)));
     }
     return dist1 < dist2
-        ? new Pose2d(x1, y1, Rotation2d.fromDegrees(0))
-        : new Pose2d(x2, y2, Rotation2d.fromDegrees(0));
+        ? new Pose2d(x1, y1, Rotation2d.fromRadians(getHubScoreRotation(x1, y1)))
+        : new Pose2d(x2, y2, Rotation2d.fromRadians(getHubScoreRotation(x2, y2)));
+  }
+
+  public static double calcShooterSpeedFromRad() {
+    return 4000;
+    //calcShooterSpeedFromDistance(SmartDashboard.getNumber("Auto/rad", -1));
+  }
+
+  public static double getHubScoreRotation(double x, double y) {
+    double leg1 = DynamicLocation.HUB.getY() - y;
+    double leg2 = DynamicLocation.HUB.getX() - x;
+
+    return Math.atan(leg1/leg2) + Math.PI;
+
   }
 }
