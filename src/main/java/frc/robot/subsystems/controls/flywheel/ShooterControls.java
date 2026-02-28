@@ -40,10 +40,10 @@ public class ShooterControls {
               return 0.0;
             }));
 
-    controller
-        .leftTrigger()
-        .onTrue(
-            new InstantCommand(() -> ((Motor) shooter).runVoltage(0.0), shooterFlywheelSubsystem));
+    // controller
+    //     .leftTrigger()
+    //     .onTrue(
+    //         new InstantCommand(() -> ((Motor) shooter).runVoltage(0.0), shooterFlywheelSubsystem));
 
     /*
      * Indexer
@@ -70,10 +70,10 @@ public class ShooterControls {
               return 0.0;
             }));
 
-    controller
-        .leftBumper()
-        .onTrue(
-            new InstantCommand(() -> ((Motor) indexer).runVoltage(0.0), indexerFlywheelSubsystem));
+    // controller
+    //     .leftBumper()
+    //     .onTrue(
+    //         new InstantCommand(() -> ((Motor) indexer).runVoltage(0.0), indexerFlywheelSubsystem));
   }
 
   public static void setupSpeedController(
@@ -91,20 +91,20 @@ public class ShooterControls {
         new FlywheelCommand(
             shooter,
             () -> {
-              if (!SmartDashboard.getString("Selected Subsystems/Selected", "UNKNOWN")
-                  .equals(shooterFlywheelSubsystem.getName())) {
-                return 0.0;
-              }
+              // if (!SmartDashboard.getString("Selected Subsystems/Selected", "UNKNOWN")
+              //     .equals(shooterFlywheelSubsystem.getName())) {
+              //   return 0.0;
+              // }
 
-              if (controller.pov(0).getAsBoolean()) {
+              if (controller.pov(90).getAsBoolean()) {
                 return 1.0;
-              } else if (controller.pov(180).getAsBoolean()) {
+              } else if (controller.pov(270).getAsBoolean()) {
                 return -1.0;
               }
               return 0.0;
             }));
 
-    controller.leftTrigger().onTrue(new FlywheelToVelocity(shooter, () -> 0.0));
+    // controller.leftTrigger().onTrue(new FlywheelToVelocity(shooter, () -> 0.0));
 
     /*
      * Indexer
@@ -131,6 +131,6 @@ public class ShooterControls {
               return 0.0;
             }));
 
-    controller.leftBumper().onTrue(new FlywheelToVelocity(indexer, () -> 0.0));
+    // controller.leftBumper().onTrue(new FlywheelToVelocity(indexer, () -> 0.0));
   }
 }

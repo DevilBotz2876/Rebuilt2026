@@ -92,7 +92,7 @@ public class DriverControls {
                 new FlywheelToVelocity(conveyor, () -> settings.conveyorLaunchRPM)));
 
     // Intake Commands
-    Command intakeIn = new FlywheelToVelocity(intake, () -> settings.intakeRPM);
+    Command intakeIn = new ParallelCommandGroup(new FlywheelToVelocity(intake, () -> settings.intakeRPM), new FlywheelToVelocity(conveyor, () -> settings.conveyorLaunchRPM));
 
     Command intakeOut =
         new ParallelCommandGroup(
@@ -104,24 +104,33 @@ public class DriverControls {
 
     // binding
     controller
-        .x()
-        .whileTrue(launchSequentialParallel)
+        .rightTrigger()
+        .whileTrue(launchSequentialParallelSmartDashBoard)
         .onFalse(stopShooter)
         .onFalse(stopIndexer)
         .onFalse(stopConveyor);
 
     controller
         .y()
-        .whileTrue(launchSequentialParallelSmartDashBoard)
-        .onFalse(stopShooter)
-        .onFalse(stopIndexer)
-        .onFalse(stopConveyor);
+        .onTrue(new InstantCommand(() -> SmartDashboard.putNumber("ShooterRPMScore", 4800)));
 
-    controller.a().whileTrue(intakeIn).onFalse(stopIntake);
+
+    controller
+        .x()
+        .onTrue(new InstantCommand(() -> SmartDashboard.putNumber("ShooterRPMScore", 4000)));
+
+    controller
+        .a()
+        .onTrue(new InstantCommand(() -> SmartDashboard.putNumber("ShooterRPMScore", 3000)));
+
+    controller.leftTrigger().whileTrue(intakeIn).onFalse(stopIntake).onFalse(stopConveyor);
     controller.b().whileTrue(intakeOut).onFalse(stopIntake).onFalse(stopConveyor);
 
-    controller.pov(90).whileTrue(DeployerVoltagePlus).onFalse(stopIntakeArm);
-    controller.pov(270).whileTrue(DeployerVoltageMinus).onFalse(stopIntakeArm);
+    controller.pov(0).whileTrue(DeployerVoltagePlus).onFalse(stopIntakeArm).whileFalse(DeployerVoltagePlus);
+    controller.pov(180).whileTrue(DeployerVoltageMinus).onFalse(stopIntakeArm).whileFalse(DeployerVoltagePlus);
+
+    controller.leftBumper().whileTrue(new FlywheelToVelocity(conveyor, () -> settings.conveyorLaunchRPM));
+    
   }
 
   public static void setupAssistController(

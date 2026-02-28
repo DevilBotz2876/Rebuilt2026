@@ -40,10 +40,10 @@ public class IntakeControls {
               return 0.0;
             }));
 
-    controller
-        .rightTrigger()
-        .onTrue(
-            new InstantCommand(() -> ((Motor) topFlywheel).runVoltage(0.0), topFlywheelSubsystem));
+    // controller
+    //     .rightTrigger()
+    //     .onTrue(
+    //         new InstantCommand(() -> ((Motor) topFlywheel).runVoltage(0.0), topFlywheelSubsystem));
   }
 
   public static void setupSpeedController(Flywheel topFlywheel, CommandXboxController controller) {
@@ -73,6 +73,6 @@ public class IntakeControls {
               return 0.0;
             }));
 
-    controller.rightTrigger().onTrue(new FlywheelToVelocity(topFlywheel, () -> 0.0));
+    // controller.rightTrigger().onTrue(new FlywheelToVelocity(topFlywheel, () -> 0.0));
   }
 }
