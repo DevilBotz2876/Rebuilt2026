@@ -112,6 +112,13 @@ public class AutoControls {
     NamedCommands.registerCommand("Launch 8 From Known Distance", launch8FuelFromKnownDistance);
     NamedCommands.registerCommand("Start Shooter from Radius Distance", Commands.defer(() -> new FlywheelToVelocity(shooter, () -> calcShooterSpeedFromRad()), Set.of((Subsystem) shooter)));
     NamedCommands.registerCommand("Start Shooter from Current Distance", new WaitCommand(1.0));
+    NamedCommands.registerCommand("Start Shooter (3800RPM)", new FlywheelToVelocity(shooter, () -> 3800));
+    NamedCommands.registerCommand("Start Shooter (3665RPM)", new FlywheelToVelocity(shooter, () -> 3665));
+    NamedCommands.registerCommand("Start Shooter (3250RPM)", new FlywheelToVelocity(shooter, () -> 3250));
+    NamedCommands.registerCommand("Start Shooter (3600RPM)", new FlywheelToVelocity(shooter, () -> 3600));
+    NamedCommands.registerCommand("Stop Shooter", stopShooter);
+
+
     NamedCommands.registerCommand(
         "Drive to Hub (Radius)",
         Commands.defer(
@@ -241,6 +248,9 @@ public class AutoControls {
         "Intake Fuel", new SequentialCommandGroup(intakeIn, new WaitCommand(2.0), stopIntake));
     NamedCommands.registerCommand("Intake Fuel from Depot", new WaitCommand(1.0));
     NamedCommands.registerCommand("Intake Fuel from Outpost", new WaitCommand(1.0));
+    NamedCommands.registerCommand("Intake In", intakeIn);
+    NamedCommands.registerCommand("Stop Intake", stopIntake);
+
   }
 
   public static Pose2d getGoToRadiusPose2d(Drive drive) {
