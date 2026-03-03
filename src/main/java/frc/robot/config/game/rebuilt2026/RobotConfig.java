@@ -34,6 +34,7 @@ import frc.robot.subsystems.controls.flywheel.IntakeControls;
 import frc.robot.subsystems.controls.flywheel.ShooterControls;
 import frc.robot.subsystems.implementations.drive.DriveBase;
 import frc.robot.subsystems.implementations.drive.DriveSwerveCTRE;
+import frc.robot.subsystems.implementations.drive.DriveSwerveCTRE.DriveSettings;
 import frc.robot.subsystems.implementations.motor.ArmMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.ElevatorMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.FlywheelMotorSubsystem;
@@ -64,7 +65,7 @@ public class RobotConfig {
   public RobotConfig(Properties robotProperties) {
     if (robotProperties.containsKey("robot.drive")) {
       if (robotProperties.getProperty("robot.drive").equals("ctre")) {
-        drive = new DriveSwerveCTRE(new TunerConstants(robotProperties));
+        drive = new DriveSwerveCTRE(new TunerConstants(robotProperties), DriveSettings.getDriveSettings(robotProperties));
       }
     } else {
       drive = new DriveBase("Stub");

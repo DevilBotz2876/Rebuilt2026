@@ -19,7 +19,10 @@ import java.util.Properties;
 public class DriverControls {
   public static class DriverControlsSettings {
     // launch
-    public double shooterLaunchRPM;
+    public double shooterDefaultLaunchRPM;
+    public double shooterOutpostLaunchRPM;
+    public double shooterTrenchLaunchRPM;
+    public double shooterAgainstHubLaunchRPM;
     public double indexerLaunchRPM;
     public double conveyorLaunchRPM;
 
@@ -36,8 +39,15 @@ public class DriverControls {
      */
     public static DriverControlsSettings getDriverControlsSettings(Properties properties) {
       DriverControlsSettings settings = new DriverControlsSettings();
-      settings.shooterLaunchRPM =
-          Double.parseDouble(properties.getProperty("driverControls.shooterLaunchRPM"));
+    settings.shooterDefaultLaunchRPM =
+          Double.parseDouble(properties.getProperty("driverControls.shooterDefaultLaunchRPM"));
+    settings.shooterOutpostLaunchRPM =
+          Double.parseDouble(properties.getProperty("driverControls.shooterOutpostLaunchRPM"));
+    settings.shooterTrenchLaunchRPM =
+          Double.parseDouble(properties.getProperty("driverControls.shooterTrenchLaunchRPM"));
+    settings.shooterAgainstHubLaunchRPM =
+          Double.parseDouble(properties.getProperty("driverControls.shooterAgainstHubLaunchRPM"));
+    
       settings.indexerLaunchRPM =
           Double.parseDouble(properties.getProperty("driverControls.indexerLaunchRPM"));
       settings.conveyorLaunchRPM =
@@ -72,21 +82,21 @@ public class DriverControls {
     // Launching related commands
     Command launchSequentialParallel =
         new SequentialCommandGroup(
-            new FlywheelToVelocity(shooter, () -> settings.shooterLaunchRPM),
+            new FlywheelToVelocity(shooter, () -> settings.shooterDefaultLaunchRPM),
             new ParallelCommandGroup(
                 new FlywheelToVelocity(indexer, () -> settings.indexerLaunchRPM),
                 new FlywheelToVelocity(conveyor, () -> settings.conveyorLaunchRPM)));
 
     Command launchAllSequential =
         new SequentialCommandGroup(
-            new FlywheelToVelocity(shooter, () -> settings.shooterLaunchRPM),
+            new FlywheelToVelocity(shooter, () -> settings.shooterDefaultLaunchRPM),
             new FlywheelToVelocity(indexer, () -> settings.indexerLaunchRPM),
             new FlywheelToVelocity(conveyor, () -> settings.conveyorLaunchRPM));
 
-    SmartDashboard.putNumber("ShooterRPMScore", 4000);
+    SmartDashboard.putNumber("ShooterRPMScore", settings.shooterDefaultLaunchRPM);
     Command launchSequentialParallelSmartDashBoard =
         new SequentialCommandGroup(
-            new FlywheelToVelocity(shooter, () -> SmartDashboard.getNumber("ShooterRPMScore", 300)),
+            new FlywheelToVelocity(shooter, () -> SmartDashboard.getNumber("ShooterRPMScore", settings.shooterDefaultLaunchRPM)),
             new ParallelCommandGroup(
                 new FlywheelToVelocity(indexer, () -> settings.indexerLaunchRPM),
                 new FlywheelToVelocity(conveyor, () -> settings.conveyorLaunchRPM)));
@@ -112,25 +122,22 @@ public class DriverControls {
 
     controller
         .y()
-        .onTrue(new InstantCommand(() -> SmartDashboard.putNumber("ShooterRPMScore", 4800)));
+        .onTrue(new InstantCommand(() -> SmartDashboard.putNumber("ShooterRPMScore", settings.shooterOutpostLaunchRPM)));
 
 
     controller
         .x()
-        .onTrue(new InstantCommand(() -> SmartDashboard.putNumber("ShooterRPMScore", 4000)));
+        .onTrue(new InstantCommand(() -> SmartDashboard.putNumber("ShooterRPMScore", settings.shooterTrenchLaunchRPM)));
 
     controller
         .a()
-        .onTrue(new InstantCommand(() -> SmartDashboard.putNumber("ShooterRPMScore", 3000)));
+        .onTrue(new InstantCommand(() -> SmartDashboard.putNumber("ShooterRPMScore", settings.shooterAgainstHubLaunchRPM)));
 
     controller.leftTrigger().whileTrue(intakeIn).onFalse(stopIntake).onFalse(stopConveyor);
-    controller.b().whileTrue(intakeOut).onFalse(stopIntake).onFalse(stopConveyor);
+    controller.leftBumper().whileTrue(intakeOut).onFalse(stopIntake).onFalse(stopConveyor);
 
-    controller.pov(0).whileTrue(DeployerVoltagePlus).onFalse(stopIntakeArm).whileFalse(DeployerVoltagePlus);
-    controller.pov(180).whileTrue(DeployerVoltageMinus).onFalse(stopIntakeArm).whileFalse(DeployerVoltagePlus);
-
-    controller.leftBumper().whileTrue(new FlywheelToVelocity(conveyor, () -> settings.conveyorLaunchRPM));
-    
+    controller.pov(90).whileTrue(DeployerVoltagePlus).onFalse(stopIntakeArm).whileFalse(DeployerVoltagePlus);
+    controller.pov(270).whileTrue(DeployerVoltageMinus).onFalse(stopIntakeArm).whileFalse(DeployerVoltagePlus);    
   }
 
   public static void setupAssistController(

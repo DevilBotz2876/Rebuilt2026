@@ -91,14 +91,14 @@ public class ShooterControls {
         new FlywheelCommand(
             shooter,
             () -> {
-              // if (!SmartDashboard.getString("Selected Subsystems/Selected", "UNKNOWN")
-              //     .equals(shooterFlywheelSubsystem.getName())) {
-              //   return 0.0;
-              // }
+              if (!SmartDashboard.getString("Selected Subsystems/Selected", "UNKNOWN")
+                  .equals(shooterFlywheelSubsystem.getName())) {
+                return 0.0;
+              }
 
-              if (controller.pov(90).getAsBoolean()) {
+              if (controller.pov(0).getAsBoolean()) {
                 return 1.0;
-              } else if (controller.pov(270).getAsBoolean()) {
+              } else if (controller.pov(180).getAsBoolean()) {
                 return -1.0;
               }
               return 0.0;
@@ -132,5 +132,21 @@ public class ShooterControls {
             }));
 
     // controller.leftBumper().onTrue(new FlywheelToVelocity(indexer, () -> 0.0));
+  }
+
+  public static void setupMainController(Flywheel shooter, CommandXboxController controller) {
+    SubsystemBase shooterFlywheelSubsystem = (SubsystemBase) shooter;
+    shooterFlywheelSubsystem.setDefaultCommand(
+        new FlywheelCommand(
+            shooter,
+            () -> {
+
+              if (controller.pov(0).getAsBoolean()) {
+                return 1.0;
+              } else if (controller.pov(12).getAsBoolean()) {
+                return -1.0;
+              }
+              return 0.0;
+            }));
   }
 }

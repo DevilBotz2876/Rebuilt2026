@@ -1,9 +1,13 @@
 package frc.robot.subsystems.controls.drive;
 
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.common.drive.DriveCommand;
 import frc.robot.subsystems.interfaces.Drive;
 
@@ -21,8 +25,9 @@ public class DriveControls {
      *    Back Button = Zero Pose
      *
      *    Start Button = Toggle Drive Orientation
+     *    Start Button + Back Button = reset field centric heading
      */
-    controller.back().onTrue(new InstantCommand(() -> drive.resetOdometry()));
+    controller.back().and(controller.start().negate()).onTrue(new InstantCommand(() -> drive.resetOdometry()));
     controller
         .start()
         .onTrue(
@@ -30,5 +35,7 @@ public class DriveControls {
                 () ->
                     drive.setFieldOrientedDrive(
                         !drive.isFieldOrientedDrive()))); // Toggle Drive Orientation
+
+    SmartDashboard.putData(driveSubsystem.getName() + "/Reset Field Centric Heading", drive.resetFieldCentricHeading().onlyIf(() -> drive.isFieldOrientedDrive()));
   }
 }
