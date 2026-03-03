@@ -23,7 +23,6 @@ import frc.robot.subsystems.interfaces.Flywheel;
 import frc.robot.subsystems.interfaces.Motor;
 import frc.robot.util.Elastic;
 import frc.robot.util.Elastic.Notification;
-
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
@@ -86,8 +85,6 @@ public class AutoControls {
             new FlywheelToVelocity(indexer, () -> driverSettings.indexerLaunchRPM),
             new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorLaunchRPM));
 
-    Command stopLaunch = stopShooter.alongWith(stopIndexer, stopConveyor);
-
     // Intake Commands
     Command intakeIn = new FlywheelToVelocity(intake, () -> driverSettings.intakeRPM);
 
@@ -103,21 +100,30 @@ public class AutoControls {
             launchAllSequential,
             new WaitCommand(
                 (autoSettings.launchOneFuelSeconds + autoSettings.launchOneTimeoutSeconds) * 8),
-            stopLaunch);
+            stopShooter.asProxy().withTimeout(0.25),
+            stopConveyor.asProxy().withTimeout(0.25),
+            stopIndexer.asProxy().withTimeout(0.25));
 
     AutoControls.drive = drive;
     SmartDashboard.putNumber("Auto/rad", 2.05);
     PathConstraints constraints = new PathConstraints(1.0, 1.0, 2 * Math.PI, 4 * Math.PI);
 
     NamedCommands.registerCommand("Launch 8 From Known Distance", launch8FuelFromKnownDistance);
-    NamedCommands.registerCommand("Start Shooter from Radius Distance", Commands.defer(() -> new FlywheelToVelocity(shooter, () -> calcShooterSpeedFromRad()), Set.of((Subsystem) shooter)));
+    NamedCommands.registerCommand(
+        "Start Shooter from Radius Distance",
+        Commands.defer(
+            () -> new FlywheelToVelocity(shooter, () -> calcShooterSpeedFromRad()),
+            Set.of((Subsystem) shooter)));
     NamedCommands.registerCommand("Start Shooter from Current Distance", new WaitCommand(1.0));
-    NamedCommands.registerCommand("Start Shooter (3800RPM)", new FlywheelToVelocity(shooter, () -> 3800));
-    NamedCommands.registerCommand("Start Shooter (3665RPM)", new FlywheelToVelocity(shooter, () -> 3665));
-    NamedCommands.registerCommand("Start Shooter (3250RPM)", new FlywheelToVelocity(shooter, () -> 3250));
-    NamedCommands.registerCommand("Start Shooter (3600RPM)", new FlywheelToVelocity(shooter, () -> 3600));
-    NamedCommands.registerCommand("Stop Shooter", stopShooter);
-
+    NamedCommands.registerCommand(
+        "Start Shooter (3800RPM)", new FlywheelToVelocity(shooter, () -> 3800));
+    NamedCommands.registerCommand(
+        "Start Shooter (3665RPM)", new FlywheelToVelocity(shooter, () -> 3665));
+    NamedCommands.registerCommand(
+        "Start Shooter (3250RPM)", new FlywheelToVelocity(shooter, () -> 3250));
+    NamedCommands.registerCommand(
+        "Start Shooter (3600RPM)", new FlywheelToVelocity(shooter, () -> 3600));
+    NamedCommands.registerCommand("Stop Shooter", stopShooter.withTimeout(0.25));
 
     NamedCommands.registerCommand(
         "Drive to Hub (Radius)",
@@ -245,19 +251,24 @@ public class AutoControls {
                 constraints)));
 
     NamedCommands.registerCommand(
-        "Intake Fuel", new SequentialCommandGroup(intakeIn, new WaitCommand(2.0), stopIntake));
+        "Intake Fuel",
+        new SequentialCommandGroup(
+            intakeIn.asProxy(), new WaitCommand(2.0), stopIntake.asProxy().withTimeout(0.1)));
     NamedCommands.registerCommand("Intake Fuel from Depot", new WaitCommand(1.0));
     NamedCommands.registerCommand("Intake Fuel from Outpost", new WaitCommand(1.0));
-    NamedCommands.registerCommand("Intake In", intakeIn);
-    NamedCommands.registerCommand("Stop Intake", stopIntake);
-
+    NamedCommands.registerCommand(
+        "Intake In", intakeIn.asProxy().withTimeout(autoSettings.intakeDepotTimeoutSeconds));
+    NamedCommands.registerCommand("Stop Intake", stopIntake.asProxy().withTimeout(0.1));
   }
 
   public static Pose2d getGoToRadiusPose2d(Drive drive) {
     double radius = SmartDashboard.getNumber("Auto/rad", -1);
-    if(radius < 1.18) {
-        Elastic.sendNotification(new Notification().withTitle("INVAILD RADIUS").withDescription("The radius was less than 1.18. Will not move"));
-        return drive.getPose();
+    if (radius < 1.18) {
+      Elastic.sendNotification(
+          new Notification()
+              .withTitle("INVAILD RADIUS")
+              .withDescription("The radius was less than 1.18. Will not move"));
+      return drive.getPose();
     }
     Optional<Alliance> alliance = DriverStation.getAlliance();
     Pose2d drivePose = drive.getPose();
@@ -298,14 +309,13 @@ public class AutoControls {
 
   public static double calcShooterSpeedFromRad() {
     return 4000;
-    //calcShooterSpeedFromDistance(SmartDashboard.getNumber("Auto/rad", -1));
+    // calcShooterSpeedFromDistance(SmartDashboard.getNumber("Auto/rad", -1));
   }
 
   public static double getHubScoreRotation(double x, double y) {
     double leg1 = DynamicLocation.HUB.getY() - y;
     double leg2 = DynamicLocation.HUB.getX() - x;
 
-    return Math.atan(leg1/leg2) + Math.PI;
-
+    return Math.atan(leg1 / leg2) + Math.PI;
   }
 }
