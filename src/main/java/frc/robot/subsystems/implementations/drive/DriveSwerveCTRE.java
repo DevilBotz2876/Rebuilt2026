@@ -42,7 +42,7 @@ public class DriveSwerveCTRE extends DriveBase {
   private final CommandSwerveDrivetrain drivetrain;
   private DriveSettings settings;
 
-  @AutoLogOutput private boolean fieldOrientedDrive = true;
+  public boolean fieldOrientedDrive = true;
   // The field and robot centric swerve request
   private final SwerveRequest.FieldCentric driveFieldCentric;
   private final SwerveRequest.RobotCentric driveRobotCentric;
@@ -150,6 +150,7 @@ public class DriveSwerveCTRE extends DriveBase {
   public void periodic() {
     io.updateInputs(inputs, moduleInputs, drivetrain);
     Logger.processInputs("Drive", inputs);
+    Logger.recordOutput("Drive/isFieldOriented", fieldOrientedDrive);
     Logger.processInputs("Drive/Modules/frontleft", moduleInputs[0]);
     Logger.processInputs("Drive/Modules/frontright", moduleInputs[1]);
     Logger.processInputs("Drive/Modules/backleft", moduleInputs[2]);
