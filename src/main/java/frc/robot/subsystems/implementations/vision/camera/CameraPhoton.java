@@ -62,12 +62,12 @@ public class CameraPhoton extends CameraBase {
     camera = new PhotonCamera(getName());
     this.tagLayout = tagLayout;
     photonPoseEstimator = new PhotonPoseEstimator(tagLayout, robotToCamera);
-    SmartDashboard.putNumber(getName() + "/x", robotToCamera.getX());
-    SmartDashboard.putNumber(getName() + "/y", robotToCamera.getY());
-    SmartDashboard.putNumber(getName() + "/z", robotToCamera.getZ());
-    SmartDashboard.putNumber(getName() + "/roll", Units.radiansToDegrees(robotToCamera.getRotation().getX()));
-    SmartDashboard.putNumber(getName() + "/pitch", Units.radiansToDegrees(robotToCamera.getRotation().getY()));
-    SmartDashboard.putNumber(getName() + "/yaw", Units.radiansToDegrees(robotToCamera.getRotation().getZ()));
+    SmartDashboard.putNumber("Vision/" + getName() + "/x", robotToCamera.getX());
+    SmartDashboard.putNumber("Vision/" + getName() + "/y", robotToCamera.getY());
+    SmartDashboard.putNumber("Vision/" + getName() + "/z", robotToCamera.getZ());
+    SmartDashboard.putNumber("Vision/" + getName() + "/roll", Units.radiansToDegrees(robotToCamera.getRotation().getX()));
+    SmartDashboard.putNumber("Vision/" + getName() + "/pitch", Units.radiansToDegrees(robotToCamera.getRotation().getY()));
+    SmartDashboard.putNumber("Vision/" + getName() + "/yaw", Units.radiansToDegrees(robotToCamera.getRotation().getZ()));
 }
 
   @Override
@@ -123,7 +123,7 @@ public class CameraPhoton extends CameraBase {
             .getDistance(Translation3d.kZero);
 
     // poseMeasurements[0] = createMeasurement(result, inputs.cameraPose, inputs.targetIds);
-    photonPoseEstimator.setRobotToCameraTransform(new Transform3d(new Translation3d(SmartDashboard.getNumber(getName() + "/x", 0),SmartDashboard.getNumber(getName() + "/y", 0),SmartDashboard.getNumber(getName() + "/z", 0)),new Rotation3d(Units.degreesToRadians(SmartDashboard.getNumber(getName() + "/roll", 0)), Units.degreesToRadians(SmartDashboard.getNumber(getName() + "/pitch", 0)), Units.degreesToRadians(SmartDashboard.getNumber(getName() + "/yaw", 0)))));
+    photonPoseEstimator.setRobotToCameraTransform(new Transform3d(new Translation3d(SmartDashboard.getNumber("Vision/" + getName() + "/x", 0),SmartDashboard.getNumber("Vision/" + getName() + "/y", 0),SmartDashboard.getNumber("Vision/" + getName() + "/z", 0)),new Rotation3d(Units.degreesToRadians(SmartDashboard.getNumber("Vision/" + getName() + "/roll", 0)), Units.degreesToRadians(SmartDashboard.getNumber("Vision/" + getName() + "/pitch", 0)), Units.degreesToRadians(SmartDashboard.getNumber("Vision/" + getName() + "/yaw", 0)))));
     poseMeasurements[0] = createMeasurement(result);
     inputs.targetIds = poseMeasurements[0].targetIds;
   }
