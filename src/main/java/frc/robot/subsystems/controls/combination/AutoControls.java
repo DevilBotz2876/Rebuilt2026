@@ -50,8 +50,7 @@ public class AutoControls {
     }
     
     public static void registerNamedCommands(Drive drive,
-      Flywheel topIntake,
-      Flywheel bottomIntake,
+      Flywheel intake,
       Flywheel shooter,
       Flywheel indexer,
       Flywheel conveyor,
@@ -60,20 +59,19 @@ public class AutoControls {
     Command stopShooter = new MotorRunVoltageCommand((Motor) shooter, () -> 0.0);
     Command stopIndexer = new MotorRunVoltageCommand((Motor) indexer, () -> 0.0);
     Command stopConveyor = new MotorRunVoltageCommand((Motor) conveyor, () -> 0.0);
-    Command stopTopIntake = new MotorRunVoltageCommand((Motor) topIntake, () -> 0.0);
-    Command stopBottomIntake = new MotorRunVoltageCommand((Motor) bottomIntake, () -> 0.0);
+    Command stopIntake = new MotorRunVoltageCommand((Motor) intake, () -> 0.0);
 
     // Launching related commands
     Command launchSequentialParallel =
         new SequentialCommandGroup(
-            new FlywheelToVelocity(shooter, () -> driverSettings.shooterLaunchRPM),
+            new FlywheelToVelocity(shooter, () -> driverSettings.shooterDefaultLaunchRPM),
             new ParallelCommandGroup(
                 new FlywheelToVelocity(indexer, () -> driverSettings.indexerLaunchRPM),
                 new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorLaunchRPM)));
 
     Command launchAllSequential =
         new SequentialCommandGroup(
-            new FlywheelToVelocity(shooter, () -> driverSettings.shooterLaunchRPM),
+            new FlywheelToVelocity(shooter, () -> driverSettings.shooterDefaultLaunchRPM),
             new FlywheelToVelocity(indexer, () -> driverSettings.indexerLaunchRPM),
             new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorLaunchRPM));
 
@@ -82,18 +80,12 @@ public class AutoControls {
     // Intake Commands
 
     Command intakeIn =
-        new ParallelCommandGroup(
-            new FlywheelToVelocity(topIntake, () -> driverSettings.intakeRPM),
-            new FlywheelToVelocity(bottomIntake, () -> driverSettings.intakeRPM));
+            new FlywheelToVelocity(intake, () -> driverSettings.intakeRPM);
 
     Command intakeOut =
         new ParallelCommandGroup(
-            new FlywheelToVelocity(topIntake, () -> -driverSettings.intakeRPM),
-            new FlywheelToVelocity(bottomIntake, () -> -driverSettings.intakeRPM),
+            new FlywheelToVelocity(intake, () -> -driverSettings.intakeRPM),
             new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorReverseRPM));
-
-    Command stopIntake = stopTopIntake.alongWith(stopBottomIntake);
-
 
     // Auto commands
         // launch for the (time of one ball + timeout) * 8 balls
