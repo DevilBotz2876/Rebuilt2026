@@ -1,9 +1,12 @@
 package frc.robot.subsystems.controls.flywheel;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.common.flywheel.FlywheelCommand;
+import frc.robot.commands.common.flywheel.FlywheelToVelocity;
 import frc.robot.commands.common.motor.MotorBringUpCommand;
 import frc.robot.subsystems.interfaces.Flywheel;
 import frc.robot.subsystems.interfaces.Motor;
@@ -38,11 +41,10 @@ public class ShooterControls {
               return 0.0;
             }));
 
-    // controller
-    //     .leftTrigger()
-    //     .onTrue(
-    //         new InstantCommand(() -> ((Motor) shooter).runVoltage(0.0),
-    // shooterFlywheelSubsystem));
+    controller
+        .leftTrigger()
+        .onTrue(
+            new InstantCommand(() -> ((Motor) shooter).runVoltage(0.0), shooterFlywheelSubsystem));
 
     /*
      * Indexer
@@ -69,11 +71,10 @@ public class ShooterControls {
               return 0.0;
             }));
 
-    // controller
-    //     .leftBumper()
-    //     .onTrue(
-    //         new InstantCommand(() -> ((Motor) indexer).runVoltage(0.0),
-    // indexerFlywheelSubsystem));
+    controller
+        .leftBumper()
+        .onTrue(
+            new InstantCommand(() -> ((Motor) indexer).runVoltage(0.0), indexerFlywheelSubsystem));
   }
 
   public static void setupSpeedController(
@@ -104,7 +105,7 @@ public class ShooterControls {
               return 0.0;
             }));
 
-    // controller.leftTrigger().onTrue(new FlywheelToVelocity(shooter, () -> 0.0));
+    controller.leftTrigger().onTrue(new FlywheelToVelocity(shooter, () -> 0.0));
 
     /*
      * Indexer
@@ -131,10 +132,11 @@ public class ShooterControls {
               return 0.0;
             }));
 
-    // controller.leftBumper().onTrue(new FlywheelToVelocity(indexer, () -> 0.0));
+    controller.leftBumper().onTrue(new FlywheelToVelocity(indexer, () -> 0.0));
   }
 
-  public static void setupMainController(Flywheel shooter, CommandXboxController controller) {
+  public static void setupMainController(
+      Flywheel shooter, Flywheel indexer, CommandXboxController controller) {
     SubsystemBase shooterFlywheelSubsystem = (SubsystemBase) shooter;
     shooterFlywheelSubsystem.setDefaultCommand(
         new FlywheelCommand(
@@ -142,9 +144,17 @@ public class ShooterControls {
             () -> {
               if (controller.pov(0).getAsBoolean()) {
                 return 1.0;
-              } else if (controller.pov(12).getAsBoolean()) {
+              } else if (controller.pov(180).getAsBoolean()) {
                 return -1.0;
               }
+              return 0.0;
+            }));
+
+    SubsystemBase indexerFlywheelSubsystem = (SubsystemBase) indexer;
+    indexerFlywheelSubsystem.setDefaultCommand(
+        new FlywheelCommand(
+            indexer,
+            () -> {
               return 0.0;
             }));
   }

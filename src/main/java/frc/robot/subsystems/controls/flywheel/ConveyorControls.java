@@ -1,8 +1,11 @@
 package frc.robot.subsystems.controls.flywheel;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.common.flywheel.FlywheelCommand;
+import frc.robot.commands.common.flywheel.FlywheelToVelocity;
 import frc.robot.commands.common.flywheel.FlywheelCommand;
 import frc.robot.commands.common.motor.MotorBringUpCommand;
 import frc.robot.subsystems.interfaces.Flywheel;
@@ -30,11 +33,11 @@ public class ConveyorControls {
               return 0.0;
             }));
 
-    // controller
-    // .b()
-    // .onTrue(
-    //     new InstantCommand(
-    //         () -> ((Motor) conveyorFlywheel).runVoltage(0.0), conveyorFlywheelSubsystem));
+    controller
+        .b()
+        .onTrue(
+            new InstantCommand(
+                () -> ((Motor) conveyorFlywheel).runVoltage(0.0), conveyorFlywheelSubsystem));
   }
 
   public static void setupSpeedController(
@@ -58,6 +61,17 @@ public class ConveyorControls {
               return 0.0;
             }));
 
-    // controller.b().onTrue(new FlywheelToVelocity(conveyorFlywheel, () -> 0.0));
+    controller.b().onTrue(new FlywheelToVelocity(conveyorFlywheel, () -> 0.0));
+  }
+
+  public static void setupMainController(
+      Flywheel conveyorFlywheel, CommandXboxController controller) {
+    SubsystemBase conveyorFlywheelSubsystem = (SubsystemBase) conveyorFlywheel;
+    conveyorFlywheelSubsystem.setDefaultCommand(
+        new FlywheelCommand(
+            conveyorFlywheel,
+            () -> {
+              return 0.0;
+            }));
   }
 }

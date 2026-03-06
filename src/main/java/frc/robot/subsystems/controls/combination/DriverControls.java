@@ -80,19 +80,6 @@ public class DriverControls {
     Command stopIntakeArm = new MotorRunVoltageCommand((Motor) intakeArm, () -> 0.0);
 
     // Launching related commands
-    Command launchSequentialParallel =
-        new SequentialCommandGroup(
-            new FlywheelToVelocity(shooter, () -> settings.shooterDefaultLaunchRPM),
-            new ParallelCommandGroup(
-                new FlywheelToVelocity(indexer, () -> settings.indexerLaunchRPM),
-                new FlywheelToVelocity(conveyor, () -> settings.conveyorLaunchRPM)));
-
-    Command launchAllSequential =
-        new SequentialCommandGroup(
-            new FlywheelToVelocity(shooter, () -> settings.shooterDefaultLaunchRPM),
-            new FlywheelToVelocity(indexer, () -> settings.indexerLaunchRPM),
-            new FlywheelToVelocity(conveyor, () -> settings.conveyorLaunchRPM));
-
     SmartDashboard.putNumber("ShooterRPMScore", settings.shooterDefaultLaunchRPM);
     Command launchSequentialParallelSmartDashBoard =
         new SequentialCommandGroup(
@@ -119,6 +106,8 @@ public class DriverControls {
     Command DeployerVoltagePlus = new MotorRunVoltageCommand((Motor) intakeArm, () -> 0.5);
 
     // binding
+
+    // shooting
     controller
         .rightTrigger()
         .whileTrue(launchSequentialParallelSmartDashBoard)
@@ -126,6 +115,7 @@ public class DriverControls {
         .onFalse(stopIndexer)
         .onFalse(stopConveyor);
 
+    // set shooter speed
     controller
         .y()
         .onTrue(
@@ -148,9 +138,11 @@ public class DriverControls {
                     SmartDashboard.putNumber(
                         "ShooterRPMScore", settings.shooterAgainstHubLaunchRPM)));
 
+    // intake
     controller.leftTrigger().whileTrue(intakeIn).onFalse(stopIntake).onFalse(stopConveyor);
     controller.leftBumper().whileTrue(intakeOut).onFalse(stopIntake).onFalse(stopConveyor);
 
+    // deployer
     controller
         .pov(90)
         .whileTrue(DeployerVoltagePlus)

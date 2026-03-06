@@ -140,9 +140,9 @@ public class RobotConfig {
         DriverControlsSettings.getDriverControlsSettings(properties);
     DriveControls.setupController(drive, mainController);
 
-    IntakeControls.setupSpeedController(intakeFlywheel, mainController);
-    ShooterControls.setupSpeedController(shooterFlywheel, indexerFlywheel, mainController);
-    ConveyorControls.setupSpeedController(conveyorFlywheel, mainController);
+    IntakeControls.setupMainController(intakeFlywheel, mainController);
+    ShooterControls.setupMainController(shooterFlywheel, indexerFlywheel, mainController);
+    ConveyorControls.setupMainController(conveyorFlywheel, mainController);
     IntakeArmControls.setupController(intakeArm, mainController);
 
     DriverControls.setupMainController(

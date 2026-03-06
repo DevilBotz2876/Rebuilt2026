@@ -48,7 +48,7 @@ public class DriveSwerveCTRE extends DriveBase {
   private final CommandSwerveDrivetrain drivetrain;
   private DriveSettings settings;
 
-  public boolean fieldOrientedDrive = true;
+  private boolean fieldOrientedDrive = true;
   // The field and robot centric swerve request
   private final SwerveRequest.FieldCentric driveFieldCentric;
   private final SwerveRequest.RobotCentric driveRobotCentric;
