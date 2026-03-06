@@ -74,8 +74,12 @@ public class RobotConfig {
 
   public RobotConfig(Properties robotProperties) {
     if (robotProperties.getProperty("robot.drive").equals("ctre")) {
-      this.drive = new DriveSwerveCTRE(new TunerConstants(robotProperties), Double.parseDouble(robotProperties.getProperty("robot.drive.maxSpeedMetersPerSecond")), RotationsPerSecond.of(0.15)
-            .in(RadiansPerSecond));
+      this.drive =
+          new DriveSwerveCTRE(
+              new TunerConstants(robotProperties),
+              Double.parseDouble(
+                  robotProperties.getProperty("robot.drive.maxSpeedMetersPerSecond")),
+              RotationsPerSecond.of(0.15).in(RadiansPerSecond));
     } else {
       drive = new DriveBase("BASE");
     }

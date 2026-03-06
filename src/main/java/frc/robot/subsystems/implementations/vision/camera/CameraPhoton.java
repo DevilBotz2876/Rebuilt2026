@@ -8,27 +8,20 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.AngleUnit;
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import static edu.wpi.first.units.Units.Degrees;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.function.ToIntFunction;
-
-import org.littletonrobotics.junction.Logger;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.MultiTargetPNPResult;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class CameraPhoton extends CameraBase {
-
   public static CameraPhoton createCameraPhoton(
       Properties properties, String name, AprilTagFieldLayout layout) {
 
@@ -39,9 +32,15 @@ public class CameraPhoton extends CameraBase {
                 Double.parseDouble(properties.getProperty(name + ".robotToCamera.yMeters")),
                 Double.parseDouble(properties.getProperty(name + ".robotToCamera.zMeters"))),
             new Rotation3d(
-                Units.degreesToRadians(Double.parseDouble(properties.getProperty(name + ".robotToCamera.rollDegrees"))),
-                Units.degreesToRadians(Double.parseDouble(properties.getProperty(name + ".robotToCamera.pitchDegrees"))),
-                Units.degreesToRadians(Double.parseDouble(properties.getProperty(name + ".robotToCamera.yawDegrees")))));
+                Units.degreesToRadians(
+                    Double.parseDouble(
+                        properties.getProperty(name + ".robotToCamera.rollDegrees"))),
+                Units.degreesToRadians(
+                    Double.parseDouble(
+                        properties.getProperty(name + ".robotToCamera.pitchDegrees"))),
+                Units.degreesToRadians(
+                    Double.parseDouble(
+                        properties.getProperty(name + ".robotToCamera.yawDegrees")))));
 
     CameraSettings settings = CameraSettings.getSettings(properties, name);
 
@@ -61,14 +60,21 @@ public class CameraPhoton extends CameraBase {
     super(name, robotToCamera, settings);
     camera = new PhotonCamera(getName());
     this.tagLayout = tagLayout;
-    photonPoseEstimator = new PhotonPoseEstimator(tagLayout, robotToCamera);
+    photonPoseEstimator =
+        new PhotonPoseEstimator(
+            tagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToCamera);
     SmartDashboard.putNumber("Vision/" + getName() + "/x", robotToCamera.getX());
     SmartDashboard.putNumber("Vision/" + getName() + "/y", robotToCamera.getY());
     SmartDashboard.putNumber("Vision/" + getName() + "/z", robotToCamera.getZ());
-    SmartDashboard.putNumber("Vision/" + getName() + "/roll", Units.radiansToDegrees(robotToCamera.getRotation().getX()));
-    SmartDashboard.putNumber("Vision/" + getName() + "/pitch", Units.radiansToDegrees(robotToCamera.getRotation().getY()));
-    SmartDashboard.putNumber("Vision/" + getName() + "/yaw", Units.radiansToDegrees(robotToCamera.getRotation().getZ()));
-}
+    SmartDashboard.putNumber(
+        "Vision/" + getName() + "/roll",
+        Units.radiansToDegrees(robotToCamera.getRotation().getX()));
+    SmartDashboard.putNumber(
+        "Vision/" + getName() + "/pitch",
+        Units.radiansToDegrees(robotToCamera.getRotation().getY()));
+    SmartDashboard.putNumber(
+        "Vision/" + getName() + "/yaw", Units.radiansToDegrees(robotToCamera.getRotation().getZ()));
+  }
 
   @Override
   public void update(CameraInputs inputs) {
@@ -123,7 +129,19 @@ public class CameraPhoton extends CameraBase {
             .getDistance(Translation3d.kZero);
 
     // poseMeasurements[0] = createMeasurement(result, inputs.cameraPose, inputs.targetIds);
-    photonPoseEstimator.setRobotToCameraTransform(new Transform3d(new Translation3d(SmartDashboard.getNumber("Vision/" + getName() + "/x", 0),SmartDashboard.getNumber("Vision/" + getName() + "/y", 0),SmartDashboard.getNumber("Vision/" + getName() + "/z", 0)),new Rotation3d(Units.degreesToRadians(SmartDashboard.getNumber("Vision/" + getName() + "/roll", 0)), Units.degreesToRadians(SmartDashboard.getNumber("Vision/" + getName() + "/pitch", 0)), Units.degreesToRadians(SmartDashboard.getNumber("Vision/" + getName() + "/yaw", 0)))));
+    photonPoseEstimator.setRobotToCameraTransform(
+        new Transform3d(
+            new Translation3d(
+                SmartDashboard.getNumber("Vision/" + getName() + "/x", 0),
+                SmartDashboard.getNumber("Vision/" + getName() + "/y", 0),
+                SmartDashboard.getNumber("Vision/" + getName() + "/z", 0)),
+            new Rotation3d(
+                Units.degreesToRadians(
+                    SmartDashboard.getNumber("Vision/" + getName() + "/roll", 0)),
+                Units.degreesToRadians(
+                    SmartDashboard.getNumber("Vision/" + getName() + "/pitch", 0)),
+                Units.degreesToRadians(
+                    SmartDashboard.getNumber("Vision/" + getName() + "/yaw", 0)))));
     poseMeasurements[0] = createMeasurement(result);
     inputs.targetIds = poseMeasurements[0].targetIds;
   }
@@ -139,10 +157,7 @@ public class CameraPhoton extends CameraBase {
 
   private VisionPoseMeasurement createMeasurement(PhotonPipelineResult result) {
     VisionPoseMeasurement measurement = new VisionPoseMeasurement();
-    Optional<EstimatedRobotPose> estPose = photonPoseEstimator.estimateCoprocMultiTagPose(result);
-    if (estPose.isEmpty()) {
-      estPose = photonPoseEstimator.estimateLowestAmbiguityPose(result);
-    }
+    Optional<EstimatedRobotPose> estPose = photonPoseEstimator.estimateLowestAmbiguityPose(result);
 
     if (estPose.isEmpty()) {
       return measurement;
@@ -161,7 +176,6 @@ public class CameraPhoton extends CameraBase {
 
     Transform3d robotToCamera = getRobotToCamera();
     measurement.robotPose = estPose.get().estimatedPose.toPose2d();
-    Logger.recordOutput("Vision/backRight/cameraPose", estPose.get().estimatedPose.plus(robotToCamera));
     // robot to camera + camera to target = robot to target
     // TODO: Determine best start location for calculated distance
     // the distance should be measured at a place that is easy to verify in person
