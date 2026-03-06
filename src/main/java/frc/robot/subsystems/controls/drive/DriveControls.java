@@ -22,12 +22,12 @@ public class DriveControls {
      *    Back Button = Zero Pose
      *
      *    Start Button = Toggle Drive Orientation
-     *    Start Button + Back Button = reset field centric heading
      */
     controller
         .back()
         .and(controller.start().negate())
         .onTrue(new InstantCommand(() -> drive.resetOdometry()));
+
     controller
         .start()
         .onTrue(
@@ -36,6 +36,7 @@ public class DriveControls {
                     drive.setFieldOrientedDrive(
                         !drive.isFieldOrientedDrive()))); // Toggle Drive Orientation
 
+    // Reset Field Centric Heading
     SmartDashboard.putData(
         driveSubsystem.getName() + "/Reset Field Centric Heading",
         drive.resetFieldCentricHeading().onlyIf(() -> drive.isFieldOrientedDrive()));
