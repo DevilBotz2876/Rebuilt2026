@@ -2,8 +2,6 @@ package frc.robot.subsystems.implementations.drive;
 
 import static edu.wpi.first.units.Units.*;
 
-import java.util.Properties;
-
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.Matrix;
@@ -17,9 +15,7 @@ import frc.robot.io.interfaces.DriveIO;
 import frc.robot.io.interfaces.DriveIOInputsAutoLogged;
 import frc.robot.io.interfaces.ModuleIOInputsAutoLogged;
 import frc.robot.subsystems.implementations.drive.generated.CommandSwerveDrivetrain;
-import pabeles.concurrency.ConcurrencyOps.Reset;
-
-import org.littletonrobotics.junction.AutoLogOutput;
+import java.util.Properties;
 import org.littletonrobotics.junction.Logger;
 
 // A wrapper of the DriveBase around the generated CommandSwerveDrivetrain subsystem from the CTRE
@@ -29,11 +25,16 @@ public class DriveSwerveCTRE extends DriveBase {
   public static class DriveSettings {
     public double maxSpeedMetersPerSecond;
     public double maxAngularRateRadiansPerSecond;
-    
+
     public static DriveSettings getDriveSettings(Properties properties) {
       DriveSettings settings = new DriveSettings();
-      settings.maxSpeedMetersPerSecond = Double.parseDouble(properties.getProperty("robot.drive.maxSpeedMetersPerSecond"));
-      settings.maxAngularRateRadiansPerSecond = RotationsPerSecond.of(Double.parseDouble(properties.getProperty("robot.drive.maxAngularRateRotationsPerSecond"))).in(RadiansPerSecond);
+      settings.maxSpeedMetersPerSecond =
+          Double.parseDouble(properties.getProperty("robot.drive.maxSpeedMetersPerSecond"));
+      settings.maxAngularRateRadiansPerSecond =
+          RotationsPerSecond.of(
+                  Double.parseDouble(
+                      properties.getProperty("robot.drive.maxAngularRateRotationsPerSecond")))
+              .in(RadiansPerSecond);
 
       return settings;
     }
@@ -61,19 +62,24 @@ public class DriveSwerveCTRE extends DriveBase {
     drivetrain = tunerConstants.createDrivetrain();
     this.settings = settings;
     // Ensure max speed is less than or equal to max speed at 12v
-    this.settings.maxSpeedMetersPerSecond = Math.min(this.settings.maxSpeedMetersPerSecond, tunerConstants.kSpeedAt12Volts.in(MetersPerSecond));
+    this.settings.maxSpeedMetersPerSecond =
+        Math.min(
+            this.settings.maxSpeedMetersPerSecond,
+            tunerConstants.kSpeedAt12Volts.in(MetersPerSecond));
 
     driveFieldCentric =
         new SwerveRequest.FieldCentric()
             .withDeadband(this.settings.maxSpeedMetersPerSecond * 0.1)
-            .withRotationalDeadband(this.settings.maxAngularRateRadiansPerSecond * 0.1) // Add a 10% deadband
+            .withRotationalDeadband(
+                this.settings.maxAngularRateRadiansPerSecond * 0.1) // Add a 10% deadband
             .withDriveRequestType(
                 DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
 
     driveRobotCentric =
         new SwerveRequest.RobotCentric()
             .withDeadband(this.settings.maxSpeedMetersPerSecond * 0.1)
-            .withRotationalDeadband(this.settings.maxAngularRateRadiansPerSecond * 0.1) // Add a 10% deadband
+            .withRotationalDeadband(
+                this.settings.maxAngularRateRadiansPerSecond * 0.1) // Add a 10% deadband
             .withDriveRequestType(
                 DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
   }
@@ -167,7 +173,7 @@ public class DriveSwerveCTRE extends DriveBase {
     }
   }
 
-  //Reset the field-centric heading
+  // Reset the field-centric heading
   @Override
   public Command resetFieldCentricHeading() {
     return drivetrain.runOnce(drivetrain::seedFieldCentric);

@@ -32,11 +32,11 @@ public class ConveyorControls {
               return 0.0;
             }));
 
-    // controller
-        // .b()
-        // .onTrue(
-        //     new InstantCommand(
-        //         () -> ((Motor) conveyorFlywheel).runVoltage(0.0), conveyorFlywheelSubsystem));
+    controller
+        .b()
+        .onTrue(
+            new InstantCommand(
+                () -> ((Motor) conveyorFlywheel).runVoltage(0.0), conveyorFlywheelSubsystem));
   }
 
   public static void setupSpeedController(
@@ -60,6 +60,17 @@ public class ConveyorControls {
               return 0.0;
             }));
 
-    // controller.b().onTrue(new FlywheelToVelocity(conveyorFlywheel, () -> 0.0));
+    controller.b().onTrue(new FlywheelToVelocity(conveyorFlywheel, () -> 0.0));
+  }
+
+  public static void setupMainController(
+      Flywheel conveyorFlywheel, CommandXboxController controller) {
+    SubsystemBase conveyorFlywheelSubsystem = (SubsystemBase) conveyorFlywheel;
+    conveyorFlywheelSubsystem.setDefaultCommand(
+        new FlywheelCommand(
+            conveyorFlywheel,
+            () -> {
+              return 0.0;
+            }));
   }
 }

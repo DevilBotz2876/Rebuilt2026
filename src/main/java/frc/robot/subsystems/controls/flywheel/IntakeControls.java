@@ -13,7 +13,7 @@ import frc.robot.subsystems.interfaces.Motor;
 // set the default commands for the intake subsystems
 public class IntakeControls {
   public static void setupVoltageController(
-      Flywheel topFlywheel, CommandXboxController controller) {
+      Flywheel intakeFlywheel, CommandXboxController controller) {
 
     /*
      * Top Flywheel
@@ -22,13 +22,13 @@ public class IntakeControls {
      *  Up D-PAD: increase volts
      *  Down D-PAD: decrease volts
      */
-    SubsystemBase topFlywheelSubsystem = (SubsystemBase) topFlywheel;
-    topFlywheelSubsystem.setDefaultCommand(
+    SubsystemBase intakeFlywheelSubsystem = (SubsystemBase) intakeFlywheel;
+    intakeFlywheelSubsystem.setDefaultCommand(
         new MotorBringUpCommand(
-            (Motor) topFlywheel,
+            (Motor) intakeFlywheel,
             () -> {
               if (!SmartDashboard.getString("Selected Subsystems/Selected", "UNKNOWN")
-                  .equals(topFlywheelSubsystem.getName())) {
+                  .equals(intakeFlywheelSubsystem.getName())) {
                 return 0.0;
               }
 
@@ -40,13 +40,15 @@ public class IntakeControls {
               return 0.0;
             }));
 
-    // controller
-    //     .rightTrigger()
-    //     .onTrue(
-    //         new InstantCommand(() -> ((Motor) topFlywheel).runVoltage(0.0), topFlywheelSubsystem));
+    controller
+        .rightTrigger()
+        .onTrue(
+            new InstantCommand(
+                () -> ((Motor) intakeFlywheel).runVoltage(0.0), intakeFlywheelSubsystem));
   }
 
-  public static void setupSpeedController(Flywheel topFlywheel, CommandXboxController controller) {
+  public static void setupSpeedController(
+      Flywheel intakeFlywheel, CommandXboxController controller) {
 
     /*
      * Top Flywheel
@@ -55,13 +57,13 @@ public class IntakeControls {
      *  Up D-PAD: increase volts
      *  Down D-PAD: decrease volts
      */
-    SubsystemBase topFlywheelSubsystem = (SubsystemBase) topFlywheel;
-    topFlywheelSubsystem.setDefaultCommand(
+    SubsystemBase intakeFlywheelSubsystem = (SubsystemBase) intakeFlywheel;
+    intakeFlywheelSubsystem.setDefaultCommand(
         new FlywheelCommand(
-            topFlywheel,
+            intakeFlywheel,
             () -> {
               if (!SmartDashboard.getString("Selected Subsystems/Selected", "UNKNOWN")
-                  .equals(topFlywheelSubsystem.getName())) {
+                  .equals(intakeFlywheelSubsystem.getName())) {
                 return 0.0;
               }
 
@@ -73,6 +75,17 @@ public class IntakeControls {
               return 0.0;
             }));
 
-    // controller.rightTrigger().onTrue(new FlywheelToVelocity(topFlywheel, () -> 0.0));
+    controller.rightTrigger().onTrue(new FlywheelToVelocity(intakeFlywheel, () -> 0.0));
+  }
+
+  public static void setupMainController(
+      Flywheel intakeFlywheel, CommandXboxController controller) {
+    SubsystemBase intakeFlywheelSubsystem = (SubsystemBase) intakeFlywheel;
+    intakeFlywheelSubsystem.setDefaultCommand(
+        new FlywheelCommand(
+            intakeFlywheel,
+            () -> {
+              return 0.0;
+            }));
   }
 }
