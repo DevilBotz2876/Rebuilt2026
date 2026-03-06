@@ -4,15 +4,12 @@ import static edu.wpi.first.units.Units.*;
 
 import java.util.Properties;
 
-import java.util.function.Supplier;
-
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -56,7 +53,6 @@ public class DriveSwerveCTRE extends DriveBase {
   private final SwerveRequest.RobotCentric driveRobotCentric;
   private final SwerveRequest.ApplyRobotSpeeds pathApplyRobotSpeeds; // the speeds for pathplanner
 
-
   DriveIO io = new DriveIO();
   private final DriveIOInputsAutoLogged inputs = new DriveIOInputsAutoLogged();
   private final ModuleIOInputsAutoLogged[] moduleInputs = {
@@ -91,7 +87,7 @@ public class DriveSwerveCTRE extends DriveBase {
 
     // SETUP PATHPLANNER
     RobotConfig config = null;
-    try{
+    try {
       config = RobotConfig.fromGUISettings();
     } catch (Exception e) {
       // Handle exception as needed
@@ -99,38 +95,40 @@ public class DriveSwerveCTRE extends DriveBase {
     }
 
     // Configure AutoBuilder last
-    if(config != null) {
+    if (config != null) {
       AutoBuilder.configure(
-              this::getPose, // Robot pose supplier
-              this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
-              () ->  drivetrain.getState().Speeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-              (speeds, feedforwards) -> {drivetrain.setControl(
-            pathApplyRobotSpeeds.withSpeeds(ChassisSpeeds.discretize(speeds, 0.020))
-                        .withWheelForceFeedforwardsX(feedforwards.robotRelativeForcesXNewtons())
-                        .withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesYNewtons())
-);
-              }, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
-              new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-                      new PIDConstants(10.0, 0.0, 0.0), // Translation PID constants
-                      new PIDConstants(7.0, 0.0, 0.0) // Rotation PID constants
+          this::getPose, // Robot pose supplier
+          this::resetOdometry, // Method to reset odometry (will be called if your auto has a
+          // starting pose)
+          () -> drivetrain.getState().Speeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+          (speeds, feedforwards) -> {
+            drivetrain.setControl(
+                pathApplyRobotSpeeds
+                    .withSpeeds(ChassisSpeeds.discretize(speeds, 0.020))
+                    .withWheelForceFeedforwardsX(feedforwards.robotRelativeForcesXNewtons())
+                    .withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesYNewtons()));
+          }, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally
+          // outputs individual module feedforwards
+          new PPHolonomicDriveController( // PPHolonomicController is the built in path following
+              // controller for holonomic drive trains
+              new PIDConstants(10.0, 0.0, 0.0), // Translation PID constants
+              new PIDConstants(7.0, 0.0, 0.0) // Rotation PID constants
               ),
-              config, // The robot configuration
-              () -> {
-                // Boolean supplier that controls when the path will be mirrored for the red alliance
-                // This will flip the path being followed to the red side of the field.
-                // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+          config, // The robot configuration
+          () -> {
+            // Boolean supplier that controls when the path will be mirrored for the red alliance
+            // This will flip the path being followed to the red side of the field.
+            // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-                var alliance = DriverStation.getAlliance();
-                if (alliance.isPresent()) {
-                  return alliance.get() == DriverStation.Alliance.Red;
-                }
-                return false;
-              },
-              this // Reference to this subsystem to set requirements
-      );
+            var alliance = DriverStation.getAlliance();
+            if (alliance.isPresent()) {
+              return alliance.get() == DriverStation.Alliance.Red;
             }
-
-
+            return false;
+          },
+          this // Reference to this subsystem to set requirements
+          );
+    }
   }
 
   @Override
@@ -178,6 +176,7 @@ public class DriveSwerveCTRE extends DriveBase {
   public void resetOdometry(Pose2d pose) {
     drivetrain.resetPose(pose);
   }
+
   @Override
   public void setPoseToMatchField() {
     // unsure what to do here
