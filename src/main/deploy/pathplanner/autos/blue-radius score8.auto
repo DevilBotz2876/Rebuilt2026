@@ -9,11 +9,23 @@
           "data": {
             "name": "Drive to Hub (Radius)"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Launch 8 From Known Distance SDB"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Shooter"
+          }
         }
       ]
     }
   },
   "resetOdom": false,
-  "folder": "blue",
+  "folder": null,
   "choreoAuto": false
 }

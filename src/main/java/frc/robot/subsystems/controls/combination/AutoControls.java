@@ -95,9 +95,25 @@ public class AutoControls {
 
     // Auto commands
     // launch for the (time of one ball + timeout) * 8 balls
+    Command launchSequentialParallelSmartDashBoard =
+        new SequentialCommandGroup(
+            new FlywheelToVelocity(shooter, () -> SmartDashboard.getNumber("ShooterRPMScore", driverSettings.shooterDefaultLaunchRPM)),
+            new ParallelCommandGroup(
+                new FlywheelToVelocity(indexer, () -> driverSettings.indexerLaunchRPM),
+                new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorLaunchRPM)));
+
     Command launch8FuelFromKnownDistance =
         new SequentialCommandGroup(
             launchAllSequential,
+            new WaitCommand(
+                (autoSettings.launchOneFuelSeconds + autoSettings.launchOneTimeoutSeconds) * 8),
+            stopShooter.asProxy().withTimeout(0.25),
+            stopConveyor.asProxy().withTimeout(0.25),
+            stopIndexer.asProxy().withTimeout(0.25));
+
+        Command launch8FuelSmartDashboard =
+        new SequentialCommandGroup(
+            launchSequentialParallelSmartDashBoard,
             new WaitCommand(
                 (autoSettings.launchOneFuelSeconds + autoSettings.launchOneTimeoutSeconds) * 8),
             stopShooter.asProxy().withTimeout(0.25),
@@ -109,6 +125,7 @@ public class AutoControls {
     PathConstraints constraints = new PathConstraints(1.0, 1.0, 2 * Math.PI, 4 * Math.PI);
 
     NamedCommands.registerCommand("Launch 8 From Known Distance", launch8FuelFromKnownDistance);
+    NamedCommands.registerCommand("Launch 8 From Known Distance SDB", launch8FuelSmartDashboard);
     NamedCommands.registerCommand(
         "Start Shooter from Radius Distance",
         Commands.defer(

@@ -11,6 +11,8 @@ import frc.robot.util.Elastic;
 import java.io.FileReader;
 import java.util.Properties;
 
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
 public class RobotContainer {
   public RobotConfig robotConfig;
 

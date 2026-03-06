@@ -62,7 +62,7 @@ public class CameraPhoton extends CameraBase {
     this.tagLayout = tagLayout;
     photonPoseEstimator =
         new PhotonPoseEstimator(
-            tagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToCamera);
+            tagLayout, robotToCamera);
     SmartDashboard.putNumber("Vision/" + getName() + "/x", robotToCamera.getX());
     SmartDashboard.putNumber("Vision/" + getName() + "/y", robotToCamera.getY());
     SmartDashboard.putNumber("Vision/" + getName() + "/z", robotToCamera.getZ());
