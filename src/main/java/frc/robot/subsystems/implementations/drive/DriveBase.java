@@ -2,6 +2,8 @@ package frc.robot.subsystems.implementations.drive;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.interfaces.Drive;
 
@@ -27,5 +29,10 @@ public class DriveBase extends SubsystemBase implements Drive {
   @Override
   public double getMaxAngularSpeed() {
     return 0;
+  }
+
+  @Override
+  public Command resetFieldCentricHeading() {
+    return Commands.none();
   }
 }

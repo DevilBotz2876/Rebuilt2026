@@ -81,8 +81,9 @@ public interface Drive {
   }
 
   public default void lockPose() {}
-  ;
 
   public default void addVisionMeasurement(
       Pose2d robotPose, double timestamp, Matrix<N3, N1> visionMeasurementStdDevs) {}
+
+  public Command resetFieldCentricHeading();
 }

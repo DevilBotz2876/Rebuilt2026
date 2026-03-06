@@ -62,4 +62,15 @@ public class ConveyorControls {
 
     controller.b().onTrue(new FlywheelToVelocity(conveyorFlywheel, () -> 0.0));
   }
+
+  public static void setupMainController(
+      Flywheel conveyorFlywheel, CommandXboxController controller) {
+    SubsystemBase conveyorFlywheelSubsystem = (SubsystemBase) conveyorFlywheel;
+    conveyorFlywheelSubsystem.setDefaultCommand(
+        new FlywheelCommand(
+            conveyorFlywheel,
+            () -> {
+              return 0.0;
+            }));
+  }
 }

@@ -133,4 +133,28 @@ public class ShooterControls {
 
     controller.leftBumper().onTrue(new FlywheelToVelocity(indexer, () -> 0.0));
   }
+
+  public static void setupMainController(
+      Flywheel shooter, Flywheel indexer, CommandXboxController controller) {
+    SubsystemBase shooterFlywheelSubsystem = (SubsystemBase) shooter;
+    shooterFlywheelSubsystem.setDefaultCommand(
+        new FlywheelCommand(
+            shooter,
+            () -> {
+              if (controller.pov(0).getAsBoolean()) {
+                return 1.0;
+              } else if (controller.pov(180).getAsBoolean()) {
+                return -1.0;
+              }
+              return 0.0;
+            }));
+
+    SubsystemBase indexerFlywheelSubsystem = (SubsystemBase) indexer;
+    indexerFlywheelSubsystem.setDefaultCommand(
+        new FlywheelCommand(
+            indexer,
+            () -> {
+              return 0.0;
+            }));
+  }
 }
