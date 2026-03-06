@@ -92,6 +92,15 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="nested-class-summary" id="nested-class-summary">
 <h2>Nested Class Summary</h2>
+<div class="caption"><span>Nested Classes</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Class</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>static class&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="DriveSwerveCTRE.DriveSettings.html" class="type-name-link" title="class in frc.robot.subsystems.implementations.drive">DriveSwerveCTRE.DriveSettings</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+</div>
 <div class="inherited-list">
 <h2 id="nested-classes-inherited-from-class-frc.robot.subsystems.implementations.drive.DriveBase">Nested classes/interfaces inherited from class&nbsp;frc.robot.subsystems.implementations.drive.<a href="DriveBase.html" title="class in frc.robot.subsystems.implementations.drive">DriveBase</a></h2>
 <code><a href="DriveBase.Constants.html" title="class in frc.robot.subsystems.implementations.drive">DriveBase.Constants</a></code></div>
@@ -105,7 +114,8 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(frc.robot.config.game.rebuilt2026.tunerConstants.TunerConstants)" class="member-name-link">DriveSwerveCTRE</a><wbr>(<a href="../../../config/game/rebuilt2026/tunerConstants/TunerConstants.html" title="class in frc.robot.config.game.rebuilt2026.tunerConstants">TunerConstants</a>&nbsp;tunerConstants)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(frc.robot.config.game.rebuilt2026.tunerConstants.TunerConstants,frc.robot.subsystems.implementations.drive.DriveSwerveCTRE.DriveSettings)" class="member-name-link">DriveSwerveCTRE</a><wbr>(<a href="../../../config/game/rebuilt2026/tunerConstants/TunerConstants.html" title="class in frc.robot.config.game.rebuilt2026.tunerConstants">TunerConstants</a>&nbsp;tunerConstants,
+ <a href="DriveSwerveCTRE.DriveSettings.html" title="class in frc.robot.subsystems.implementations.drive">DriveSwerveCTRE.DriveSettings</a>&nbsp;settings)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
@@ -151,23 +161,26 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#periodic()" class="member-name-link">periodic</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#resetOdometry()" class="member-name-link">resetOdometry</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>edu.wpi.first.wpilibj2.command.Command</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#resetFieldCentricHeading()" class="member-name-link">resetFieldCentricHeading</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#runVelocity(edu.wpi.first.math.kinematics.ChassisSpeeds)" class="member-name-link">runVelocity</a><wbr>(edu.wpi.first.math.kinematics.ChassisSpeeds&nbsp;velocity)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Sets the desired chassis speed</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setFieldOrientedDrive(boolean)" class="member-name-link">setFieldOrientedDrive</a><wbr>(boolean&nbsp;enable)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPose(edu.wpi.first.math.geometry.Pose2d)" class="member-name-link">setPose</a><wbr>(edu.wpi.first.math.geometry.Pose2d&nbsp;pose)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#resetOdometry()" class="member-name-link">resetOdometry</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPoseToMatchField()" class="member-name-link">setPoseToMatchField</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#runVelocity(edu.wpi.first.math.kinematics.ChassisSpeeds)" class="member-name-link">runVelocity</a><wbr>(edu.wpi.first.math.kinematics.ChassisSpeeds&nbsp;velocity)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Sets the desired chassis speed</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setFieldOrientedDrive(boolean)" class="member-name-link">setFieldOrientedDrive</a><wbr>(boolean&nbsp;enable)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPose(edu.wpi.first.math.geometry.Pose2d)" class="member-name-link">setPose</a><wbr>(edu.wpi.first.math.geometry.Pose2d&nbsp;pose)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPoseToMatchField()" class="member-name-link">setPoseToMatchField</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -195,9 +208,10 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(frc.robot.config.game.rebuilt2026.tunerConstants.TunerConstants)">
+<section class="detail" id="&lt;init&gt;(frc.robot.config.game.rebuilt2026.tunerConstants.TunerConstants,frc.robot.subsystems.implementations.drive.DriveSwerveCTRE.DriveSettings)">
 <h3>DriveSwerveCTRE</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">DriveSwerveCTRE</span><wbr><span class="parameters">(<a href="../../../config/game/rebuilt2026/tunerConstants/TunerConstants.html" title="class in frc.robot.config.game.rebuilt2026.tunerConstants">TunerConstants</a>&nbsp;tunerConstants)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">DriveSwerveCTRE</span><wbr><span class="parameters">(<a href="../../../config/game/rebuilt2026/tunerConstants/TunerConstants.html" title="class in frc.robot.config.game.rebuilt2026.tunerConstants">TunerConstants</a>&nbsp;tunerConstants,
+ <a href="DriveSwerveCTRE.DriveSettings.html" title="class in frc.robot.subsystems.implementations.drive">DriveSwerveCTRE.DriveSettings</a>&nbsp;settings)</span></div>
 </section>
 </li>
 </ul>
@@ -316,6 +330,18 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addVisionMeasurement</span><wbr><span class="parameters">(edu.wpi.first.math.geometry.Pose2d&nbsp;robotPose,
  double&nbsp;timestamp,
  edu.wpi.first.math.Matrix&lt;edu.wpi.first.math.numbers.N3,<wbr>edu.wpi.first.math.numbers.N1&gt;&nbsp;visionMeasurementStdDevs)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="resetFieldCentricHeading()">
+<h3>resetFieldCentricHeading</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">edu.wpi.first.wpilibj2.command.Command</span>&nbsp;<span class="element-name">resetFieldCentricHeading</span>()</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../interfaces/Drive.html#resetFieldCentricHeading()">resetFieldCentricHeading</a></code>&nbsp;in interface&nbsp;<code><a href="../../interfaces/Drive.html" title="interface in frc.robot.subsystems.interfaces">Drive</a></code></dd>
+<dt>Overrides:</dt>
+<dd><code><a href="DriveBase.html#resetFieldCentricHeading()">resetFieldCentricHeading</a></code>&nbsp;in class&nbsp;<code><a href="DriveBase.html" title="class in frc.robot.subsystems.implementations.drive">DriveBase</a></code></dd>
+</dl>
 </section>
 </li>
 </ul>
