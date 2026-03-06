@@ -1,11 +1,9 @@
 package frc.robot.subsystems.controls.flywheel;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.common.flywheel.FlywheelCommand;
-import frc.robot.commands.common.flywheel.FlywheelToVelocity;
 import frc.robot.commands.common.motor.MotorBringUpCommand;
 import frc.robot.subsystems.interfaces.Flywheel;
 import frc.robot.subsystems.interfaces.Motor;
@@ -43,7 +41,8 @@ public class ShooterControls {
     // controller
     //     .leftTrigger()
     //     .onTrue(
-    //         new InstantCommand(() -> ((Motor) shooter).runVoltage(0.0), shooterFlywheelSubsystem));
+    //         new InstantCommand(() -> ((Motor) shooter).runVoltage(0.0),
+    // shooterFlywheelSubsystem));
 
     /*
      * Indexer
@@ -73,7 +72,8 @@ public class ShooterControls {
     // controller
     //     .leftBumper()
     //     .onTrue(
-    //         new InstantCommand(() -> ((Motor) indexer).runVoltage(0.0), indexerFlywheelSubsystem));
+    //         new InstantCommand(() -> ((Motor) indexer).runVoltage(0.0),
+    // indexerFlywheelSubsystem));
   }
 
   public static void setupSpeedController(
@@ -140,7 +140,6 @@ public class ShooterControls {
         new FlywheelCommand(
             shooter,
             () -> {
-
               if (controller.pov(0).getAsBoolean()) {
                 return 1.0;
               } else if (controller.pov(12).getAsBoolean()) {

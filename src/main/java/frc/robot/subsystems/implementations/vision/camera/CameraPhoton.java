@@ -16,7 +16,6 @@ import java.util.function.ToIntFunction;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.MultiTargetPNPResult;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
@@ -60,9 +59,7 @@ public class CameraPhoton extends CameraBase {
     super(name, robotToCamera, settings);
     camera = new PhotonCamera(getName());
     this.tagLayout = tagLayout;
-    photonPoseEstimator =
-        new PhotonPoseEstimator(
-            tagLayout, robotToCamera);
+    photonPoseEstimator = new PhotonPoseEstimator(tagLayout, robotToCamera);
     SmartDashboard.putNumber("Vision/" + getName() + "/x", robotToCamera.getX());
     SmartDashboard.putNumber("Vision/" + getName() + "/y", robotToCamera.getY());
     SmartDashboard.putNumber("Vision/" + getName() + "/z", robotToCamera.getZ());

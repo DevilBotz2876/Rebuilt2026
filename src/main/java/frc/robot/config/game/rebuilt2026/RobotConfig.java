@@ -2,10 +2,10 @@ package frc.robot.config.game.rebuilt2026;
 
 import static edu.wpi.first.units.Units.*;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
@@ -33,7 +33,6 @@ import frc.robot.io.implementations.motor.MotorIOTalonFx;
 import frc.robot.io.implementations.motor.MotorIOTalonFx.TalonFxSettings;
 import frc.robot.subsystems.controls.arm.IntakeArmControls;
 import frc.robot.subsystems.controls.combination.AutoControls;
-import frc.robot.subsystems.controls.combination.DriverControls;
 import frc.robot.subsystems.controls.combination.AutoControls.AutoRoutineSettings;
 import frc.robot.subsystems.controls.combination.DriverControls;
 import frc.robot.subsystems.controls.combination.DriverControls.DriverControlsSettings;
@@ -57,8 +56,8 @@ import frc.robot.subsystems.interfaces.Elevator.ElevatorSettings;
 import frc.robot.subsystems.interfaces.Flywheel.FlywheelSettings;
 import frc.robot.subsystems.interfaces.SimpleMotor.SimpleMotorSettings;
 import frc.robot.subsystems.interfaces.Vision.VisionSettings;
-import java.util.Optional;
 import frc.robot.util.Elastic;
+import java.util.Optional;
 import java.util.Properties;
 
 /* Put all constants here with reasonable defaults */
@@ -82,7 +81,10 @@ public class RobotConfig {
   public RobotConfig(Properties robotProperties) {
     if (robotProperties.containsKey("robot.drive")) {
       if (robotProperties.getProperty("robot.drive").equals("ctre")) {
-        drive = new DriveSwerveCTRE(new TunerConstants(robotProperties), DriveSettings.getDriveSettings(robotProperties));
+        drive =
+            new DriveSwerveCTRE(
+                new TunerConstants(robotProperties),
+                DriveSettings.getDriveSettings(robotProperties));
       }
     } else {
       drive = new DriveBase("Stub");

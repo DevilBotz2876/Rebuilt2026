@@ -30,7 +30,7 @@ public class DriveBase extends SubsystemBase implements Drive {
   public double getMaxAngularSpeed() {
     return 0;
   }
-  
+
   @Override
   public Command resetFieldCentricHeading() {
     return Commands.none();

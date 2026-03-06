@@ -97,7 +97,11 @@ public class AutoControls {
     // launch for the (time of one ball + timeout) * 8 balls
     Command launchSequentialParallelSmartDashBoard =
         new SequentialCommandGroup(
-            new FlywheelToVelocity(shooter, () -> SmartDashboard.getNumber("ShooterRPMScore", driverSettings.shooterDefaultLaunchRPM)),
+            new FlywheelToVelocity(
+                shooter,
+                () ->
+                    SmartDashboard.getNumber(
+                        "ShooterRPMScore", driverSettings.shooterDefaultLaunchRPM)),
             new ParallelCommandGroup(
                 new FlywheelToVelocity(indexer, () -> driverSettings.indexerLaunchRPM),
                 new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorLaunchRPM)));
@@ -111,7 +115,7 @@ public class AutoControls {
             stopConveyor.asProxy().withTimeout(0.25),
             stopIndexer.asProxy().withTimeout(0.25));
 
-        Command launch8FuelSmartDashboard =
+    Command launch8FuelSmartDashboard =
         new SequentialCommandGroup(
             launchSequentialParallelSmartDashBoard,
             new WaitCommand(

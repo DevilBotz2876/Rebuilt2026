@@ -39,15 +39,15 @@ public class DriverControls {
      */
     public static DriverControlsSettings getDriverControlsSettings(Properties properties) {
       DriverControlsSettings settings = new DriverControlsSettings();
-    settings.shooterDefaultLaunchRPM =
+      settings.shooterDefaultLaunchRPM =
           Double.parseDouble(properties.getProperty("driverControls.shooterDefaultLaunchRPM"));
-    settings.shooterOutpostLaunchRPM =
+      settings.shooterOutpostLaunchRPM =
           Double.parseDouble(properties.getProperty("driverControls.shooterOutpostLaunchRPM"));
-    settings.shooterTrenchLaunchRPM =
+      settings.shooterTrenchLaunchRPM =
           Double.parseDouble(properties.getProperty("driverControls.shooterTrenchLaunchRPM"));
-    settings.shooterAgainstHubLaunchRPM =
+      settings.shooterAgainstHubLaunchRPM =
           Double.parseDouble(properties.getProperty("driverControls.shooterAgainstHubLaunchRPM"));
-    
+
       settings.indexerLaunchRPM =
           Double.parseDouble(properties.getProperty("driverControls.indexerLaunchRPM"));
       settings.conveyorLaunchRPM =
@@ -96,13 +96,19 @@ public class DriverControls {
     SmartDashboard.putNumber("ShooterRPMScore", settings.shooterDefaultLaunchRPM);
     Command launchSequentialParallelSmartDashBoard =
         new SequentialCommandGroup(
-            new FlywheelToVelocity(shooter, () -> SmartDashboard.getNumber("ShooterRPMScore", settings.shooterDefaultLaunchRPM)),
+            new FlywheelToVelocity(
+                shooter,
+                () ->
+                    SmartDashboard.getNumber("ShooterRPMScore", settings.shooterDefaultLaunchRPM)),
             new ParallelCommandGroup(
                 new FlywheelToVelocity(indexer, () -> settings.indexerLaunchRPM),
                 new FlywheelToVelocity(conveyor, () -> settings.conveyorLaunchRPM)));
 
     // Intake Commands
-    Command intakeIn = new ParallelCommandGroup(new FlywheelToVelocity(intake, () -> settings.intakeRPM), new FlywheelToVelocity(conveyor, () -> settings.conveyorLaunchRPM));
+    Command intakeIn =
+        new ParallelCommandGroup(
+            new FlywheelToVelocity(intake, () -> settings.intakeRPM),
+            new FlywheelToVelocity(conveyor, () -> settings.conveyorLaunchRPM));
 
     Command intakeOut =
         new ParallelCommandGroup(
@@ -122,22 +128,39 @@ public class DriverControls {
 
     controller
         .y()
-        .onTrue(new InstantCommand(() -> SmartDashboard.putNumber("ShooterRPMScore", settings.shooterOutpostLaunchRPM)));
-
+        .onTrue(
+            new InstantCommand(
+                () ->
+                    SmartDashboard.putNumber("ShooterRPMScore", settings.shooterOutpostLaunchRPM)));
 
     controller
         .x()
-        .onTrue(new InstantCommand(() -> SmartDashboard.putNumber("ShooterRPMScore", settings.shooterTrenchLaunchRPM)));
+        .onTrue(
+            new InstantCommand(
+                () ->
+                    SmartDashboard.putNumber("ShooterRPMScore", settings.shooterTrenchLaunchRPM)));
 
     controller
         .a()
-        .onTrue(new InstantCommand(() -> SmartDashboard.putNumber("ShooterRPMScore", settings.shooterAgainstHubLaunchRPM)));
+        .onTrue(
+            new InstantCommand(
+                () ->
+                    SmartDashboard.putNumber(
+                        "ShooterRPMScore", settings.shooterAgainstHubLaunchRPM)));
 
     controller.leftTrigger().whileTrue(intakeIn).onFalse(stopIntake).onFalse(stopConveyor);
     controller.leftBumper().whileTrue(intakeOut).onFalse(stopIntake).onFalse(stopConveyor);
 
-    controller.pov(90).whileTrue(DeployerVoltagePlus).onFalse(stopIntakeArm).whileFalse(DeployerVoltagePlus);
-    controller.pov(270).whileTrue(DeployerVoltageMinus).onFalse(stopIntakeArm).whileFalse(DeployerVoltagePlus);    
+    controller
+        .pov(90)
+        .whileTrue(DeployerVoltagePlus)
+        .onFalse(stopIntakeArm)
+        .whileFalse(DeployerVoltagePlus);
+    controller
+        .pov(270)
+        .whileTrue(DeployerVoltageMinus)
+        .onFalse(stopIntakeArm)
+        .whileFalse(DeployerVoltagePlus);
   }
 
   public static void setupAssistController(
