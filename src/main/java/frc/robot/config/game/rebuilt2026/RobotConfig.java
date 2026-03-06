@@ -1,5 +1,9 @@
 package frc.robot.config.game.rebuilt2026;
 
+import static edu.wpi.first.units.Units.*;
+
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
@@ -46,11 +50,17 @@ import frc.robot.subsystems.implementations.motor.ArmMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.ElevatorMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.FlywheelMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.SimpleMotorSubsystem;
+import frc.robot.subsystems.implementations.vision.VisionSubsystem;
+import frc.robot.subsystems.implementations.vision.camera.CameraBase;
+import frc.robot.subsystems.implementations.vision.camera.CameraPhoton;
+import frc.robot.subsystems.implementations.vision.camera.CameraPhotonSim;
 import frc.robot.subsystems.interfaces.Arm.ArmSettings;
 import frc.robot.subsystems.interfaces.Elevator.ElevatorSettings;
 import frc.robot.subsystems.interfaces.Flywheel.FlywheelSettings;
 import frc.robot.subsystems.interfaces.Motor;
 import frc.robot.subsystems.interfaces.SimpleMotor.SimpleMotorSettings;
+import frc.robot.subsystems.interfaces.Vision.VisionSettings;
+import java.util.Optional;
 import frc.robot.util.Elastic;
 
 import java.util.Properties;
@@ -62,6 +72,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 public class RobotConfig {
   public DriveBase drive;
   public SendableChooser<Command> autoChooser;
+  public VisionSubsystem vision;
   public FlywheelMotorSubsystem intakeFlywheel;
   public FlywheelMotorSubsystem shooterFlywheel;
   public FlywheelMotorSubsystem indexerFlywheel;
@@ -96,6 +107,7 @@ public class RobotConfig {
     conveyorFlywheel = createFlywheel(robotProperties, "conveyorFlywheel");
     intakeArm = createArm(robotProperties, "intakeArm");
 
+    vision = createVisionSubsystem(robotProperties);
     properties = robotProperties;
     if (robotProperties.containsKey("robot.drive")) {
       if (robotProperties.getProperty("robot.drive").equals("ctre")) {
@@ -426,5 +438,45 @@ public class RobotConfig {
       default:
         return DCMotor.getKrakenX60(1);
     }
+  }
+
+  private VisionSubsystem createVisionSubsystem(Properties robotProperties) {
+    VisionSettings settings = VisionSettings.getSettings(robotProperties);
+
+    if (Boolean.parseBoolean(robotProperties.getProperty("vision.addDrivetrain"))) {
+      vision =
+          new VisionSubsystem(
+              AprilTagFieldLayout.loadField(
+                  AprilTagFields.valueOf(robotProperties.getProperty("vision.fieldlayout"))),
+              Optional.of(drive::addVisionMeasurement),
+              settings);
+    } else {
+      vision =
+          new VisionSubsystem(
+              AprilTagFieldLayout.loadField(
+                  AprilTagFields.valueOf(robotProperties.getProperty("vision.fieldlayout"))),
+              Optional.empty(),
+              settings);
+    }
+
+    String[] cameraNames = robotProperties.getProperty("vision.cameras", "").split(", ");
+    for (String cameraName : cameraNames) {
+      switch (robotProperties.getProperty(cameraName + ".cameraType")) {
+        case "photon":
+          vision.addCamera(
+              CameraPhoton.createCameraPhoton(
+                  robotProperties, cameraName, vision.getFieldLayout()));
+          break;
+        case "photonSim":
+          vision.addCamera(
+              CameraPhotonSim.createCameraPhotonSim(
+                  robotProperties, cameraName, vision.getFieldLayout(), () -> drive.getPose()));
+          break;
+        default:
+          vision.addCamera(CameraBase.createCameraBase(robotProperties, cameraName));
+          break;
+      }
+    }
+    return vision;
   }
 }
