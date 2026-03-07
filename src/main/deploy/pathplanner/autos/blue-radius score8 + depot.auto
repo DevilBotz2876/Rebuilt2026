@@ -57,25 +57,13 @@
         {
           "type": "named",
           "data": {
-            "name": "Rotate to score"
+            "name": "Drive to Hub (Radius)"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Launch From Depot"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 3.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Stop Launching"
+            "name": "Launch 8 From Known Distance SDB"
           }
         }
       ]
