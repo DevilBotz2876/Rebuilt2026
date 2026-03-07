@@ -177,7 +177,7 @@ public class AutoControls {
     NamedCommands.registerCommand(
         "Drive to Outpost",
         DynamicLocation.createPathfindingToLocationCommand(
-            DynamicLocation.OUTPOST, Rotation2d.kZero, constraints));
+            DynamicLocation.OUTPOST, Rotation2d.k180deg, constraints));
     NamedCommands.registerCommand(
         "Drive to Depot",
         DynamicLocation.createPathfindingToLocationCommand(

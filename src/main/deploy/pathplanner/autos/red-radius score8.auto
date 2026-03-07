@@ -5,21 +5,27 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "red-Center Hub to Score Location"
+            "name": "Drive to Hub (Radius)"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Launch 8 From Known Distance"
+            "name": "Launch 8 From Known Distance SDB"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Shooter"
           }
         }
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": "red",
   "choreoAuto": false
 }

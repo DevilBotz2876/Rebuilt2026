@@ -23,7 +23,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Drive to Outpost"
+                  "name": "Drive to Depot"
                 }
               },
               {
@@ -70,6 +70,6 @@
     }
   },
   "resetOdom": false,
-  "folder": null,
+  "folder": "red",
   "choreoAuto": false
 }
