@@ -142,12 +142,12 @@ public class AutoControls {
     SmartDashboard.putNumber("Auto/rad", 2.05);
     PathConstraints constraints = new PathConstraints(1.0, 1.0, 2 * Math.PI, 4 * Math.PI);
 
-    NamedCommands.registerCommand("Launch 8 From Known Distance SDB", launch8FuelSmartDashboard);
-    NamedCommands.registerCommand("Launch From Depot", launch8FuelSmartDashboard);
-    NamedCommands.registerCommand("Launch From Outpost", launchOutpost);
-    NamedCommands.registerCommand("Launch From Trench", launchTrench);
-    NamedCommands.registerCommand("Launch From AgainstHub", launchAgainstHub);
-    NamedCommands.registerCommand("Stop Launching", stopLaunching);
+    NamedCommands.registerCommand("Launch 8 From Known Distance SDB", launch8FuelSmartDashboard.withTimeout(4));
+    NamedCommands.registerCommand("Launch From Depot", launch8FuelSmartDashboard.withTimeout(4));
+    NamedCommands.registerCommand("Launch From Outpost", launchOutpost.withTimeout(4));
+    NamedCommands.registerCommand("Launch From Trench", launchTrench.withTimeout(4));
+    NamedCommands.registerCommand("Launch From AgainstHub", launchAgainstHub.withTimeout(4));
+    NamedCommands.registerCommand("Stop Launching", stopLaunching.withTimeout(0.5));
 
 
 
@@ -301,7 +301,7 @@ public class AutoControls {
     NamedCommands.registerCommand(
         "Intake In", intakeIn.asProxy().withTimeout(autoSettings.intakeDepotTimeoutSeconds));
     NamedCommands.registerCommand("Stop Intake", stopIntake.asProxy().withTimeout(0.1));
-    NamedCommands.registerCommand("Rotate to score", DynamicLocation.createPathfindingToLocationCommand(new Pose2d(drive.getPose().getTranslation(), Rotation2d.fromRadians(getHubScoreRotation(drive.getPose().getX(), drive.getPose().getY()))), constraints, 0));
+    NamedCommands.registerCommand("Rotate to score", Commands.defer(() -> DynamicLocation.createPathfindingToLocationCommand(new Pose2d(drive.getPose().getTranslation(), Rotation2d.fromRadians(getHubScoreRotation(drive.getPose().getX(), drive.getPose().getY()))), constraints, 0), Set.of((Subsystem) drive)));
   }
 
   public static Pose2d getGoToRadiusPose2d(Drive drive) {
