@@ -139,8 +139,9 @@ public class DriverControls {
                         "ShooterRPMScore", settings.shooterAgainstHubLaunchRPM)));
 
     // intake
-    controller.leftTrigger().whileTrue(intakeIn).onFalse(stopIntake).onFalse(stopConveyor);
+    controller.leftTrigger().whileTrue(intakeIn).whileTrue(new MotorRunVoltageCommand((Motor) intakeArm, () -> 1.0)).onFalse(stopIntake).onFalse(stopConveyor).onFalse(new MotorRunVoltageCommand((Motor) intakeArm, () -> 0.0));
     controller.leftBumper().whileTrue(intakeOut).onFalse(stopIntake).onFalse(stopConveyor);
+
 
     // deployer
     controller
