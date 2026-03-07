@@ -70,21 +70,7 @@ public class AutoControls {
     Command stopIndexer = new MotorRunVoltageCommand((Motor) indexer, () -> 0.0);
     Command stopConveyor = new MotorRunVoltageCommand((Motor) conveyor, () -> 0.0);
     Command stopIntake = new MotorRunVoltageCommand((Motor) intake, () -> 0.0);
-
-    // Launching related commands
-    Command launchSequentialParallel =
-        new SequentialCommandGroup(
-            new FlywheelToVelocity(shooter, () -> driverSettings.shooterDefaultLaunchRPM),
-            new ParallelCommandGroup(
-                new FlywheelToVelocity(indexer, () -> driverSettings.indexerLaunchRPM),
-                new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorLaunchRPM)));
-
-    Command launchAllSequential =
-        new SequentialCommandGroup(
-            new FlywheelToVelocity(shooter, () -> driverSettings.shooterDefaultLaunchRPM),
-            new FlywheelToVelocity(indexer, () -> driverSettings.indexerLaunchRPM),
-            new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorLaunchRPM));
-
+    
     // Intake Commands
     Command intakeIn = new FlywheelToVelocity(intake, () -> driverSettings.intakeRPM);
 
@@ -106,14 +92,36 @@ public class AutoControls {
                 new FlywheelToVelocity(indexer, () -> driverSettings.indexerLaunchRPM),
                 new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorLaunchRPM)));
 
-    Command launch8FuelFromKnownDistance =
+    Command launchOutpost =
         new SequentialCommandGroup(
-            launchAllSequential,
-            new WaitCommand(
-                (autoSettings.launchOneFuelSeconds + autoSettings.launchOneTimeoutSeconds) * 8),
-            stopShooter.asProxy().withTimeout(0.25),
-            stopConveyor.asProxy().withTimeout(0.25),
-            stopIndexer.asProxy().withTimeout(0.25));
+            new FlywheelToVelocity(
+                shooter,
+                () ->
+                    driverSettings.shooterOutpostLaunchRPM),
+            new ParallelCommandGroup(
+                new FlywheelToVelocity(indexer, () -> driverSettings.indexerLaunchRPM),
+                new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorLaunchRPM)));
+
+
+    Command launchTrench =
+        new SequentialCommandGroup(
+            new FlywheelToVelocity(
+                shooter,
+                () ->
+                    driverSettings.shooterTrenchLaunchRPM),
+            new ParallelCommandGroup(
+                new FlywheelToVelocity(indexer, () -> driverSettings.indexerLaunchRPM),
+                new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorLaunchRPM)));
+
+    Command launchAgainstHub =
+        new SequentialCommandGroup(
+            new FlywheelToVelocity(
+                shooter,
+                () ->
+                    driverSettings.shooterAgainstHubLaunchRPM),
+            new ParallelCommandGroup(
+                new FlywheelToVelocity(indexer, () -> driverSettings.indexerLaunchRPM),
+                new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorLaunchRPM)));
 
     Command launch8FuelSmartDashboard =
         new SequentialCommandGroup(
@@ -123,17 +131,30 @@ public class AutoControls {
             stopShooter.asProxy().withTimeout(0.25),
             stopConveyor.asProxy().withTimeout(0.25),
             stopIndexer.asProxy().withTimeout(0.25));
+    
+    Command stopLaunching =
+        new SequentialCommandGroup(
+            stopShooter.asProxy().withTimeout(0.25),
+            stopConveyor.asProxy().withTimeout(0.25),
+            stopIndexer.asProxy().withTimeout(0.25));
 
     AutoControls.drive = drive;
     SmartDashboard.putNumber("Auto/rad", 2.05);
     PathConstraints constraints = new PathConstraints(1.0, 1.0, 2 * Math.PI, 4 * Math.PI);
 
-    NamedCommands.registerCommand("Launch 8 From Known Distance", launch8FuelFromKnownDistance);
     NamedCommands.registerCommand("Launch 8 From Known Distance SDB", launch8FuelSmartDashboard);
+    NamedCommands.registerCommand("Launch From Depot", launch8FuelSmartDashboard);
+    NamedCommands.registerCommand("Launch From Outpost", launchOutpost);
+    NamedCommands.registerCommand("Launch From Trench", launchTrench);
+    NamedCommands.registerCommand("Launch From AgainstHub", launchAgainstHub);
+    NamedCommands.registerCommand("Stop Launching", stopLaunching);
+
+
+
     NamedCommands.registerCommand(
         "Start Shooter from Radius Distance",
         Commands.defer(
-            () -> new FlywheelToVelocity(shooter, () -> calcShooterSpeedFromRad()),
+            () -> new FlywheelToVelocity(shooter, () -> driverSettings.shooterDefaultLaunchRPM),
             Set.of((Subsystem) shooter)));
     NamedCommands.registerCommand("Start Shooter from Current Distance", new WaitCommand(1.0));
     NamedCommands.registerCommand(
@@ -160,7 +181,7 @@ public class AutoControls {
     NamedCommands.registerCommand(
         "Drive to Depot",
         DynamicLocation.createPathfindingToLocationCommand(
-            DynamicLocation.DEPOT, Rotation2d.kZero, constraints));
+            DynamicLocation.DEPOT, Rotation2d.k180deg, constraints));
 
     NamedCommands.registerCommand(
         "Drive to Left Neutral Zone (Alliance Side) Through Left Trench",
@@ -280,6 +301,7 @@ public class AutoControls {
     NamedCommands.registerCommand(
         "Intake In", intakeIn.asProxy().withTimeout(autoSettings.intakeDepotTimeoutSeconds));
     NamedCommands.registerCommand("Stop Intake", stopIntake.asProxy().withTimeout(0.1));
+    NamedCommands.registerCommand("Rotate to score", DynamicLocation.createPathfindingToLocationCommand(new Pose2d(drive.getPose().getTranslation(), Rotation2d.fromRadians(getHubScoreRotation(drive.getPose().getX(), drive.getPose().getY()))), constraints, 0));
   }
 
   public static Pose2d getGoToRadiusPose2d(Drive drive) {
