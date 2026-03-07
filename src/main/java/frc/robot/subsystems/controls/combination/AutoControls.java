@@ -142,12 +142,12 @@ public class AutoControls {
     SmartDashboard.putNumber("Auto/rad", 2.05);
     PathConstraints constraints = new PathConstraints(1.0, 1.0, 2 * Math.PI, 4 * Math.PI);
 
-    NamedCommands.registerCommand("Launch 8 From Known Distance SDB", launch8FuelSmartDashboard.withTimeout(4));
-    NamedCommands.registerCommand("Launch From Depot", launch8FuelSmartDashboard.withTimeout(4));
-    NamedCommands.registerCommand("Launch From Outpost", launchOutpost.withTimeout(4));
-    NamedCommands.registerCommand("Launch From Trench", launchTrench.withTimeout(4));
-    NamedCommands.registerCommand("Launch From AgainstHub", launchAgainstHub.withTimeout(4));
-    NamedCommands.registerCommand("Stop Launching", stopLaunching.withTimeout(0.5));
+    NamedCommands.registerCommand("Launch 8 From Known Distance SDB", launch8FuelSmartDashboard.asProxy().withTimeout(4));
+    NamedCommands.registerCommand("Launch From Depot", launch8FuelSmartDashboard.asProxy().withTimeout(4));
+    NamedCommands.registerCommand("Launch From Outpost", launchOutpost.asProxy().withTimeout(4));
+    NamedCommands.registerCommand("Launch From Trench", launchTrench.asProxy().withTimeout(4));
+    NamedCommands.registerCommand("Launch From AgainstHub", launchAgainstHub.asProxy().withTimeout(4));
+    NamedCommands.registerCommand("Stop Launching", stopLaunching.asProxy().withTimeout(0.5));
 
 
 
