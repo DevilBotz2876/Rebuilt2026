@@ -1,5 +1,6 @@
 package frc.robot.subsystems.controls.combination;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -7,6 +8,8 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.common.drive.DriveCommand;
 import frc.robot.commands.common.flywheel.FlywheelToVelocity;
 import frc.robot.commands.common.motor.MotorPitCommand;
 import frc.robot.commands.common.motor.MotorRunVoltageCommand;
@@ -22,7 +25,9 @@ public class DriverControls {
     public double shooterDefaultLaunchRPM;
     public double shooterOutpostLaunchRPM;
     public double shooterTrenchLaunchRPM;
+    public double shooterDepotLaunchRPM;
     public double shooterAgainstHubLaunchRPM;
+    public double shooterPassRPM;
     public double indexerLaunchRPM;
     public double conveyorLaunchRPM;
 
@@ -30,6 +35,7 @@ public class DriverControls {
     public double intakeRPM;
     public double intakeReverseRPM;
     public double conveyorReverseRPM;
+    public double intakeDriveSpeed;
 
     /**
      * Creates a DriverControlsSettings and sets the varibles to equal the matching property value.
@@ -47,6 +53,10 @@ public class DriverControls {
           Double.parseDouble(properties.getProperty("driverControls.shooterTrenchLaunchRPM"));
       settings.shooterAgainstHubLaunchRPM =
           Double.parseDouble(properties.getProperty("driverControls.shooterAgainstHubLaunchRPM"));
+      settings.shooterDepotLaunchRPM =
+          Double.parseDouble(properties.getProperty("driverControls.shooterDepotLaunchRPM"));
+      settings.shooterPassRPM =
+          Double.parseDouble(properties.getProperty("driverControls.shooterPassRPM"));
 
       settings.indexerLaunchRPM =
           Double.parseDouble(properties.getProperty("driverControls.indexerLaunchRPM"));
@@ -58,6 +68,7 @@ public class DriverControls {
           Double.parseDouble(properties.getProperty("driverControls.intakeReverseRPM"));
       settings.conveyorReverseRPM =
           Double.parseDouble(properties.getProperty("driverControls.conveyorReverseRPM"));
+      settings.intakeDriveSpeed = Double.parseDouble(properties.getProperty("driverControls.intakeDriveSpeed"));
       return settings;
     }
   }
@@ -80,13 +91,14 @@ public class DriverControls {
     Command stopIntakeArm = new MotorRunVoltageCommand((Motor) intakeArm, () -> 0.0);
 
     // Launching related commands
-    SmartDashboard.putNumber("ShooterRPMScore", settings.shooterDefaultLaunchRPM);
+    SmartDashboard.putNumber("Controls/launchShooterRPM", settings.shooterDefaultLaunchRPM);
     Command launchSequentialParallelSmartDashBoard =
         new SequentialCommandGroup(
             new FlywheelToVelocity(
                 shooter,
                 () ->
-                    SmartDashboard.getNumber("ShooterRPMScore", settings.shooterDefaultLaunchRPM)),
+                    SmartDashboard.getNumber(
+                        "Controls/launchShooterRPM", settings.shooterDefaultLaunchRPM)),
             new ParallelCommandGroup(
                 new FlywheelToVelocity(indexer, () -> settings.indexerLaunchRPM),
                 new FlywheelToVelocity(conveyor, () -> settings.conveyorLaunchRPM)));
@@ -95,7 +107,8 @@ public class DriverControls {
     Command intakeIn =
         new ParallelCommandGroup(
             new FlywheelToVelocity(intake, () -> settings.intakeRPM),
-            new FlywheelToVelocity(conveyor, () -> settings.conveyorLaunchRPM));
+            new FlywheelToVelocity(conveyor, () -> settings.conveyorLaunchRPM),
+            new MotorRunVoltageCommand((Motor) intakeArm, () -> -1.0));
 
     Command intakeOut =
         new ParallelCommandGroup(
@@ -121,14 +134,16 @@ public class DriverControls {
         .onTrue(
             new InstantCommand(
                 () ->
-                    SmartDashboard.putNumber("ShooterRPMScore", settings.shooterOutpostLaunchRPM)));
+                    SmartDashboard.putNumber(
+                        "Controls/launchShooterRPM", settings.shooterOutpostLaunchRPM)));
 
     controller
         .x()
         .onTrue(
             new InstantCommand(
                 () ->
-                    SmartDashboard.putNumber("ShooterRPMScore", settings.shooterTrenchLaunchRPM)));
+                    SmartDashboard.putNumber(
+                        "Controls/launchShooterRPM", settings.shooterTrenchLaunchRPM)));
 
     controller
         .a()
@@ -136,34 +151,101 @@ public class DriverControls {
             new InstantCommand(
                 () ->
                     SmartDashboard.putNumber(
-                        "ShooterRPMScore", settings.shooterAgainstHubLaunchRPM)));
+                        "Controls/launchShooterRPM", settings.shooterAgainstHubLaunchRPM)));
 
     // intake
-    controller.leftTrigger().whileTrue(intakeIn).whileTrue(new MotorRunVoltageCommand((Motor) intakeArm, () -> 1.0)).onFalse(stopIntake).onFalse(stopConveyor).onFalse(new MotorRunVoltageCommand((Motor) intakeArm, () -> 0.0));
+    controller
+        .leftTrigger()
+        .whileTrue(intakeIn)
+        .onFalse(stopIntake)
+        .onFalse(stopConveyor)
+        .onFalse(stopIntakeArm);
     controller.leftBumper().whileTrue(intakeOut).onFalse(stopIntake).onFalse(stopConveyor);
 
-
     // deployer
+    controller.pov(90).whileTrue(DeployerVoltagePlus).onFalse(stopIntakeArm);
+    controller.pov(270).whileTrue(DeployerVoltageMinus).onFalse(stopIntakeArm);
+
+    SmartDashboard.putNumber("Controls/intakeDriveSpeed", settings.intakeDriveSpeed);
+    Trigger intakeDriveSpeedchange =
+        new Trigger(
+            () ->
+                SmartDashboard.getNumber("Controls/intakeDriveSpeed", settings.intakeDriveSpeed)
+                    != settings.intakeDriveSpeed);
+    intakeDriveSpeedchange.onTrue(
+        new InstantCommand(
+            () ->
+                settings.intakeDriveSpeed =
+                    SmartDashboard.getNumber(
+                        "Controls/intakeDriveSpeed", settings.intakeDriveSpeed)));
+    Command driveForintakeCommand =
+        new DriveCommand(
+            drive,
+            () -> MathUtil.applyDeadband(-controller.getLeftY(), 0.05) * settings.intakeDriveSpeed,
+            () -> MathUtil.applyDeadband(-controller.getLeftX(), 0.05) * settings.intakeDriveSpeed,
+            () ->
+                MathUtil.applyDeadband(-controller.getRightX(), 0.05) * settings.intakeDriveSpeed);
     controller
-        .pov(90)
-        .whileTrue(DeployerVoltagePlus)
-        .onFalse(stopIntakeArm)
-        .whileFalse(DeployerVoltagePlus);
-    controller
-        .pov(270)
-        .whileTrue(DeployerVoltageMinus)
-        .onFalse(stopIntakeArm)
-        .whileFalse(DeployerVoltagePlus);
+        .leftTrigger()
+        .onTrue(
+            driveForintakeCommand.until(() -> controller.leftTrigger().negate().getAsBoolean()));
   }
 
   public static void setupAssistController(
       Drive drive,
-      Flywheel topIntake,
-      Flywheel bottomIntake,
+      Flywheel intake,
       Flywheel shooter,
       Flywheel indexer,
       Flywheel conveyor,
-      CommandXboxController controller) {}
+      Arm intakeArm,
+      CommandXboxController controller,
+      DriverControlsSettings settings) {
+    controller
+        .y()
+        .onTrue(
+            new InstantCommand(
+                () ->
+                    SmartDashboard.putNumber(
+                        "Controls/launchShooterRPM", settings.shooterPassRPM)));
+
+    controller
+        .x()
+        .onTrue(
+            new InstantCommand(
+                () ->
+                    SmartDashboard.putNumber(
+                        "Controls/launchShooterRPM", settings.shooterTrenchLaunchRPM)));
+
+    controller
+        .a()
+        .onTrue(
+            new InstantCommand(
+                () ->
+                    SmartDashboard.putNumber(
+                        "Controls/launchShooterRPM", settings.shooterAgainstHubLaunchRPM)));
+
+    controller
+        .b()
+        .onTrue(
+            new InstantCommand(
+                () ->
+                    SmartDashboard.putNumber(
+                        "Controls/launchShooterRPM", settings.shooterDepotLaunchRPM)));
+    controller
+        .rightTrigger()
+        .onTrue(
+            new InstantCommand(
+                () ->
+                    SmartDashboard.putNumber(
+                        "Controls/launchShooterRPM", settings.shooterOutpostLaunchRPM)));
+
+    Command intakeOut =
+        new ParallelCommandGroup(
+            new FlywheelToVelocity(intake, () -> settings.intakeReverseRPM),
+            new FlywheelToVelocity(conveyor, () -> settings.conveyorReverseRPM));
+
+    controller.leftTrigger().onTrue(intakeOut);
+  }
 
   public static void setupFlywheelSmartDashboardControl(Flywheel flywheel) {
     SubsystemBase flywheelSubsystem = (SubsystemBase) flywheel;

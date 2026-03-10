@@ -70,7 +70,7 @@ public class AutoControls {
     Command stopIndexer = new MotorRunVoltageCommand((Motor) indexer, () -> 0.0);
     Command stopConveyor = new MotorRunVoltageCommand((Motor) conveyor, () -> 0.0);
     Command stopIntake = new MotorRunVoltageCommand((Motor) intake, () -> 0.0);
-    
+
     // Intake Commands
     Command intakeIn = new FlywheelToVelocity(intake, () -> driverSettings.intakeRPM);
 
@@ -87,38 +87,28 @@ public class AutoControls {
                 shooter,
                 () ->
                     SmartDashboard.getNumber(
-                        "ShooterRPMScore", driverSettings.shooterDefaultLaunchRPM)),
+                        "Controls/launchShooterRPM", driverSettings.shooterDefaultLaunchRPM)),
             new ParallelCommandGroup(
                 new FlywheelToVelocity(indexer, () -> driverSettings.indexerLaunchRPM),
                 new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorLaunchRPM)));
 
     Command launchOutpost =
         new SequentialCommandGroup(
-            new FlywheelToVelocity(
-                shooter,
-                () ->
-                    driverSettings.shooterOutpostLaunchRPM),
+            new FlywheelToVelocity(shooter, () -> driverSettings.shooterOutpostLaunchRPM),
             new ParallelCommandGroup(
                 new FlywheelToVelocity(indexer, () -> driverSettings.indexerLaunchRPM),
                 new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorLaunchRPM)));
 
-
     Command launchTrench =
         new SequentialCommandGroup(
-            new FlywheelToVelocity(
-                shooter,
-                () ->
-                    driverSettings.shooterTrenchLaunchRPM),
+            new FlywheelToVelocity(shooter, () -> driverSettings.shooterTrenchLaunchRPM),
             new ParallelCommandGroup(
                 new FlywheelToVelocity(indexer, () -> driverSettings.indexerLaunchRPM),
                 new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorLaunchRPM)));
 
     Command launchAgainstHub =
         new SequentialCommandGroup(
-            new FlywheelToVelocity(
-                shooter,
-                () ->
-                    driverSettings.shooterAgainstHubLaunchRPM),
+            new FlywheelToVelocity(shooter, () -> driverSettings.shooterAgainstHubLaunchRPM),
             new ParallelCommandGroup(
                 new FlywheelToVelocity(indexer, () -> driverSettings.indexerLaunchRPM),
                 new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorLaunchRPM)));
@@ -131,7 +121,7 @@ public class AutoControls {
             stopShooter.asProxy().withTimeout(0.25),
             stopConveyor.asProxy().withTimeout(0.25),
             stopIndexer.asProxy().withTimeout(0.25));
-    
+
     Command stopLaunching =
         new SequentialCommandGroup(
             stopShooter.asProxy().withTimeout(0.25),
@@ -142,14 +132,15 @@ public class AutoControls {
     SmartDashboard.putNumber("Auto/rad", 2.05);
     PathConstraints constraints = new PathConstraints(1.0, 1.0, 2 * Math.PI, 4 * Math.PI);
 
-    NamedCommands.registerCommand("Launch 8 From Known Distance SDB", launch8FuelSmartDashboard.asProxy().withTimeout(4));
-    NamedCommands.registerCommand("Launch From Depot", launch8FuelSmartDashboard.asProxy().withTimeout(4));
+    NamedCommands.registerCommand(
+        "Launch 8 From Known Distance SDB", launch8FuelSmartDashboard.asProxy().withTimeout(4));
+    NamedCommands.registerCommand(
+        "Launch From Depot", launch8FuelSmartDashboard.asProxy().withTimeout(4));
     NamedCommands.registerCommand("Launch From Outpost", launchOutpost.asProxy().withTimeout(4));
     NamedCommands.registerCommand("Launch From Trench", launchTrench.asProxy().withTimeout(4));
-    NamedCommands.registerCommand("Launch From AgainstHub", launchAgainstHub.asProxy().withTimeout(4));
+    NamedCommands.registerCommand(
+        "Launch From AgainstHub", launchAgainstHub.asProxy().withTimeout(4));
     NamedCommands.registerCommand("Stop Launching", stopLaunching.asProxy().withTimeout(0.5));
-
-
 
     NamedCommands.registerCommand(
         "Start Shooter from Radius Distance",
@@ -301,7 +292,18 @@ public class AutoControls {
     NamedCommands.registerCommand(
         "Intake In", intakeIn.asProxy().withTimeout(autoSettings.intakeDepotTimeoutSeconds));
     NamedCommands.registerCommand("Stop Intake", stopIntake.asProxy().withTimeout(0.1));
-    NamedCommands.registerCommand("Rotate to score", Commands.defer(() -> DynamicLocation.createPathfindingToLocationCommand(new Pose2d(drive.getPose().getTranslation(), Rotation2d.fromRadians(getHubScoreRotation(drive.getPose().getX(), drive.getPose().getY()))), constraints, 0), Set.of((Subsystem) drive)));
+    NamedCommands.registerCommand(
+        "Rotate to score",
+        Commands.defer(
+            () ->
+                DynamicLocation.createPathfindingToLocationCommand(
+                    new Pose2d(
+                        drive.getPose().getTranslation(),
+                        Rotation2d.fromRadians(
+                            getHubScoreRotation(drive.getPose().getX(), drive.getPose().getY()))),
+                    constraints,
+                    0),
+            Set.of((Subsystem) drive)));
   }
 
   public static Pose2d getGoToRadiusPose2d(Drive drive) {
