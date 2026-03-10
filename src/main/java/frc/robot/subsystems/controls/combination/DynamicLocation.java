@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 public enum DynamicLocation {
   ORIGIN("Origin", 0.0, 0.0),
-  DEPOT("Depot", 0.7348-0.508, 6.009),
+  DEPOT("Depot", 0.7348 - 0.508, 6.009),
   OUTPOST("Outpost", 0.7348, 0.650),
   LEFT_BUMP("Left Bump", 4.625594, 5.55244),
   RIGHT_BUMP("Right Bump", 4.625594, 2.516886),
