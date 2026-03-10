@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.common.flywheel.FlywheelCommand;
 import frc.robot.commands.common.flywheel.FlywheelToVelocity;
-import frc.robot.commands.common.flywheel.FlywheelCommand;
 import frc.robot.commands.common.motor.MotorBringUpCommand;
 import frc.robot.subsystems.interfaces.Flywheel;
 import frc.robot.subsystems.interfaces.Motor;
