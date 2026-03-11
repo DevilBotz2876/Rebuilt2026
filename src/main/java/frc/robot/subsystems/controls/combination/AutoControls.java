@@ -87,7 +87,7 @@ public class AutoControls {
                 shooter,
                 () ->
                     SmartDashboard.getNumber(
-                        "Controls/launchShooterRPM", driverSettings.shooterDefaultLaunchRPM)),
+                        "Controls/launchShooterRPM", driverSettings.shooterCurrentLaunchRPM)),
             new ParallelCommandGroup(
                 new FlywheelToVelocity(indexer, () -> driverSettings.indexerLaunchRPM),
                 new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorLaunchRPM)));
@@ -145,7 +145,7 @@ public class AutoControls {
     NamedCommands.registerCommand(
         "Start Shooter from Radius Distance",
         Commands.defer(
-            () -> new FlywheelToVelocity(shooter, () -> driverSettings.shooterDefaultLaunchRPM),
+            () -> new FlywheelToVelocity(shooter, () -> driverSettings.shooterCurrentLaunchRPM),
             Set.of((Subsystem) shooter)));
     NamedCommands.registerCommand("Start Shooter from Current Distance", new WaitCommand(1.0));
     NamedCommands.registerCommand(
@@ -156,7 +156,7 @@ public class AutoControls {
         "Start Shooter (3250RPM)", new FlywheelToVelocity(shooter, () -> 3250));
     NamedCommands.registerCommand(
         "Start Shooter (3600RPM)", new FlywheelToVelocity(shooter, () -> 3600));
-    NamedCommands.registerCommand("Stop Shooter", stopShooter.withTimeout(0.25));
+    NamedCommands.registerCommand("Stop Shooter", stopShooter.asProxy().withTimeout(0.25));
 
     NamedCommands.registerCommand(
         "Drive to Hub (Radius)",

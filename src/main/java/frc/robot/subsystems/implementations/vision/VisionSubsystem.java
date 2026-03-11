@@ -64,7 +64,7 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
       for (VisionPoseMeasurement poseMeasurement :
           cameras.get(cameraIndex).getVisionPoseMeasurements()) {
 
-        // more than one tag then then the mesurment is valid for estimation
+        // more than one tag then then the measurement is valid for estimation
         if (poseMeasurement.targetIds.length >= 2
             && poseMeasurement.robotToBestTargetDistanceInMeters
                 <= settings.maximumMultiTagDistanceMeters) {
@@ -72,7 +72,7 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
           continue;
         } else {
 
-          // one tag seen and is close than max distance then mesurment is valid for estimation
+          // one tag seen and is close than max distance then measurement is valid for estimation
           if (poseMeasurement.targetIds.length == 1
               && poseMeasurement.robotToBestTargetDistanceInMeters
                   <= settings.maximumSingleTagDistanceMeters) {
@@ -181,6 +181,8 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
     double currentTime = Timer.getFPGATimestamp();
     for (int cameraIndex = 0; cameraIndex < cameraTagPoses.size(); cameraIndex++) {
 
+      // tuned by hand to see when new data from photonvision is available. by seeing how log it
+      // takes for a photonvision result.
       double measurementLifespan = 0.25;
 
       Map<Integer, Set<VisionPoseMeasurement>> tagMap = cameraTagPoses.get(cameraIndex);

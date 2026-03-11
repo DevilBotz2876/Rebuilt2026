@@ -17,6 +17,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Stop Launching"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -64,6 +70,12 @@
           "type": "named",
           "data": {
             "name": "Launch 8 From Known Distance SDB"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Launching"
           }
         }
       ]
