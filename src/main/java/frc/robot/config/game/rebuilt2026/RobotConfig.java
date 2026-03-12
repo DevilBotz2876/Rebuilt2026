@@ -164,6 +164,8 @@ public class RobotConfig {
         assistController,
         driverSettings);
 
+    DriverControls.setupPitControls();
+    
     DriverControls.setupFlywheelSmartDashboardControl(intakeFlywheel);
     DriverControls.setupFlywheelSmartDashboardControl(shooterFlywheel);
     DriverControls.setupFlywheelSmartDashboardControl(indexerFlywheel);

@@ -2,7 +2,9 @@ package frc.robot.subsystems.controls.combination;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -334,6 +336,10 @@ public class DriverControls {
     controller.pov(270).whileTrue(DeployerVoltageMinus).onFalse(stopIntakeArm);
 
     controller.leftTrigger().onTrue(intakeOut).onFalse(stopIntake).onFalse(stopConveyor);
+  }
+
+  public static void setupPitControls() {
+    SmartDashboard.putData("Pit/PDP", new PowerDistribution(1, ModuleType.kRev));
   }
 
   public static void setupFlywheelSmartDashboardControl(Flywheel flywheel) {
