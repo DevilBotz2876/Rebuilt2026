@@ -69,6 +69,8 @@ loadScripts(document, 'script');</script>
 <li><a href="frc/robot/subsystems/implementations/drive/package-tree.html">frc.robot.subsystems.implementations.drive</a>, </li>
 <li><a href="frc/robot/subsystems/implementations/drive/generated/package-tree.html">frc.robot.subsystems.implementations.drive.generated</a>, </li>
 <li><a href="frc/robot/subsystems/implementations/motor/package-tree.html">frc.robot.subsystems.implementations.motor</a>, </li>
+<li><a href="frc/robot/subsystems/implementations/vision/package-tree.html">frc.robot.subsystems.implementations.vision</a>, </li>
+<li><a href="frc/robot/subsystems/implementations/vision/camera/package-tree.html">frc.robot.subsystems.implementations.vision.camera</a>, </li>
 <li><a href="frc/robot/subsystems/interfaces/package-tree.html">frc.robot.subsystems.interfaces</a>, </li>
 <li><a href="frc/robot/util/package-tree.html">frc.robot.util</a></li>
 </ul>
@@ -79,7 +81,18 @@ loadScripts(document, 'script');</script>
 <li class="circle">java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" class="type-name-link external-link" title="class or interface in java.lang">Object</a>
 <ul>
 <li class="circle">frc.robot.subsystems.interfaces.<a href="frc/robot/subsystems/interfaces/Arm.ArmSettings.html" class="type-name-link" title="class in frc.robot.subsystems.interfaces">Arm.ArmSettings</a></li>
+<li class="circle">frc.robot.subsystems.controls.combination.<a href="frc/robot/subsystems/controls/combination/AutoControls.html" class="type-name-link" title="class in frc.robot.subsystems.controls.combination">AutoControls</a></li>
+<li class="circle">frc.robot.subsystems.controls.combination.<a href="frc/robot/subsystems/controls/combination/AutoControls.AutoRoutineSettings.html" class="type-name-link" title="class in frc.robot.subsystems.controls.combination">AutoControls.AutoRoutineSettings</a></li>
 <li class="circle">frc.robot.<a href="frc/robot/BuildConstants.html" class="type-name-link" title="class in frc.robot">BuildConstants</a></li>
+<li class="circle">frc.robot.subsystems.implementations.vision.camera.<a href="frc/robot/subsystems/implementations/vision/camera/CameraBase.html" class="type-name-link" title="class in frc.robot.subsystems.implementations.vision.camera">CameraBase</a> (implements frc.robot.subsystems.interfaces.<a href="frc/robot/subsystems/interfaces/Vision.Camera.html" title="interface in frc.robot.subsystems.interfaces">Vision.Camera</a>)
+<ul>
+<li class="circle">frc.robot.subsystems.implementations.vision.camera.<a href="frc/robot/subsystems/implementations/vision/camera/CameraPhoton.html" class="type-name-link" title="class in frc.robot.subsystems.implementations.vision.camera">CameraPhoton</a>
+<ul>
+<li class="circle">frc.robot.subsystems.implementations.vision.camera.<a href="frc/robot/subsystems/implementations/vision/camera/CameraPhotonSim.html" class="type-name-link" title="class in frc.robot.subsystems.implementations.vision.camera">CameraPhotonSim</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="circle">edu.wpi.first.wpilibj2.command.Command (implements edu.wpi.first.util.sendable.Sendable)
 <ul>
 <li class="circle">frc.robot.commands.common.arm.<a href="frc/robot/commands/common/arm/ArmCommand.html" class="type-name-link" title="class in frc.robot.commands.common.arm">ArmCommand</a></li>
@@ -172,6 +185,7 @@ loadScripts(document, 'script');</script>
 <li class="circle">frc.robot.subsystems.implementations.motor.<a href="frc/robot/subsystems/implementations/motor/SimpleMotorSubsystem.html" class="type-name-link" title="class in frc.robot.subsystems.implementations.motor">SimpleMotorSubsystem</a> (implements frc.robot.subsystems.interfaces.<a href="frc/robot/subsystems/interfaces/SimpleMotor.html" title="interface in frc.robot.subsystems.interfaces">SimpleMotor</a>)</li>
 </ul>
 </li>
+<li class="circle">frc.robot.subsystems.implementations.vision.<a href="frc/robot/subsystems/implementations/vision/VisionSubsystem.html" class="type-name-link" title="class in frc.robot.subsystems.implementations.vision">VisionSubsystem</a> (implements frc.robot.subsystems.interfaces.<a href="frc/robot/subsystems/interfaces/Vision.html" title="interface in frc.robot.subsystems.interfaces">Vision</a>)</li>
 </ul>
 </li>
 <li class="circle">com.ctre.phoenix6.swerve.SwerveDrivetrain&lt;DriveMotorT,<wbr>SteerMotorT,<wbr>EncoderT&gt; (implements java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/AutoCloseable.html" title="class or interface in java.lang" class="external-link">AutoCloseable</a>)
@@ -184,6 +198,11 @@ loadScripts(document, 'script');</script>
 </ul>
 </li>
 <li class="circle">frc.robot.config.game.rebuilt2026.tunerConstants.<a href="frc/robot/config/game/rebuilt2026/tunerConstants/TunerConstants.html" class="type-name-link" title="class in frc.robot.config.game.rebuilt2026.tunerConstants">TunerConstants</a></li>
+<li class="circle">frc.robot.subsystems.interfaces.<a href="frc/robot/subsystems/interfaces/Vision.Camera.CameraInputs.html" class="type-name-link" title="class in frc.robot.subsystems.interfaces">Vision.Camera.CameraInputs</a></li>
+<li class="circle">frc.robot.subsystems.interfaces.<a href="frc/robot/subsystems/interfaces/Vision.Camera.CameraSettings.html" class="type-name-link" title="class in frc.robot.subsystems.interfaces">Vision.Camera.CameraSettings</a></li>
+<li class="circle">frc.robot.subsystems.interfaces.<a href="frc/robot/subsystems/interfaces/Vision.Camera.VisionPoseMeasurement.html" class="type-name-link" title="class in frc.robot.subsystems.interfaces">Vision.Camera.VisionPoseMeasurement</a></li>
+<li class="circle">frc.robot.subsystems.interfaces.<a href="frc/robot/subsystems/interfaces/Vision.VisionSettings.html" class="type-name-link" title="class in frc.robot.subsystems.interfaces">Vision.VisionSettings</a></li>
+<li class="circle">frc.robot.subsystems.implementations.vision.<a href="frc/robot/subsystems/implementations/vision/VisionSubsystem.MatchingMeasurementInfo.html" class="type-name-link" title="class in frc.robot.subsystems.implementations.vision">VisionSubsystem.MatchingMeasurementInfo</a></li>
 </ul>
 </li>
 </ul>
@@ -198,6 +217,9 @@ loadScripts(document, 'script');</script>
 <li class="circle">frc.robot.subsystems.interfaces.<a href="frc/robot/subsystems/interfaces/Motor.html" class="type-name-link" title="interface in frc.robot.subsystems.interfaces">Motor</a></li>
 <li class="circle">frc.robot.io.interfaces.<a href="frc/robot/io/interfaces/MotorIO.html" class="type-name-link" title="interface in frc.robot.io.interfaces">MotorIO</a></li>
 <li class="circle">frc.robot.subsystems.interfaces.<a href="frc/robot/subsystems/interfaces/SimpleMotor.html" class="type-name-link" title="interface in frc.robot.subsystems.interfaces">SimpleMotor</a></li>
+<li class="circle">frc.robot.subsystems.interfaces.<a href="frc/robot/subsystems/interfaces/Vision.html" class="type-name-link" title="interface in frc.robot.subsystems.interfaces">Vision</a></li>
+<li class="circle">frc.robot.subsystems.interfaces.<a href="frc/robot/subsystems/interfaces/Vision.Camera.html" class="type-name-link" title="interface in frc.robot.subsystems.interfaces">Vision.Camera</a></li>
+<li class="circle">frc.robot.subsystems.interfaces.<a href="frc/robot/subsystems/interfaces/Vision.VisionMeasurementConsumer.html" class="type-name-link" title="interface in frc.robot.subsystems.interfaces">Vision.VisionMeasurementConsumer</a></li>
 </ul>
 </section>
 <section class="hierarchy">
@@ -208,6 +230,7 @@ loadScripts(document, 'script');</script>
 <li class="circle">java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" class="type-name-link external-link" title="class or interface in java.lang">Enum</a>&lt;E&gt; (implements java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;T&gt;, java.lang.constant.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a>, java.io.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>)
 <ul>
 <li class="circle">frc.robot.util.<a href="frc/robot/util/DevilBotState.State.html" class="type-name-link" title="enum class in frc.robot.util">DevilBotState.State</a></li>
+<li class="circle">frc.robot.subsystems.controls.combination.<a href="frc/robot/subsystems/controls/combination/DynamicLocation.html" class="type-name-link" title="enum class in frc.robot.subsystems.controls.combination">DynamicLocation</a></li>
 <li class="circle">frc.robot.util.<a href="frc/robot/util/Elastic.Notification.NotificationLevel.html" class="type-name-link" title="enum class in frc.robot.util">Elastic.Notification.NotificationLevel</a></li>
 </ul>
 </li>

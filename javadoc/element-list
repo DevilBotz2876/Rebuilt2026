@@ -17,5 +17,7 @@ frc.robot.subsystems.controls.flywheel
 frc.robot.subsystems.implementations.drive
 frc.robot.subsystems.implementations.drive.generated
 frc.robot.subsystems.implementations.motor
+frc.robot.subsystems.implementations.vision
+frc.robot.subsystems.implementations.vision.camera
 frc.robot.subsystems.interfaces
 frc.robot.util
