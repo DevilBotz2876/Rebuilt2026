@@ -1,0 +1,1 @@
+./gradlew DBBuildPathPlanner-%1

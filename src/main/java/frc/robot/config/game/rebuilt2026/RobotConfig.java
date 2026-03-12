@@ -1,5 +1,10 @@
 package frc.robot.config.game.rebuilt2026;
 
+import static edu.wpi.first.units.Units.*;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
@@ -12,7 +17,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot;
 import frc.robot.config.game.rebuilt2026.tunerConstants.TunerConstants;
@@ -26,6 +30,8 @@ import frc.robot.io.implementations.motor.MotorIOStub;
 import frc.robot.io.implementations.motor.MotorIOTalonFx;
 import frc.robot.io.implementations.motor.MotorIOTalonFx.TalonFxSettings;
 import frc.robot.subsystems.controls.arm.IntakeArmControls;
+import frc.robot.subsystems.controls.combination.AutoControls;
+import frc.robot.subsystems.controls.combination.AutoControls.AutoRoutineSettings;
 import frc.robot.subsystems.controls.combination.DriverControls;
 import frc.robot.subsystems.controls.combination.DriverControls.DriverControlsSettings;
 import frc.robot.subsystems.controls.drive.DriveControls;
@@ -39,16 +45,24 @@ import frc.robot.subsystems.implementations.motor.ArmMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.ElevatorMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.FlywheelMotorSubsystem;
 import frc.robot.subsystems.implementations.motor.SimpleMotorSubsystem;
+import frc.robot.subsystems.implementations.vision.VisionSubsystem;
+import frc.robot.subsystems.implementations.vision.camera.CameraBase;
+import frc.robot.subsystems.implementations.vision.camera.CameraPhoton;
+import frc.robot.subsystems.implementations.vision.camera.CameraPhotonSim;
 import frc.robot.subsystems.interfaces.Arm.ArmSettings;
 import frc.robot.subsystems.interfaces.Elevator.ElevatorSettings;
 import frc.robot.subsystems.interfaces.Flywheel.FlywheelSettings;
 import frc.robot.subsystems.interfaces.SimpleMotor.SimpleMotorSettings;
+import frc.robot.subsystems.interfaces.Vision.VisionSettings;
+import frc.robot.util.Elastic;
+import java.util.Optional;
 import java.util.Properties;
 
 /* Put all constants here with reasonable defaults */
 public class RobotConfig {
   public DriveBase drive;
   public SendableChooser<Command> autoChooser;
+  public VisionSubsystem vision;
   public FlywheelMotorSubsystem intakeFlywheel;
   public FlywheelMotorSubsystem shooterFlywheel;
   public FlywheelMotorSubsystem indexerFlywheel;
@@ -72,6 +86,10 @@ public class RobotConfig {
       }
     } else {
       drive = new DriveBase("Stub");
+      Elastic.sendNotification(
+          new Elastic.Notification()
+              .withDescription("USING DRIVE BASE. UNABLE TO RUN AUTO ROUTINES"));
+      //   autoChooser = new SendableChooser<>();
     }
 
     if (Robot.isSimulation()) {
@@ -84,27 +102,41 @@ public class RobotConfig {
     conveyorFlywheel = createFlywheel(robotProperties, "conveyorFlywheel");
     intakeArm = createArm(robotProperties, "intakeArm");
 
+    vision = createVisionSubsystem(robotProperties);
     properties = robotProperties;
-  }
-
-  public RobotConfig(boolean stubDrive, boolean stubAuto, boolean stubVision) {
-    if (stubDrive) {
-      drive = new DriveBase("Stub");
-    }
-
-    if (stubAuto) {
-      autoChooser = new SendableChooser<>();
-      autoChooser.setDefaultOption("No Auto Routines Specified", Commands.none());
-    }
-
-    // TODO: Add VisionSubsystem Initialization
-
-    if (stubVision) {
-      // TODO: Add VisionSubsystem Settings
+    if (robotProperties.containsKey("robot.drive")) {
+      if (robotProperties.getProperty("robot.drive").equals("ctre")) {
+        DriverControlsSettings driverSettings =
+            DriverControlsSettings.getDriverControlsSettings(robotProperties);
+        AutoRoutineSettings autoRoutineSettings =
+            AutoRoutineSettings.getAutoRoutineSettings(robotProperties);
+        AutoControls.registerNamedCommands(
+            drive,
+            intakeFlywheel,
+            shooterFlywheel,
+            indexerFlywheel,
+            conveyorFlywheel,
+            intakeArm,
+            autoRoutineSettings,
+            driverSettings);
+        autoChooser =
+            AutoBuilder.buildAutoChooserWithOptionsModifier(
+                (stream) -> {
+                  stream =
+                      stream.filter(
+                          auto ->
+                              auto.getName()
+                                  .startsWith(
+                                      properties.getProperty("robot.name").toLowerCase() + "-"));
+                  return stream;
+                });
+      }
     }
   }
 
   public void configureBindings() {
+    DriverControlsSettings driverSettings =
+        DriverControlsSettings.getDriverControlsSettings(properties);
     DriveControls.setupController(drive, mainController);
 
     IntakeControls.setupMainController(intakeFlywheel, mainController);
@@ -120,7 +152,17 @@ public class RobotConfig {
         conveyorFlywheel,
         intakeArm,
         mainController,
-        DriverControlsSettings.getDriverControlsSettings(properties));
+        driverSettings);
+
+    DriverControls.setupAssistController(
+        drive,
+        intakeFlywheel,
+        shooterFlywheel,
+        indexerFlywheel,
+        conveyorFlywheel,
+        intakeArm,
+        assistController,
+        driverSettings);
 
     DriverControls.setupFlywheelSmartDashboardControl(intakeFlywheel);
     DriverControls.setupFlywheelSmartDashboardControl(shooterFlywheel);
@@ -412,5 +454,45 @@ public class RobotConfig {
       default:
         return DCMotor.getKrakenX60(1);
     }
+  }
+
+  private VisionSubsystem createVisionSubsystem(Properties robotProperties) {
+    VisionSettings settings = VisionSettings.getSettings(robotProperties);
+
+    if (Boolean.parseBoolean(robotProperties.getProperty("vision.addDrivetrain"))) {
+      vision =
+          new VisionSubsystem(
+              AprilTagFieldLayout.loadField(
+                  AprilTagFields.valueOf(robotProperties.getProperty("vision.fieldlayout"))),
+              Optional.of(drive::addVisionMeasurement),
+              settings);
+    } else {
+      vision =
+          new VisionSubsystem(
+              AprilTagFieldLayout.loadField(
+                  AprilTagFields.valueOf(robotProperties.getProperty("vision.fieldlayout"))),
+              Optional.empty(),
+              settings);
+    }
+
+    String[] cameraNames = robotProperties.getProperty("vision.cameras", "").split(", ");
+    for (String cameraName : cameraNames) {
+      switch (robotProperties.getProperty(cameraName + ".cameraType")) {
+        case "photon":
+          vision.addCamera(
+              CameraPhoton.createCameraPhoton(
+                  robotProperties, cameraName, vision.getFieldLayout()));
+          break;
+        case "photonSim":
+          vision.addCamera(
+              CameraPhotonSim.createCameraPhotonSim(
+                  robotProperties, cameraName, vision.getFieldLayout(), () -> drive.getPose()));
+          break;
+        default:
+          vision.addCamera(CameraBase.createCameraBase(robotProperties, cameraName));
+          break;
+      }
+    }
+    return vision;
   }
 }

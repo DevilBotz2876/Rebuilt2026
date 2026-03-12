@@ -36,7 +36,7 @@ public class RobotContainer {
     }
 
     String robotName = robotProperties.getProperty("robot.name", "UNKNOWN");
-    RobotConfig robotConfig = new RobotConfig(robotProperties);
+    robotConfig = new RobotConfig(robotProperties);
 
     Preferences.initString("Robot Name", robotName);
     robotName = Preferences.getString("Robot Name", robotName);

@@ -121,6 +121,31 @@ task(replayWatch, type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
 }
 
+tasks.addRule("Pattern: DBBuildPathPlanner-<PROFILE>: builds the robot with the given profile. Requires a corresponding .properties file in \"src/main/resources\".") { String taskName ->
+    if (taskName.startsWith("DBBuildPathPlanner-")){
+        def settingsFile = taskName - "DBBuildPathPlanner-"
+        task(taskName, type: Copy) {
+            // assert that the given config file exists
+            assert file("src/main/resources/pathplanner/" + settingsFile + ".json").exists()
+
+            // proceed, delete old .properties files
+            println "Deleting previous properties files..."
+            delete fileTree('src/main/deploy/pathplanner/'){
+                include 'settings.json'
+            }
+
+            // copy properties file over and build
+            println "Building robot with profile \""  + settingsFile + "\"..."
+            from ('src/main/resources/pathplanner/'){
+                include settingsFile + ".json"
+            }
+
+            into 'src/main/deploy/pathplanner/'
+            rename (settingsFile + ".json", "settings.json")
+        }
+    }
+}
+
 tasks.addRule("Pattern: DBBuild-<PROFILE>: builds the robot with the given profile. Requires a corresponding .properties file in \"src/main/resources\".") { String taskName ->
     if (taskName.startsWith("DBBuild-")){
         def configFile = taskName - "DBBuild-"

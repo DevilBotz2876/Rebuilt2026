@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.commands.FollowPathCommand;
+import com.pathplanner.lib.commands.PathfindingCommand;
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -74,7 +76,9 @@ public class Robot extends LoggedRobot {
     m_robotContainer = new RobotContainer();
 
     SmartDashboard.putData(CommandScheduler.getInstance());
-
+    // Warms up pathplanner commands so that first path does not have large delay
+    FollowPathCommand.warmupCommand().schedule();
+    PathfindingCommand.warmupCommand().schedule();
     /* Start Webserver for Elastic Remote Layout JSON download */
     WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
   }

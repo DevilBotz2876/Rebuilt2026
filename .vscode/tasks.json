@@ -28,7 +28,21 @@
                 "reveal": "always",
                 "panel": "new"
             }
-        }
+        },
+        {
+            "label": "Build DevilBotz Pathplanner Settings",
+            "type": "shell",
+            "command": "sh scripts/dbbuild.sh ${input:robot-settings}",
+			
+            "windows": {
+                "command": ".\\scripts\\dbbuildpathplanner.bat ${input:robot-settings}"
+            },
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
 	],
 	"inputs": [
         {
@@ -40,6 +54,11 @@
         {
             "id": "profiles-dir-name",
             "description": "Create Directory of Profile. See src/main/resources for available directories.",
+            "type": "promptString"
+        },
+        {
+            "id": "robot-settings",
+            "description": "Builds the PathpPlanner settings of the robot. Settings should be located in src/main/resources/pathplanner",
             "type": "promptString"
         },
     ]
