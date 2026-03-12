@@ -3,6 +3,8 @@ package frc.robot.subsystems.controls.combination;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -336,6 +338,10 @@ public class DriverControls {
     controller.leftTrigger().onTrue(intakeOut).onFalse(stopIntake).onFalse(stopConveyor);
   }
 
+  public static void setupPitControls() {
+    SmartDashboard.putData("Pit/PDP", new PowerDistribution(1, ModuleType.kRev));
+  }
+
   public static void setupFlywheelSmartDashboardControl(Flywheel flywheel) {
     SubsystemBase flywheelSubsystem = (SubsystemBase) flywheel;
     setupMotorSmartDashboardControl(flywheelSubsystem, (Motor) flywheel);
@@ -387,6 +393,9 @@ public class DriverControls {
     SmartDashboard.putData(
         motorSubsystem.getName() + "/Commands/Run at set Voltage",
         new MotorPitCommand((Motor) motor, motorSubsystem.getName() + "/Commands/Set Voltage"));
+    SmartDashboard.putData(
+        motorSubsystem.getName() + "/Commands/Run at x Volts/Run 0 Volts",
+        new MotorRunVoltageCommand((Motor) motor, () -> 0));
   }
 
   private static void setupSmartDashboardSpeedControl(
