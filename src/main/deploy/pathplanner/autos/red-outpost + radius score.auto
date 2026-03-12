@@ -11,7 +11,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Drive to Depot"
+                  "name": "Deploy Intake"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Drive to Outpost"
                 }
               },
               {
@@ -21,13 +27,13 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 0.75
+                        "waitTime": 1.0
                       }
                     },
                     {
                       "type": "named",
                       "data": {
-                        "name": "Intake Fuel"
+                        "name": "Intake In"
                       }
                     }
                   ]
@@ -35,11 +41,29 @@
               }
             ]
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Drive to Hub (Radius)"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Launch 8 From Known Distance SDB"
+          }
         }
       ]
     }
   },
   "resetOdom": false,
-  "folder": "sim",
+  "folder": "red",
   "choreoAuto": false
 }

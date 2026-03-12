@@ -5,40 +5,15 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "Drive to Hub (Radius)"
-          }
-        },
-        {
-          "type": "sequential",
+          "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
-                  "name": "Start Shooter (3600RPM)"
+                  "name": "Deploy Intake"
                 }
               },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 2.0
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Stop Shooter"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "sequential",
-          "data": {
-            "commands": [
               {
                 "type": "named",
                 "data": {
@@ -80,34 +55,15 @@
           }
         },
         {
-          "type": "sequential",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Start Shooter (3600RPM)"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 2.0
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Stop Shooter"
-                }
-              }
-            ]
+            "name": "Launch 8 From Known Distance SDB"
           }
         }
       ]
     }
   },
   "resetOdom": false,
-  "folder": "sim",
+  "folder": "red",
   "choreoAuto": false
 }

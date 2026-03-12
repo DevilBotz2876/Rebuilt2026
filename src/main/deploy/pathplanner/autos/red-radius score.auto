@@ -7,13 +7,19 @@
         {
           "type": "named",
           "data": {
-            "name": "Drive to Left Neutral Zone (Alliance Side) Through Left Trench"
+            "name": "Drive to Hub (Radius)"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Launch 8 From Known Distance SDB"
           }
         }
       ]
     }
   },
   "resetOdom": false,
-  "folder": "sim",
+  "folder": "red",
   "choreoAuto": false
 }

@@ -23,6 +23,12 @@
               {
                 "type": "named",
                 "data": {
+                  "name": "Deploy Intake"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
                   "name": "Drive to Depot"
                 }
               },

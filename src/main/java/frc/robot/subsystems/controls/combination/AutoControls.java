@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.common.flywheel.FlywheelToVelocity;
 import frc.robot.commands.common.motor.MotorRunVoltageCommand;
 import frc.robot.subsystems.controls.combination.DriverControls.DriverControlsSettings;
+import frc.robot.subsystems.interfaces.Arm;
 import frc.robot.subsystems.interfaces.Drive;
 import frc.robot.subsystems.interfaces.Flywheel;
 import frc.robot.subsystems.interfaces.Motor;
@@ -63,6 +64,7 @@ public class AutoControls {
       Flywheel shooter,
       Flywheel indexer,
       Flywheel conveyor,
+      Arm intakeArm,
       AutoRoutineSettings autoSettings,
       DriverControlsSettings driverSettings) {
     // Commands to stop subsystem
@@ -70,9 +72,14 @@ public class AutoControls {
     Command stopIndexer = new MotorRunVoltageCommand((Motor) indexer, () -> 0.0);
     Command stopConveyor = new MotorRunVoltageCommand((Motor) conveyor, () -> 0.0);
     Command stopIntake = new MotorRunVoltageCommand((Motor) intake, () -> 0.0);
+    Command stopIntakeArm = new MotorRunVoltageCommand((Motor) intakeArm, () -> 0.0);
 
     // Intake Commands
-    Command intakeIn = new FlywheelToVelocity(intake, () -> driverSettings.intakeRPM);
+    Command intakeIn =
+        new ParallelCommandGroup(
+            new FlywheelToVelocity(intake, () -> driverSettings.intakeRPM),
+            new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorLaunchRPM),
+            new MotorRunVoltageCommand((Motor) intakeArm, () -> driverSettings.intakeArmWhileInakingVolts));
 
     Command intakeOut =
         new ParallelCommandGroup(
@@ -92,26 +99,26 @@ public class AutoControls {
                 new FlywheelToVelocity(indexer, () -> driverSettings.indexerLaunchRPM),
                 new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorLaunchRPM)));
 
-    Command launchOutpost =
-        new SequentialCommandGroup(
-            new FlywheelToVelocity(shooter, () -> driverSettings.shooterOutpostLaunchRPM),
-            new ParallelCommandGroup(
-                new FlywheelToVelocity(indexer, () -> driverSettings.indexerLaunchRPM),
-                new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorLaunchRPM)));
+    // Command launchOutpost =
+    //     new SequentialCommandGroup(
+    //         new FlywheelToVelocity(shooter, () -> driverSettings.shooterOutpostLaunchRPM),
+    //         new ParallelCommandGroup(
+    //             new FlywheelToVelocity(indexer, () -> driverSettings.indexerLaunchRPM),
+    //             new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorLaunchRPM)));
 
-    Command launchTrench =
-        new SequentialCommandGroup(
-            new FlywheelToVelocity(shooter, () -> driverSettings.shooterTrenchLaunchRPM),
-            new ParallelCommandGroup(
-                new FlywheelToVelocity(indexer, () -> driverSettings.indexerLaunchRPM),
-                new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorLaunchRPM)));
+    // Command launchTrench =
+    //     new SequentialCommandGroup(
+    //         new FlywheelToVelocity(shooter, () -> driverSettings.shooterTrenchLaunchRPM),
+    //         new ParallelCommandGroup(
+    //             new FlywheelToVelocity(indexer, () -> driverSettings.indexerLaunchRPM),
+    //             new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorLaunchRPM)));
 
-    Command launchAgainstHub =
-        new SequentialCommandGroup(
-            new FlywheelToVelocity(shooter, () -> driverSettings.shooterAgainstHubLaunchRPM),
-            new ParallelCommandGroup(
-                new FlywheelToVelocity(indexer, () -> driverSettings.indexerLaunchRPM),
-                new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorLaunchRPM)));
+    // Command launchAgainstHub =
+    //     new SequentialCommandGroup(
+    //         new FlywheelToVelocity(shooter, () -> driverSettings.shooterAgainstHubLaunchRPM),
+    //         new ParallelCommandGroup(
+    //             new FlywheelToVelocity(indexer, () -> driverSettings.indexerLaunchRPM),
+    //             new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorLaunchRPM)));
 
     Command launch8FuelSmartDashboard =
         new SequentialCommandGroup(
@@ -132,14 +139,13 @@ public class AutoControls {
     SmartDashboard.putNumber("Auto/rad", 2.05);
     PathConstraints constraints = new PathConstraints(1.0, 1.0, 2 * Math.PI, 4 * Math.PI);
 
+    Command DeployerVoltageMinus = new MotorRunVoltageCommand((Motor) intakeArm, () -> -driverSettings.intakeArmVolts);
+
+    NamedCommands.registerCommand("Deploy Intake", new SequentialCommandGroup(DeployerVoltageMinus.asProxy(), new WaitCommand(2), stopIntakeArm.asProxy()));
     NamedCommands.registerCommand(
         "Launch 8 From Known Distance SDB", launch8FuelSmartDashboard.asProxy().withTimeout(4));
     NamedCommands.registerCommand(
         "Launch From Depot", launch8FuelSmartDashboard.asProxy().withTimeout(4));
-    NamedCommands.registerCommand("Launch From Outpost", launchOutpost.asProxy().withTimeout(4));
-    NamedCommands.registerCommand("Launch From Trench", launchTrench.asProxy().withTimeout(4));
-    NamedCommands.registerCommand(
-        "Launch From AgainstHub", launchAgainstHub.asProxy().withTimeout(4));
     NamedCommands.registerCommand("Stop Launching", stopLaunching.asProxy().withTimeout(0.5));
 
     NamedCommands.registerCommand(
@@ -283,12 +289,6 @@ public class AutoControls {
                 Rotation2d.kCCW_90deg,
                 constraints)));
 
-    NamedCommands.registerCommand(
-        "Intake Fuel",
-        new SequentialCommandGroup(
-            intakeIn.asProxy(), new WaitCommand(2.0), stopIntake.asProxy().withTimeout(0.1)));
-    NamedCommands.registerCommand("Intake Fuel from Depot", new WaitCommand(1.0));
-    NamedCommands.registerCommand("Intake Fuel from Outpost", new WaitCommand(1.0));
     NamedCommands.registerCommand(
         "Intake In", intakeIn.asProxy().withTimeout(autoSettings.intakeDepotTimeoutSeconds));
     NamedCommands.registerCommand("Stop Intake", stopIntake.asProxy().withTimeout(0.1));

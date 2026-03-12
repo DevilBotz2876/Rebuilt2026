@@ -118,6 +118,7 @@ public class RobotConfig {
             shooterFlywheel,
             indexerFlywheel,
             conveyorFlywheel,
+            intakeArm,
             autoRoutineSettings,
             driverSettings);
         autoChooser =

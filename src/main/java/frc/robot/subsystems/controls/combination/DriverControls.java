@@ -41,6 +41,7 @@ public class DriverControls {
         public double intakeReverseRPM;
         public double conveyorReverseRPM;
         public double intakeArmVolts;
+        public double intakeArmWhileInakingVolts;
         public double intakeDriveSpeed;
 
         /**
@@ -77,6 +78,7 @@ public class DriverControls {
             settings.conveyorOutpostLaunchRPM = Double
                     .parseDouble(properties.getProperty("driverControls.conveyorOutpostLaunchRPM"));
             settings.intakeDriveSpeed = Double.parseDouble(properties.getProperty("driverControls.intakeDriveSpeed"));
+            settings.intakeArmWhileInakingVolts = Double.parseDouble(properties.getProperty("driverControls.intakeArmWhileInakingVolts"));
             return settings;
         }
     }
@@ -126,7 +128,7 @@ public class DriverControls {
         new ParallelCommandGroup(
             new FlywheelToVelocity(intake, () -> settings.intakeRPM),
             new FlywheelToVelocity(conveyor, () -> settings.conveyorLaunchRPM),
-            new MotorRunVoltageCommand((Motor) intakeArm, () -> -2.0));
+            new MotorRunVoltageCommand((Motor) intakeArm, () -> settings.intakeArmWhileInakingVolts));
 
     Command intakeOut =
         new ParallelCommandGroup(
@@ -151,21 +153,25 @@ public class DriverControls {
     // shooting
 
     // unclear if this works
-    // Trigger launchShooterRPMChanged =
-    //     new Trigger(
-    //         () ->
-    //             SmartDashboard.getNumber("Controls/launchShooterRPM", 0)
-    //                 != settings.shooterCurrentLaunchRPM);
-    // launchShooterRPMChanged.onTrue(
-    //     new InstantCommand(
-    //         () ->
-    //             settings.shooterCurrentLaunchRPM =
-    //                 SmartDashboard.getNumber("Controls/launchShooterRPM", 0)));
-    // Trigger resetShooting =
-    //     new Trigger(
-    //         () ->
-    //             !SmartDashboard.getBoolean("Controls/isShooting", false)
-    //                 || launchShooterRPMChanged.getAsBoolean());
+    Trigger launchShooterRPMChanged =
+    new Trigger(
+        () ->
+            SmartDashboard.getNumber("Controls/launchShooterRPM", 0)
+                != settings.shooterCurrentLaunchRPM);
+
+    launchShooterRPMChanged.onTrue(
+    new InstantCommand(
+        () ->
+            settings.shooterCurrentLaunchRPM =
+                SmartDashboard.getNumber("Controls/launchShooterRPM", 0)));
+
+    launchShooterRPMChanged
+    .and(controller.rightTrigger())
+    .onTrue(
+        new InstantCommand(() -> {
+            launchSequentialParallelSmartDashBoard.cancel();
+            launchSequentialParallelSmartDashBoard.schedule();
+        }));
 
     controller
         .rightTrigger()
