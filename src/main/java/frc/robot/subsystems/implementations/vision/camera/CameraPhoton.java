@@ -1,10 +1,8 @@
 package frc.robot.subsystems.implementations.vision.camera;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
@@ -174,7 +172,7 @@ public class CameraPhoton extends CameraBase {
     Transform3d robotToCamera = getRobotToCamera();
     measurement.robotPose = estPose.get().estimatedPose.toPose2d();
     // robot to camera + camera to target = robot to target
-    // TODO: Determine best start location for calculated distance
+    // TODO Add offset for easier verification of distance
     // the distance should be measured at a place that is easy to verify in person
     measurement.robotToBestTargetDistanceInMeters =
         robotToCamera
