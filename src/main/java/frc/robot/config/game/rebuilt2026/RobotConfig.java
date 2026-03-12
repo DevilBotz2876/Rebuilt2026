@@ -177,11 +177,6 @@ public class RobotConfig {
     }
   }
 
-  private void registerNamedCommands(DriverControlsSettings settings) {
-    NamedCommands.registerCommand("Dynamic Drive to Hub (radius)", new WaitCommand(1.0));
-    NamedCommands.registerCommand("Launch ", new WaitCommand(1.0));
-  }
-
   private SimpleMotorSubsystem createSimpleMotor(Properties robotProperties, String name) {
     SimpleMotorSettings simpleMotorSettings = new SimpleMotorSettings();
     String simpleMotorSettingsPrefix = name + ".simpleMotorSettings";

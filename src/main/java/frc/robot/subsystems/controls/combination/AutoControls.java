@@ -79,7 +79,8 @@ public class AutoControls {
         new ParallelCommandGroup(
             new FlywheelToVelocity(intake, () -> driverSettings.intakeRPM),
             new FlywheelToVelocity(conveyor, () -> driverSettings.conveyorLaunchRPM),
-            new MotorRunVoltageCommand((Motor) intakeArm, () -> driverSettings.intakeArmWhileInakingVolts));
+            new MotorRunVoltageCommand(
+                (Motor) intakeArm, () -> driverSettings.intakeArmWhileInakingVolts));
 
     Command intakeOut =
         new ParallelCommandGroup(
@@ -139,9 +140,13 @@ public class AutoControls {
     SmartDashboard.putNumber("Auto/rad", 2.05);
     PathConstraints constraints = new PathConstraints(1.0, 1.0, 2 * Math.PI, 4 * Math.PI);
 
-    Command DeployerVoltageMinus = new MotorRunVoltageCommand((Motor) intakeArm, () -> -driverSettings.intakeArmVolts);
+    Command DeployerVoltageMinus =
+        new MotorRunVoltageCommand((Motor) intakeArm, () -> -driverSettings.intakeArmVolts);
 
-    NamedCommands.registerCommand("Deploy Intake", new SequentialCommandGroup(DeployerVoltageMinus.asProxy(), new WaitCommand(2), stopIntakeArm.asProxy()));
+    NamedCommands.registerCommand(
+        "Deploy Intake",
+        new SequentialCommandGroup(
+            DeployerVoltageMinus.asProxy(), new WaitCommand(2), stopIntakeArm.asProxy()));
     NamedCommands.registerCommand(
         "Launch 8 From Known Distance SDB", launch8FuelSmartDashboard.asProxy().withTimeout(4));
     NamedCommands.registerCommand(

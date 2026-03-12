@@ -184,31 +184,4 @@ public class CameraPhoton extends CameraBase {
 
     return measurement;
   }
-
-  private VisionPoseMeasurement createMeasurement(
-      PhotonPipelineResult result, Pose2d cameraPose, int[] targetIds) {
-    VisionPoseMeasurement measurement = new VisionPoseMeasurement();
-
-    measurement.targetIds = targetIds;
-    measurement.timestamp = result.getTimestampSeconds();
-
-    Transform3d robotToCamera = getRobotToCamera();
-    measurement.robotPose =
-        cameraPose.transformBy(
-            (new Transform2d(
-                    robotToCamera.getTranslation().toTranslation2d(),
-                    robotToCamera.getRotation().toRotation2d()))
-                .inverse());
-
-    // robot to camera + camera to target = robot to target
-    // TODO: Determine best start location for calculated distance
-    // the distance should be measured at a place that is easy to verify in person
-    measurement.robotToBestTargetDistanceInMeters =
-        robotToCamera
-            .plus(result.getBestTarget().getBestCameraToTarget())
-            .getTranslation()
-            .getDistance(Translation3d.kZero);
-
-    return measurement;
-  }
 }

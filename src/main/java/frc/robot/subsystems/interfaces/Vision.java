@@ -12,14 +12,14 @@ import org.littletonrobotics.junction.AutoLog;
 
 public interface Vision {
   public static class VisionSettings {
-    public double timestampToleranceSeconds = 10;
+    public double timestampToleranceSeconds;
     // maximum distance between robot and tag for poseMeasurement to be valid to be considered
-    public double maximumSingleTagDistanceMeters = 2.0; // need to tune to robot
-    public double maximumMultiTagDistanceMeters = 3.9; // need to tune to robot
+    public double maximumSingleTagDistanceMeters; // need to tune to robot
+    public double maximumMultiTagDistanceMeters; // need to tune to robot
     // show if pose measurement is valid, reason (and matching pose if there is one) and
     // poseMeasurement data at
     // AdvantageKit/RealOutputs/Vision/'cameraName'/PoseMeasurements/'poseIndex'/
-    public boolean visionLoggingDebug = true;
+    public boolean visionLoggingDebug;
 
     public static VisionSettings getSettings(Properties properties) {
       VisionSettings settings = new VisionSettings();
