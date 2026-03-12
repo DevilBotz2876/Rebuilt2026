@@ -49,6 +49,20 @@
                 }
               },
               {
+                "title": "Stop",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/Flywheel[intakeFlywheel]/Commands/Run at x Volts/Run 0 Volts",
+                  "period": 0.06,
+                  "show_type": true,
+                  "maximize_button_space": false
+                }
+              },
+              {
                 "title": "AppliedVolts",
                 "x": 0.0,
                 "y": 0.0,
@@ -122,6 +136,20 @@
                   "period": 0.06,
                   "show_type": true,
                   "maximize_button_space": true
+                }
+              },
+              {
+                "title": "Stop",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/Flywheel[shooterFlywheel]/Commands/Run at x Volts/Run 0 Volts",
+                  "period": 0.06,
+                  "show_type": true,
+                  "maximize_button_space": false
                 }
               },
               {
@@ -201,6 +229,20 @@
                 }
               },
               {
+                "title": "Stop",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/Flywheel[indexerFlywheel]/Commands/Run at x Volts/Run 0 Volts",
+                  "period": 0.06,
+                  "show_type": true,
+                  "maximize_button_space": false
+                }
+              },
+              {
                 "title": "AppliedVolts",
                 "x": 0.0,
                 "y": 0.0,
@@ -277,6 +319,20 @@
                 }
               },
               {
+                "title": "Stop",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/Flywheel[conveyorFlywheel]/Commands/Run at x Volts/Run 0 Volts",
+                  "period": 0.06,
+                  "show_type": true,
+                  "maximize_button_space": false
+                }
+              },
+              {
                 "title": "AppliedVolts",
                 "x": 0.0,
                 "y": 0.0,
@@ -350,6 +406,20 @@
                   "period": 0.06,
                   "show_type": true,
                   "maximize_button_space": true
+                }
+              },
+              {
+                "title": "Stop",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/Arm[intakeArm]/Commands/Run at x Volts/Run 0 Volts",
+                  "period": 0.06,
+                  "show_type": true,
+                  "maximize_button_space": false
                 }
               },
               {

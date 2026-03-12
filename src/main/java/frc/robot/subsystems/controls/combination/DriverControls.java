@@ -393,6 +393,9 @@ public class DriverControls {
     SmartDashboard.putData(
         motorSubsystem.getName() + "/Commands/Run at set Voltage",
         new MotorPitCommand((Motor) motor, motorSubsystem.getName() + "/Commands/Set Voltage"));
+    SmartDashboard.putData(
+        motorSubsystem.getName() + "/Commands/Run at x Volts/Run 0 Volts",
+        new MotorRunVoltageCommand((Motor) motor, () -> 0));
   }
 
   private static void setupSmartDashboardSpeedControl(
