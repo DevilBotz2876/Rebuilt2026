@@ -174,16 +174,16 @@ public class AutoControls {
         Commands.defer(
             () ->
                 DynamicLocation.createPathfindingToLocationCommand(
-                    AutoControls.getGoToRadiusPose2d(drive), constraints, 0),
+                    AutoControls.getGoToRadiusPose2d(drive), constraints, 0).withTimeout(4),
             Set.of((Subsystem) drive)));
     NamedCommands.registerCommand(
         "Drive to Outpost",
         DynamicLocation.createPathfindingToLocationCommand(
-            DynamicLocation.OUTPOST, Rotation2d.k180deg, constraints));
+            DynamicLocation.OUTPOST, Rotation2d.k180deg, constraints).withTimeout(4));
     NamedCommands.registerCommand(
         "Drive to Depot",
         DynamicLocation.createPathfindingToLocationCommand(
-            DynamicLocation.DEPOT, Rotation2d.k180deg, constraints));
+            DynamicLocation.DEPOT, Rotation2d.k180deg, constraints).withTimeout(4));
 
     NamedCommands.registerCommand(
         "Drive to Left Neutral Zone (Alliance Side) Through Left Trench",
@@ -295,7 +295,7 @@ public class AutoControls {
                 constraints)));
 
     NamedCommands.registerCommand(
-        "Intake In", intakeIn.asProxy().withTimeout(autoSettings.intakeDepotTimeoutSeconds));
+        "Intake In", intakeIn.asProxy().withTimeout(5));
     NamedCommands.registerCommand("Stop Intake", stopIntake.asProxy().withTimeout(0.1));
     NamedCommands.registerCommand(
         "Rotate to score",
