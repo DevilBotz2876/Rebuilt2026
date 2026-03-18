@@ -1,0 +1,92 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "red-trench to netrual"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Deploy Intake"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake In"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "red-neutral to trench"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "red-trench to score"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Drive to Hub (Radius)"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Launch 8 From Known Distance SDB"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.75
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Launch 8 From Known Distance SDB"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.75
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Launch 8 From Known Distance SDB"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": false,
+  "folder": "red",
+  "choreoAuto": false
+}

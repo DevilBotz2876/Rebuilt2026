@@ -148,6 +148,10 @@ public class AutoControls {
         new SequentialCommandGroup(
             DeployerVoltageMinus.asProxy(), new WaitCommand(2), stopIntakeArm.asProxy()));
     NamedCommands.registerCommand(
+        "Deploy Some",
+        new SequentialCommandGroup(
+            DeployerVoltageMinus.asProxy(), new WaitCommand(0.5), stopIntakeArm.asProxy()));
+    NamedCommands.registerCommand(
         "Launch 8 From Known Distance SDB", launch8FuelSmartDashboard.asProxy().withTimeout(4));
     NamedCommands.registerCommand(
         "Launch From Depot", launch8FuelSmartDashboard.asProxy().withTimeout(4));
@@ -174,7 +178,7 @@ public class AutoControls {
         Commands.defer(
             () ->
                 DynamicLocation.createPathfindingToLocationCommand(
-                    AutoControls.getGoToRadiusPose2d(drive), constraints, 0).withTimeout(4),
+                    AutoControls.getGoToRadiusPose2d(drive), constraints, 0),
             Set.of((Subsystem) drive)));
     NamedCommands.registerCommand(
         "Drive to Outpost",
@@ -183,7 +187,7 @@ public class AutoControls {
     NamedCommands.registerCommand(
         "Drive to Depot",
         DynamicLocation.createPathfindingToLocationCommand(
-            DynamicLocation.DEPOT, Rotation2d.k180deg, constraints).withTimeout(4));
+            DynamicLocation.DEPOT, Rotation2d.k180deg, constraints));
 
     NamedCommands.registerCommand(
         "Drive to Left Neutral Zone (Alliance Side) Through Left Trench",

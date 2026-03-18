@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.common.drive.DriveCommand;
@@ -119,6 +120,7 @@ public class DriverControls {
                 () ->
                     SmartDashboard.getNumber(
                         "Controls/launchShooterRPM", settings.shooterCurrentLaunchRPM)),
+            new WaitCommand(0.2),
             new ParallelCommandGroup(
                 new FlywheelToVelocity(
                     indexer,

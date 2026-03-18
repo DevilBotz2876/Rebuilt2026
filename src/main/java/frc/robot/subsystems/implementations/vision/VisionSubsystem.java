@@ -128,6 +128,10 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
           } else if (isValid) {
             reason = "Cross Tag Check,  Same AprilTag as different camera";
             MatchingMeasurementInfo matchInfo = measurementToMatchMap.get(poseMeasurement);
+            if(matchInfo == null) {
+              break;
+              
+            }
             matchDebug =
                 "Camera: "
                     + cameras.get(matchInfo.cameraIndex).getName()

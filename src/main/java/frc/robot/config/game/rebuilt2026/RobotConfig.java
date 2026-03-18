@@ -3,6 +3,8 @@ package frc.robot.config.game.rebuilt2026;
 import static edu.wpi.first.units.Units.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.FlippingUtil;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.ArmFeedforward;
@@ -13,6 +15,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color8Bit;
@@ -94,6 +99,17 @@ public class RobotConfig {
 
     if (Robot.isSimulation()) {
       drive.setPose(new Pose2d(new Translation2d(1, 1), new Rotation2d()));
+    }
+
+    Optional<Alliance> alliance = DriverStation.getAlliance();
+    if(alliance.isPresent()) {
+        if(alliance.get() == Alliance.Red) {
+            drive.setPose(FlippingUtil.flipFieldPose(new Pose2d(new Translation2d(3.493, 4.051), Rotation2d.k180deg)));
+        } else {
+            drive.setPose(new Pose2d(new Translation2d(3.493, 4.051), Rotation2d.k180deg));
+        }
+    } else {
+            drive.setPose(new Pose2d(new Translation2d(3.493, 4.051), Rotation2d.k180deg));
     }
 
     intakeFlywheel = createFlywheel(robotProperties, "intakeFlywheel");
