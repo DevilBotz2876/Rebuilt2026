@@ -75,10 +75,11 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
 
           // one tag seen and is close than max distance then measurement is valid for estimation
           if (poseMeasurement.targetIds.length == 1
-              && poseMeasurement.robotToBestTargetDistanceInMeters
-                  <= settings.maximumSingleTagDistanceMeters || (poseMeasurement.targetIds.length == 1
-              && DriverStation.isAutonomousEnabled() && poseMeasurement.robotToBestTargetDistanceInMeters
-                  <= 2.6)) {
+                  && poseMeasurement.robotToBestTargetDistanceInMeters
+                      <= settings.maximumSingleTagDistanceMeters
+              || (poseMeasurement.targetIds.length == 1
+                  && DriverStation.isAutonomousEnabled()
+                  && poseMeasurement.robotToBestTargetDistanceInMeters <= 2.6)) {
             validPoseMeasurements.add(poseMeasurement);
             continue;
           }
@@ -128,9 +129,8 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
           } else if (isValid) {
             reason = "Cross Tag Check,  Same AprilTag as different camera";
             MatchingMeasurementInfo matchInfo = measurementToMatchMap.get(poseMeasurement);
-            if(matchInfo == null) {
+            if (matchInfo == null) {
               break;
-
             }
             matchDebug =
                 "Camera: "

@@ -183,7 +183,8 @@ public class AutoControls {
     NamedCommands.registerCommand(
         "Drive to Outpost",
         DynamicLocation.createPathfindingToLocationCommand(
-            DynamicLocation.OUTPOST, Rotation2d.k180deg, constraints).withTimeout(4));
+                DynamicLocation.OUTPOST, Rotation2d.k180deg, constraints)
+            .withTimeout(4));
     NamedCommands.registerCommand(
         "Drive to Depot",
         DynamicLocation.createPathfindingToLocationCommand(
@@ -298,8 +299,7 @@ public class AutoControls {
                 Rotation2d.kCCW_90deg,
                 constraints)));
 
-    NamedCommands.registerCommand(
-        "Intake In", intakeIn.asProxy().withTimeout(5));
+    NamedCommands.registerCommand("Intake In", intakeIn.asProxy().withTimeout(5));
     NamedCommands.registerCommand("Stop Intake", stopIntake.asProxy().withTimeout(0.1));
     NamedCommands.registerCommand(
         "Rotate to score",
