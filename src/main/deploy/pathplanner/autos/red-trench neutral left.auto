@@ -36,7 +36,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "red-trench to netrual r"
+                  "pathName": "red-trench to netrual"
                 }
               },
               {
@@ -61,7 +61,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "red-neutral to trench r"
+                  "pathName": "red-neutral to trench"
                 }
               },
               {
@@ -80,7 +80,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "red-trench to score r"
+                  "pathName": "red-trench to score"
                 }
               },
               {

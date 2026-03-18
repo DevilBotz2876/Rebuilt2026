@@ -341,7 +341,7 @@ public class DriverControls {
   }
 
   public static void setupPitControls() {
-    SmartDashboard.putData("Pit/PDP", new PowerDistribution(1, ModuleType.kRev));
+    // SmartDashboard.putData("Pit/PDP", new PowerDistribution(1, ModuleType.kRev));
   }
 
   public static void setupFlywheelSmartDashboardControl(Flywheel flywheel) {

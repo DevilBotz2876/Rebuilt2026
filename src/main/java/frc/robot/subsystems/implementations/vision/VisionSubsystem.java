@@ -130,7 +130,7 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
             MatchingMeasurementInfo matchInfo = measurementToMatchMap.get(poseMeasurement);
             if(matchInfo == null) {
               break;
-              
+
             }
             matchDebug =
                 "Camera: "
