@@ -1,8 +1,15 @@
 package frc.robot.subsystems.controls.combination;
 
+import java.util.Optional;
+import java.util.Properties;
+import java.util.Set;
+
+import org.littletonrobotics.junction.AutoLogOutput;
+
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.util.FlippingUtil;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -11,6 +18,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -24,10 +32,6 @@ import frc.robot.subsystems.interfaces.Flywheel;
 import frc.robot.subsystems.interfaces.Motor;
 import frc.robot.util.Elastic;
 import frc.robot.util.Elastic.Notification;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.Set;
-import org.littletonrobotics.junction.AutoLogOutput;
 
 public class AutoControls {
   public static class AutoRoutineSettings {
@@ -123,7 +127,7 @@ public class AutoControls {
 
     Command launch8FuelSmartDashboard =
         new SequentialCommandGroup(
-            launchSequentialParallelSmartDashBoard,
+            launchSequentialParallelSmartDashBoard.asProxy(),
             new WaitCommand(
                 (autoSettings.launchOneFuelSeconds + autoSettings.launchOneTimeoutSeconds) * 8),
             stopShooter.asProxy().withTimeout(0.25),
@@ -155,6 +159,9 @@ public class AutoControls {
         "Launch 8 From Known Distance SDB", launch8FuelSmartDashboard.asProxy().withTimeout(4));
     NamedCommands.registerCommand(
         "Launch From Depot", launch8FuelSmartDashboard.asProxy().withTimeout(4));
+        NamedCommands.registerCommand(
+        "Launch From Center Hub Path", new SequentialCommandGroup (new InstantCommand(() -> SmartDashboard.putNumber(
+                        "Controls/launchShooterRPM", 3175)), launchSequentialParallelSmartDashBoard.asProxy()));
     NamedCommands.registerCommand("Stop Launching", stopLaunching.asProxy().withTimeout(0.5));
 
     NamedCommands.registerCommand(
@@ -189,116 +196,6 @@ public class AutoControls {
         "Drive to Depot",
         DynamicLocation.createPathfindingToLocationCommand(
             DynamicLocation.DEPOT, Rotation2d.k180deg, constraints));
-
-    NamedCommands.registerCommand(
-        "Drive to Left Neutral Zone (Alliance Side) Through Left Trench",
-        new SequentialCommandGroup(
-            DynamicLocation.createPathfindingToLocationCommand(
-                DynamicLocation.LEFT_TRENCH, Rotation2d.fromDegrees(-30), constraints, 1.0),
-            DynamicLocation.createPathfindingToLocationCommand(
-                DynamicLocation.LEFT_NEUTRAL_ZONE_ALLIANCE_SIDE,
-                Rotation2d.kCW_90deg,
-                constraints)));
-    NamedCommands.registerCommand(
-        "Drive to Left Neutral Zone (Alliance Side) Through Left Bump",
-        new SequentialCommandGroup(
-            DynamicLocation.createPathfindingToLocationCommand(
-                DynamicLocation.LEFT_BUMP, Rotation2d.fromDegrees(30), constraints, 1.0),
-            DynamicLocation.createPathfindingToLocationCommand(
-                DynamicLocation.LEFT_NEUTRAL_ZONE_ALLIANCE_SIDE,
-                Rotation2d.kCCW_90deg,
-                constraints)));
-    NamedCommands.registerCommand(
-        "Drive to Right Neutral Zone (Alliance Side) Through Right Trench",
-        new SequentialCommandGroup(
-            DynamicLocation.createPathfindingToLocationCommand(
-                DynamicLocation.RIGHT_TRENCH, Rotation2d.fromDegrees(30), constraints, 1.0),
-            DynamicLocation.createPathfindingToLocationCommand(
-                DynamicLocation.RIGHT_NEUTRAL_ZONE_ALLIANCE_SIDE,
-                Rotation2d.kCW_90deg,
-                constraints)));
-    NamedCommands.registerCommand(
-        "Drive to Right Neutral Zone (Alliance Side) Through Right Bump",
-        new SequentialCommandGroup(
-            DynamicLocation.createPathfindingToLocationCommand(
-                DynamicLocation.RIGHT_BUMP, Rotation2d.fromDegrees(-30), constraints, 1.0),
-            DynamicLocation.createPathfindingToLocationCommand(
-                DynamicLocation.RIGHT_NEUTRAL_ZONE_ALLIANCE_SIDE,
-                Rotation2d.kCCW_90deg,
-                constraints)));
-
-    NamedCommands.registerCommand(
-        "Drive to Left Neutral Zone (Center Line) Through Left Trench",
-        new SequentialCommandGroup(
-            DynamicLocation.createPathfindingToLocationCommand(
-                DynamicLocation.LEFT_TRENCH, Rotation2d.fromDegrees(-30), constraints, 1.0),
-            DynamicLocation.createPathfindingToLocationCommand(
-                DynamicLocation.LEFT_NEUTRAL_ZONE_CENTER_LINE, Rotation2d.kCW_90deg, constraints)));
-    NamedCommands.registerCommand(
-        "Drive to Left Neutral Zone (Center Line) Through Left Bump",
-        new SequentialCommandGroup(
-            DynamicLocation.createPathfindingToLocationCommand(
-                DynamicLocation.LEFT_BUMP, Rotation2d.fromDegrees(30), constraints, 1.0),
-            DynamicLocation.createPathfindingToLocationCommand(
-                DynamicLocation.LEFT_NEUTRAL_ZONE_ALLIANCE_SIDE,
-                Rotation2d.kCCW_90deg,
-                constraints)));
-    NamedCommands.registerCommand(
-        "Drive to Right Neutral Zone (Center Line) Through Right Trench",
-        new SequentialCommandGroup(
-            DynamicLocation.createPathfindingToLocationCommand(
-                DynamicLocation.RIGHT_TRENCH, Rotation2d.fromDegrees(30), constraints, 1.0),
-            DynamicLocation.createPathfindingToLocationCommand(
-                DynamicLocation.RIGHT_NEUTRAL_ZONE_CENTER_LINE,
-                Rotation2d.kCW_90deg,
-                constraints)));
-    NamedCommands.registerCommand(
-        "Drive to Right Neutral Zone (Center Line) Through Right Bump",
-        new SequentialCommandGroup(
-            DynamicLocation.createPathfindingToLocationCommand(
-                DynamicLocation.RIGHT_BUMP, Rotation2d.fromDegrees(-30), constraints, 1.0),
-            DynamicLocation.createPathfindingToLocationCommand(
-                DynamicLocation.RIGHT_NEUTRAL_ZONE_CENTER_LINE,
-                Rotation2d.kCCW_90deg,
-                constraints)));
-
-    NamedCommands.registerCommand(
-        "Drive to Left Neutral Zone (Opponent Side) Through Left Trench",
-        new SequentialCommandGroup(
-            DynamicLocation.createPathfindingToLocationCommand(
-                DynamicLocation.LEFT_TRENCH, Rotation2d.fromDegrees(-30), constraints, 1.0),
-            DynamicLocation.createPathfindingToLocationCommand(
-                DynamicLocation.LEFT_NEUTRAL_ZONE_OPPONENT_SIDE,
-                Rotation2d.kCW_90deg,
-                constraints)));
-    NamedCommands.registerCommand(
-        "Drive to Left Neutral Zone (Opponent Side) Through Left Bump",
-        new SequentialCommandGroup(
-            DynamicLocation.createPathfindingToLocationCommand(
-                DynamicLocation.LEFT_BUMP, Rotation2d.fromDegrees(30), constraints, 1.0),
-            DynamicLocation.createPathfindingToLocationCommand(
-                DynamicLocation.LEFT_NEUTRAL_ZONE_OPPONENT_SIDE,
-                Rotation2d.kCCW_90deg,
-                constraints)));
-    NamedCommands.registerCommand(
-        "Drive to Right Neutral Zone (Opponent Side) Through Right Trench",
-        new SequentialCommandGroup(
-            DynamicLocation.createPathfindingToLocationCommand(
-                DynamicLocation.RIGHT_TRENCH, Rotation2d.fromDegrees(30), constraints, 1.0),
-            DynamicLocation.createPathfindingToLocationCommand(
-                DynamicLocation.RIGHT_NEUTRAL_ZONE_OPPONENT_SIDE,
-                Rotation2d.kCW_90deg,
-                constraints)));
-    NamedCommands.registerCommand(
-        "Drive to Right Neutral Zone (Opponent Side) Through Right Bump",
-        new SequentialCommandGroup(
-            DynamicLocation.createPathfindingToLocationCommand(
-                DynamicLocation.RIGHT_BUMP, Rotation2d.fromDegrees(-30), constraints, 1.0),
-            DynamicLocation.createPathfindingToLocationCommand(
-                DynamicLocation.RIGHT_NEUTRAL_ZONE_OPPONENT_SIDE,
-                Rotation2d.kCCW_90deg,
-                constraints)));
-
     NamedCommands.registerCommand("Intake In", intakeIn.asProxy().withTimeout(5));
     NamedCommands.registerCommand("Stop Intake", stopIntake.asProxy().withTimeout(0.1));
     NamedCommands.registerCommand(

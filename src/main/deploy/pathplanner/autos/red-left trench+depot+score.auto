@@ -5,27 +5,27 @@
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Deploy Some"
+            "pathName": "red-left trench to depot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "red-depot to score"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Drive to Hub (Radius)"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Launch 8 From Known Distance SDB"
+            "name": "Launch From Center Hub Path"
           }
         }
       ]
     }
   },
-  "resetOdom": false,
+  "resetOdom": true,
   "folder": "red",
   "choreoAuto": false
 }
