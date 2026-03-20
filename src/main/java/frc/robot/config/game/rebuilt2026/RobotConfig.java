@@ -99,19 +99,6 @@ public class RobotConfig {
       drive.setPose(new Pose2d(new Translation2d(1, 1), new Rotation2d()));
     }
 
-    Optional<Alliance> alliance = DriverStation.getAlliance();
-    if (alliance.isPresent()) {
-      if (alliance.get() == Alliance.Red) {
-        drive.setPose(
-            FlippingUtil.flipFieldPose(
-                new Pose2d(new Translation2d(3.493, 4.051), Rotation2d.k180deg)));
-      } else {
-        drive.setPose(new Pose2d(new Translation2d(3.493, 4.051), Rotation2d.k180deg));
-      }
-    } else {
-      drive.setPose(new Pose2d(new Translation2d(3.493, 4.051), Rotation2d.k180deg));
-    }
-
     intakeFlywheel = createFlywheel(robotProperties, "intakeFlywheel");
     shooterFlywheel = createFlywheel(robotProperties, "shooterFlywheel");
     indexerFlywheel = createFlywheel(robotProperties, "indexerFlywheel");
