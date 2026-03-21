@@ -1,15 +1,8 @@
 package frc.robot.subsystems.controls.combination;
 
-import java.util.Optional;
-import java.util.Properties;
-import java.util.Set;
-
-import org.littletonrobotics.junction.AutoLogOutput;
-
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.util.FlippingUtil;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -32,6 +25,10 @@ import frc.robot.subsystems.interfaces.Flywheel;
 import frc.robot.subsystems.interfaces.Motor;
 import frc.robot.util.Elastic;
 import frc.robot.util.Elastic.Notification;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.Set;
+import org.littletonrobotics.junction.AutoLogOutput;
 
 public class AutoControls {
   public static class AutoRoutineSettings {
@@ -159,9 +156,11 @@ public class AutoControls {
         "Launch 8 From Known Distance SDB", launch8FuelSmartDashboard.asProxy().withTimeout(4));
     NamedCommands.registerCommand(
         "Launch From Depot", launch8FuelSmartDashboard.asProxy().withTimeout(4));
-        NamedCommands.registerCommand(
-        "Launch From Center Hub Path", new SequentialCommandGroup (new InstantCommand(() -> SmartDashboard.putNumber(
-                        "Controls/launchShooterRPM", 3175)), launchSequentialParallelSmartDashBoard.asProxy()));
+    NamedCommands.registerCommand(
+        "Launch From Center Hub Path",
+        new SequentialCommandGroup(
+            new InstantCommand(() -> SmartDashboard.putNumber("Controls/launchShooterRPM", 3175)),
+            launchSequentialParallelSmartDashBoard.asProxy()));
     NamedCommands.registerCommand("Stop Launching", stopLaunching.asProxy().withTimeout(0.5));
 
     NamedCommands.registerCommand(
