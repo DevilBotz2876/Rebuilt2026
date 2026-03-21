@@ -36,6 +36,7 @@ import frc.robot.subsystems.controls.arm.IntakeArmControls;
 import frc.robot.subsystems.controls.combination.AutoControls;
 import frc.robot.subsystems.controls.combination.AutoControls.AutoRoutineSettings;
 import frc.robot.subsystems.controls.combination.DriverControls;
+import frc.robot.subsystems.controls.combination.DriverControls.DefenseControlsSettings;
 import frc.robot.subsystems.controls.combination.DriverControls.DriverControlsSettings;
 import frc.robot.subsystems.controls.drive.DriveControls;
 import frc.robot.subsystems.controls.flywheel.ConveyorControls;
@@ -147,6 +148,9 @@ public class RobotConfig {
     ConveyorControls.setupMainController(conveyorFlywheel, mainController);
     IntakeArmControls.setupController(intakeArm, mainController);
 
+    if(Boolean.parseBoolean(properties.getProperty("robot.isDefenseBot", "false"))) {
+        DriverControls.setupDefenseController(drive, assistController, DefenseControlsSettings.getDefenseControlsSettings(properties));
+    }
     DriverControls.setupMainController(
         drive,
         intakeFlywheel,
@@ -481,7 +485,9 @@ public class RobotConfig {
     }
 
     String[] cameraNames = robotProperties.getProperty("vision.cameras", "").split(", ");
+    System.out.println(cameraNames[0]);
     for (String cameraName : cameraNames) {
+        if(cameraName.isEmpty()) break;
       switch (robotProperties.getProperty(cameraName + ".cameraType")) {
         case "photon":
           vision.addCamera(

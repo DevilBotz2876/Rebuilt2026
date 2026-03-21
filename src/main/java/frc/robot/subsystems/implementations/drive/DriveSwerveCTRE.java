@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -244,5 +245,20 @@ public class DriveSwerveCTRE extends DriveBase {
   @Override
   public Command resetFieldCentricHeading() {
     return drivetrain.runOnce(drivetrain::seedFieldCentric);
+  }
+
+  public void setMaxSpeed(double linearMPS, double angularRPS) {
+    settings.maxAngularRateRadiansPerSecond = angularRPS;
+    settings.maxSpeedMetersPerSecond = linearMPS;
+    driveFieldCentric
+            .withDeadband(this.settings.maxSpeedMetersPerSecond * 0.1)
+            .withRotationalDeadband(
+                this.settings.maxAngularRateRadiansPerSecond * 0.1); // Add a 10% deadband
+
+    driveRobotCentric
+            .withDeadband(this.settings.maxSpeedMetersPerSecond * 0.1)
+            .withRotationalDeadband(
+                this.settings.maxAngularRateRadiansPerSecond * 0.1); // Add a 10% deadband
+  
   }
 }

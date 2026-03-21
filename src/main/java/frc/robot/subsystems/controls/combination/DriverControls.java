@@ -16,6 +16,7 @@ import frc.robot.commands.common.drive.DriveCommand;
 import frc.robot.commands.common.flywheel.FlywheelToVelocity;
 import frc.robot.commands.common.motor.MotorPitCommand;
 import frc.robot.commands.common.motor.MotorRunVoltageCommand;
+import frc.robot.subsystems.implementations.drive.DriveSwerveCTRE;
 import frc.robot.subsystems.interfaces.Arm;
 import frc.robot.subsystems.interfaces.Drive;
 import frc.robot.subsystems.interfaces.Flywheel;
@@ -90,6 +91,37 @@ public class DriverControls {
     }
   }
 
+  public static class DefenseControlsSettings {
+    public double xLinearSpeed = 3.5;
+    public double aLinearSpeed = 1.0;
+    public double bLinearSpeed = 2.0;
+    public double yLinearSpeed = 4.58;
+    public double xAngularSpeed = 0.75;
+    public double aAngularSpeed = 0.25;
+    public double bAngularSpeed = 0.50;
+    public double yAngularSpeed = 1.00;
+
+    public static DefenseControlsSettings getDefenseControlsSettings(Properties properties) {
+        DefenseControlsSettings settings = new DefenseControlsSettings();
+        settings.xLinearSpeed =
+            Double.parseDouble(properties.getProperty("driverControls.xLinearSpeed"));
+        settings.xAngularSpeed =
+            Double.parseDouble(properties.getProperty("driverControls.xAngularSpeed"));
+            settings.yAngularSpeed =
+            Double.parseDouble(properties.getProperty("driverControls.yAngularSpeed"));
+            settings.yLinearSpeed =
+            Double.parseDouble(properties.getProperty("driverControls.yLinearSpeed"));
+            settings.aAngularSpeed =
+            Double.parseDouble(properties.getProperty("driverControls.aAngularSpeed"));
+            settings.aLinearSpeed =
+            Double.parseDouble(properties.getProperty("driverControls.aLinearSpeed"));
+            settings.bAngularSpeed =
+            Double.parseDouble(properties.getProperty("driverControls.bAngularSpeed"));
+            settings.bLinearSpeed =
+            Double.parseDouble(properties.getProperty("driverControls.bLinearSpeed"));
+            return settings;
+    }
+  }
   public static void setupMainController(
       Drive drive,
       Flywheel intake,
@@ -266,6 +298,20 @@ public class DriverControls {
         .onTrue(
             driveForintakeCommand.until(() -> controller.leftTrigger().negate().getAsBoolean()));
   }
+  public static void setupDefenseController(
+      Drive drive,
+      CommandXboxController controller,
+      DefenseControlsSettings settings
+      ) {
+        controller.x().onTrue(new InstantCommand(() -> {((DriveSwerveCTRE) drive).setMaxSpeed(settings.xLinearSpeed, settings.xAngularSpeed);
+        }));
+        controller.y().onTrue(new InstantCommand(() -> {((DriveSwerveCTRE) drive).setMaxSpeed(settings.yLinearSpeed, settings.yAngularSpeed);
+        }));
+        controller.a().onTrue(new InstantCommand(() -> {((DriveSwerveCTRE) drive).setMaxSpeed(settings.aLinearSpeed, settings.aAngularSpeed);
+        }));
+        controller.b().onTrue(new InstantCommand(() -> {((DriveSwerveCTRE) drive).setMaxSpeed(settings.bLinearSpeed, settings.bAngularSpeed);
+        }));
+      }
 
   public static void setupAssistController(
       Drive drive,
