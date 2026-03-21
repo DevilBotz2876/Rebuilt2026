@@ -2,6 +2,7 @@ package frc.robot.subsystems.implementations.vision;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.interfaces.CameraInputsAutoLogged;
@@ -74,8 +75,11 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
 
           // one tag seen and is close than max distance then measurement is valid for estimation
           if (poseMeasurement.targetIds.length == 1
-              && poseMeasurement.robotToBestTargetDistanceInMeters
-                  <= settings.maximumSingleTagDistanceMeters) {
+                  && poseMeasurement.robotToBestTargetDistanceInMeters
+                      <= settings.maximumSingleTagDistanceMeters
+              || (poseMeasurement.targetIds.length == 1
+                  && DriverStation.isAutonomousEnabled()
+                  && poseMeasurement.robotToBestTargetDistanceInMeters <= 2.6)) {
             validPoseMeasurements.add(poseMeasurement);
             continue;
           }
@@ -125,6 +129,9 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
           } else if (isValid) {
             reason = "Cross Tag Check,  Same AprilTag as different camera";
             MatchingMeasurementInfo matchInfo = measurementToMatchMap.get(poseMeasurement);
+            if (matchInfo == null) {
+              break;
+            }
             matchDebug =
                 "Camera: "
                     + cameras.get(matchInfo.cameraIndex).getName()

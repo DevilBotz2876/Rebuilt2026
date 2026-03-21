@@ -127,6 +127,7 @@ public class MotorIOTalonFx extends MotorIOBase {
         edu.wpi.first.math.util.Units.rotationsToRadians(
             motorFx.getVelocity().getValueAsDouble() / motorSettings.motor.gearing);
 
+    inputs.isConnected = motorFx.isConnected();
     super.updateInputs(inputs);
   }
 

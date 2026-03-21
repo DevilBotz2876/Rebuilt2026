@@ -14,7 +14,9 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.config.game.rebuilt2026.tunerConstants.TunerConstants;
 import frc.robot.io.interfaces.DriveIO;
 import frc.robot.io.interfaces.DriveIOInputsAutoLogged;
@@ -117,7 +119,7 @@ public class DriveSwerveCTRE extends DriveBase {
           // outputs individual module feedforwards
           new PPHolonomicDriveController( // PPHolonomicController is the built in path following
               // controller for holonomic drive trains
-              new PIDConstants(10.0, 0.0, 0.0), // Translation PID constants
+              new PIDConstants(15.0, 0.0, 0.0), // Translation PID constants
               new PIDConstants(7.0, 0.0, 0.0) // Rotation PID constants
               ),
           config, // The robot configuration
@@ -135,6 +137,14 @@ public class DriveSwerveCTRE extends DriveBase {
           this // Reference to this subsystem to set requirements
           );
     }
+    SmartDashboard.putData(
+        getName() + "/Sysid/Dyanmic Forward", drivetrain.sysIdDynamic(Direction.kForward));
+    SmartDashboard.putData(
+        getName() + "/Sysid/Dyanmic Reverse", drivetrain.sysIdDynamic(Direction.kReverse));
+    SmartDashboard.putData(
+        getName() + "/Sysid/Quasistatic Forward", drivetrain.sysIdQuasistatic(Direction.kForward));
+    SmartDashboard.putData(
+        getName() + "/Sysid/Quasistatic Reverse", drivetrain.sysIdQuasistatic(Direction.kReverse));
   }
 
   @Override

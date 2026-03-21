@@ -1,0 +1,94 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.6443000000000003,
+        "y": 7.471522222222222
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.594540703088264,
+        "y": 7.48085130279753
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 0.40864616656513786,
+        "y": 7.329966908050284
+      },
+      "prevControl": {
+        "x": 0.40864616656513786,
+        "y": 7.579966908050283
+      },
+      "nextControl": {
+        "x": 0.40864616656513786,
+        "y": 6.776022780340078
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 0.40864616656513786,
+        "y": 5.57096576099087
+      },
+      "prevControl": {
+        "x": 0.413746855325202,
+        "y": 5.820913721523003
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.2250896057347657,
+      "rotationDegrees": -90.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "Deploy Intake",
+      "waypointRelativePos": 0.7996545768566558,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "Intake In",
+      "waypointRelativePos": 1.3108808290155507,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "Stop Intake",
+      "waypointRelativePos": 2.0,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 1.0,
+    "maxAcceleration": 1.0,
+    "maxAngularVelocity": 360.0,
+    "maxAngularAcceleration": 360.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -90.0
+  },
+  "reversed": false,
+  "folder": "red",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": false
+}

@@ -305,48 +305,248 @@ public class TunerConstants {
 
     FrontLeft =
         ConstantCreator.createModuleConstants(
-            kFrontLeftSteerMotorId,
-            kFrontLeftDriveMotorId,
-            kFrontLeftEncoderId,
-            kFrontLeftEncoderOffset,
-            kFrontLeftXPos,
-            kFrontLeftYPos,
-            kInvertLeftSide,
-            kFrontLeftSteerMotorInverted,
-            kFrontLeftEncoderInverted);
+                kFrontLeftSteerMotorId,
+                kFrontLeftDriveMotorId,
+                kFrontLeftEncoderId,
+                kFrontLeftEncoderOffset,
+                kFrontLeftXPos,
+                kFrontLeftYPos,
+                kInvertLeftSide,
+                kFrontLeftSteerMotorInverted,
+                kFrontLeftEncoderInverted)
+            .withDriveMotorGains(
+                Boolean.parseBoolean(robotProperties.getProperty("ctre.useDefaultDriveGains"))
+                    ? driveGains
+                    : (new Slot0Configs()
+                        .withKP(
+                            Double.parseDouble(
+                                robotProperties.getProperty("ctre.frontLeft.driveGains.kp", "0.0")))
+                        .withKI(
+                            Double.parseDouble(
+                                robotProperties.getProperty("ctre.frontLeft.driveGains.ki", "0.0")))
+                        .withKD(
+                            Double.parseDouble(
+                                robotProperties.getProperty("ctre.frontLeft.driveGains.kd", "0.0")))
+                        .withKS(
+                            Double.parseDouble(
+                                robotProperties.getProperty("ctre.frontLeft.driveGains.ks", "0.0")))
+                        .withKV(
+                            Double.parseDouble(
+                                robotProperties.getProperty(
+                                    "ctre.frontLeft.driveGains.kv", "0.0")))))
+            .withSteerMotorGains(
+                Boolean.parseBoolean(robotProperties.getProperty("ctre.useDefaultSteerGains"))
+                    ? steerGains
+                    : (new Slot0Configs()
+                        .withKP(
+                            Double.parseDouble(
+                                robotProperties.getProperty(
+                                    "ctre.frontRight.steerGains.kp", "0.0")))
+                        .withKI(
+                            Double.parseDouble(
+                                robotProperties.getProperty(
+                                    "ctre.frontRight.steerGains.ki", "0.0")))
+                        .withKD(
+                            Double.parseDouble(
+                                robotProperties.getProperty(
+                                    "ctre.frontRight.steerGains.kd", "0.0")))
+                        .withKS(
+                            Double.parseDouble(
+                                robotProperties.getProperty(
+                                    "ctre.frontRight.steerGains.ks", "0.0")))
+                        .withKV(
+                            Double.parseDouble(
+                                robotProperties.getProperty(
+                                    "ctre.frontRight.steerGains.kv", "0.0")))
+                        .withKA(
+                            Double.parseDouble(
+                                robotProperties.getProperty(
+                                    "ctre.frontRight.steerGains.ka", "0.0")))
+                        .withStaticFeedforwardSign(
+                            StaticFeedforwardSignValue.valueOf(
+                                robotProperties.getProperty(
+                                    "ctre.steerGains.staticFeedforwardSign", "UNKNOWN")))));
     FrontRight =
         ConstantCreator.createModuleConstants(
-            kFrontRightSteerMotorId,
-            kFrontRightDriveMotorId,
-            kFrontRightEncoderId,
-            kFrontRightEncoderOffset,
-            kFrontRightXPos,
-            kFrontRightYPos,
-            kInvertRightSide,
-            kFrontRightSteerMotorInverted,
-            kFrontRightEncoderInverted);
+                kFrontRightSteerMotorId,
+                kFrontRightDriveMotorId,
+                kFrontRightEncoderId,
+                kFrontRightEncoderOffset,
+                kFrontRightXPos,
+                kFrontRightYPos,
+                kInvertRightSide,
+                kFrontRightSteerMotorInverted,
+                kFrontRightEncoderInverted)
+            .withDriveMotorGains(
+                Boolean.parseBoolean(robotProperties.getProperty("ctre.useDefaultDriveGains"))
+                    ? driveGains
+                    : (new Slot0Configs()
+                        .withKP(
+                            Double.parseDouble(
+                                robotProperties.getProperty(
+                                    "ctre.frontRight.driveGains.kp", "0.0")))
+                        .withKI(
+                            Double.parseDouble(
+                                robotProperties.getProperty(
+                                    "ctre.frontRight.driveGains.ki", "0.0")))
+                        .withKD(
+                            Double.parseDouble(
+                                robotProperties.getProperty(
+                                    "ctre.frontRight.driveGains.kd", "0.0")))
+                        .withKS(
+                            Double.parseDouble(
+                                robotProperties.getProperty(
+                                    "ctre.frontRight.driveGains.ks", "0.0")))
+                        .withKV(
+                            Double.parseDouble(
+                                robotProperties.getProperty(
+                                    "ctre.frontRight.driveGains.kv", "0.0")))))
+            .withSteerMotorGains(
+                Boolean.parseBoolean(robotProperties.getProperty("ctre.useDefaultSteerGains"))
+                    ? steerGains
+                    : (new Slot0Configs()
+                        .withKP(
+                            Double.parseDouble(
+                                robotProperties.getProperty(
+                                    "ctre.frontRight.steerGains.kp", "0.0")))
+                        .withKI(
+                            Double.parseDouble(
+                                robotProperties.getProperty(
+                                    "ctre.frontRight.steerGains.ki", "0.0")))
+                        .withKD(
+                            Double.parseDouble(
+                                robotProperties.getProperty(
+                                    "ctre.frontRight.steerGains.kd", "0.0")))
+                        .withKS(
+                            Double.parseDouble(
+                                robotProperties.getProperty(
+                                    "ctre.frontRight.steerGains.ks", "0.0")))
+                        .withKV(
+                            Double.parseDouble(
+                                robotProperties.getProperty(
+                                    "ctre.frontRight.steerGains.kv", "0.0")))
+                        .withKA(
+                            Double.parseDouble(
+                                robotProperties.getProperty(
+                                    "ctre.frontRight.steerGains.ka", "0.0")))
+                        .withStaticFeedforwardSign(
+                            StaticFeedforwardSignValue.valueOf(
+                                robotProperties.getProperty(
+                                    "ctre.steerGains.staticFeedforwardSign", "UNKNOWN")))));
     BackLeft =
         ConstantCreator.createModuleConstants(
-            kBackLeftSteerMotorId,
-            kBackLeftDriveMotorId,
-            kBackLeftEncoderId,
-            kBackLeftEncoderOffset,
-            kBackLeftXPos,
-            kBackLeftYPos,
-            kInvertLeftSide,
-            kBackLeftSteerMotorInverted,
-            kBackLeftEncoderInverted);
+                kBackLeftSteerMotorId,
+                kBackLeftDriveMotorId,
+                kBackLeftEncoderId,
+                kBackLeftEncoderOffset,
+                kBackLeftXPos,
+                kBackLeftYPos,
+                kInvertLeftSide,
+                kBackLeftSteerMotorInverted,
+                kBackLeftEncoderInverted)
+            .withDriveMotorGains(
+                Boolean.parseBoolean(robotProperties.getProperty("ctre.useDefaultDriveGains"))
+                    ? driveGains
+                    : (new Slot0Configs()
+                        .withKP(
+                            Double.parseDouble(
+                                robotProperties.getProperty("ctre.backLeft.driveGains.kp", "0.0")))
+                        .withKI(
+                            Double.parseDouble(
+                                robotProperties.getProperty("ctre.backLeft.driveGains.ki", "0.0")))
+                        .withKD(
+                            Double.parseDouble(
+                                robotProperties.getProperty("ctre.backLeft.driveGains.kd", "0.0")))
+                        .withKS(
+                            Double.parseDouble(
+                                robotProperties.getProperty("ctre.backLeft.driveGains.ks", "0.0")))
+                        .withKV(
+                            Double.parseDouble(
+                                robotProperties.getProperty(
+                                    "ctre.backLeft.driveGains.kv", "0.0")))))
+            .withSteerMotorGains(
+                Boolean.parseBoolean(robotProperties.getProperty("ctre.useDefaultSteerGains"))
+                    ? steerGains
+                    : (new Slot0Configs()
+                        .withKP(
+                            Double.parseDouble(
+                                robotProperties.getProperty("ctre.backLeft.steerGains.kp", "0.0")))
+                        .withKI(
+                            Double.parseDouble(
+                                robotProperties.getProperty("ctre.backLeft.steerGains.ki", "0.0")))
+                        .withKD(
+                            Double.parseDouble(
+                                robotProperties.getProperty("ctre.backLeft.steerGains.kd", "0.0")))
+                        .withKS(
+                            Double.parseDouble(
+                                robotProperties.getProperty("ctre.backLeft.steerGains.ks", "0.0")))
+                        .withKV(
+                            Double.parseDouble(
+                                robotProperties.getProperty("ctre.backLeft.steerGains.kv", "0.0")))
+                        .withKA(
+                            Double.parseDouble(
+                                robotProperties.getProperty("ctre.backLeft.steerGains.ka", "0.0")))
+                        .withStaticFeedforwardSign(
+                            StaticFeedforwardSignValue.valueOf(
+                                robotProperties.getProperty(
+                                    "ctre.steerGains.staticFeedforwardSign", "UNKNOWN")))));
     BackRight =
         ConstantCreator.createModuleConstants(
-            kBackRightSteerMotorId,
-            kBackRightDriveMotorId,
-            kBackRightEncoderId,
-            kBackRightEncoderOffset,
-            kBackRightXPos,
-            kBackRightYPos,
-            kInvertRightSide,
-            kBackRightSteerMotorInverted,
-            kBackRightEncoderInverted);
+                kBackRightSteerMotorId,
+                kBackRightDriveMotorId,
+                kBackRightEncoderId,
+                kBackRightEncoderOffset,
+                kBackRightXPos,
+                kBackRightYPos,
+                kInvertRightSide,
+                kBackRightSteerMotorInverted,
+                kBackRightEncoderInverted)
+            .withDriveMotorGains(
+                Boolean.parseBoolean(robotProperties.getProperty("ctre.useDefaultDriveGains"))
+                    ? driveGains
+                    : (new Slot0Configs()
+                        .withKP(
+                            Double.parseDouble(
+                                robotProperties.getProperty("ctre.backRight.driveGains.kp", "0.0")))
+                        .withKI(
+                            Double.parseDouble(
+                                robotProperties.getProperty("ctre.backRight.driveGains.ki", "0.0")))
+                        .withKD(
+                            Double.parseDouble(
+                                robotProperties.getProperty("ctre.backRight.driveGains.kd", "0.0")))
+                        .withKS(
+                            Double.parseDouble(
+                                robotProperties.getProperty("ctre.backRight.driveGains.ks", "0.0")))
+                        .withKV(
+                            Double.parseDouble(
+                                robotProperties.getProperty(
+                                    "ctre.backRight.driveGains.kv", "0.0")))))
+            .withSteerMotorGains(
+                Boolean.parseBoolean(robotProperties.getProperty("ctre.useDefaultSteerGains"))
+                    ? steerGains
+                    : (new Slot0Configs()
+                        .withKP(
+                            Double.parseDouble(
+                                robotProperties.getProperty("ctre.backRight.steerGains.kp", "0.0")))
+                        .withKI(
+                            Double.parseDouble(
+                                robotProperties.getProperty("ctre.backRight.steerGains.ki", "0.0")))
+                        .withKD(
+                            Double.parseDouble(
+                                robotProperties.getProperty("ctre.backRight.steerGains.kd", "0.0")))
+                        .withKS(
+                            Double.parseDouble(
+                                robotProperties.getProperty("ctre.backRight.steerGains.ks", "0.0")))
+                        .withKV(
+                            Double.parseDouble(
+                                robotProperties.getProperty("ctre.backRight.steerGains.kv", "0.0")))
+                        .withKA(
+                            Double.parseDouble(
+                                robotProperties.getProperty("ctre.backRight.steerGains.ka", "0.0")))
+                        .withStaticFeedforwardSign(
+                            StaticFeedforwardSignValue.valueOf(
+                                robotProperties.getProperty(
+                                    "ctre.steerGains.staticFeedforwardSign", "UNKNOWN")))));
   }
 
   /**
