@@ -52,6 +52,7 @@ public class DriveSwerveCTRE extends DriveBase {
   private DriveSettings settings;
 
   private boolean fieldOrientedDrive = true;
+  private double defenseSpeedFactor = 1.0;
   // The field and robot centric swerve request
   private final SwerveRequest.FieldCentric driveFieldCentric;
   private final SwerveRequest.RobotCentric driveRobotCentric;
@@ -183,6 +184,14 @@ public class DriveSwerveCTRE extends DriveBase {
   @Override
   public boolean isFieldOrientedDrive() {
     return fieldOrientedDrive;
+  }
+
+  public double getDriveSpeedFactor() {
+    return defenseSpeedFactor;
+  }
+
+  public void setDriveSpeedFactor(double factor) {
+    defenseSpeedFactor = factor;
   }
 
   @Override

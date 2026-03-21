@@ -149,17 +149,18 @@ public class RobotConfig {
     IntakeArmControls.setupController(intakeArm, mainController);
 
     if(Boolean.parseBoolean(properties.getProperty("robot.isDefenseBot", "false"))) {
-        DriverControls.setupDefenseController(drive, assistController, DefenseControlsSettings.getDefenseControlsSettings(properties));
+        DriverControls.setupDefenseController(drive, mainController, DefenseControlsSettings.getDefenseControlsSettings(properties));
+    } else {
+        DriverControls.setupMainController(
+            drive,
+            intakeFlywheel,
+            shooterFlywheel,
+            indexerFlywheel,
+            conveyorFlywheel,
+            intakeArm,
+            mainController,
+            driverSettings);
     }
-    DriverControls.setupMainController(
-        drive,
-        intakeFlywheel,
-        shooterFlywheel,
-        indexerFlywheel,
-        conveyorFlywheel,
-        intakeArm,
-        mainController,
-        driverSettings);
 
     DriverControls.setupAssistController(
         drive,

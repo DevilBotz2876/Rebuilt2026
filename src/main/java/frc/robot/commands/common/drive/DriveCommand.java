@@ -4,6 +4,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.implementations.drive.DriveSwerveCTRE;
 import frc.robot.subsystems.interfaces.Drive;
 import frc.robot.util.DevilBotState;
 import java.util.Optional;
@@ -80,6 +81,12 @@ public class DriveCommand extends Command {
     if (drive.isFieldOrientedDrive() && (DevilBotState.isRedAlliance())) {
       xSpeed *= -1;
       ySpeed *= -1;
+    }
+
+    if (drive instanceof DriveSwerveCTRE) {
+      xSpeed *= ((DriveSwerveCTRE)drive).getDriveSpeedFactor();
+      ySpeed *= ((DriveSwerveCTRE)drive).getDriveSpeedFactor();
+      newRot *= ((DriveSwerveCTRE)drive).getDriveSpeedFactor();
     }
 
     ChassisSpeeds speeds =

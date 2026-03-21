@@ -303,13 +303,13 @@ public class DriverControls {
       CommandXboxController controller,
       DefenseControlsSettings settings
       ) {
-        controller.x().onTrue(new InstantCommand(() -> {((DriveSwerveCTRE) drive).setMaxSpeed(settings.xLinearSpeed, settings.xAngularSpeed);
+        controller.x().onTrue(new InstantCommand(() -> {((DriveSwerveCTRE) drive).setDriveSpeedFactor(1);
         }));
-        controller.y().onTrue(new InstantCommand(() -> {((DriveSwerveCTRE) drive).setMaxSpeed(settings.yLinearSpeed, settings.yAngularSpeed);
+        controller.y().onTrue(new InstantCommand(() -> {((DriveSwerveCTRE) drive).setDriveSpeedFactor(1.5);
         }));
-        controller.a().onTrue(new InstantCommand(() -> {((DriveSwerveCTRE) drive).setMaxSpeed(settings.aLinearSpeed, settings.aAngularSpeed);
+        controller.a().onTrue(new InstantCommand(() -> {((DriveSwerveCTRE) drive).setDriveSpeedFactor(.5);
         }));
-        controller.b().onTrue(new InstantCommand(() -> {((DriveSwerveCTRE) drive).setMaxSpeed(settings.bLinearSpeed, settings.bAngularSpeed);
+        controller.b().onTrue(new InstantCommand(() -> {((DriveSwerveCTRE) drive).setDriveSpeedFactor(.75);
         }));
       }
 
