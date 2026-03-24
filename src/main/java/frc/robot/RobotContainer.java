@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.config.game.rebuilt2026.*;
@@ -47,6 +48,8 @@ public class RobotContainer {
             .withDescription("Loading Settings for Robot Name = " + robotName));
 
     robotConfig.configureBindings();
+
+    CameraServer.startAutomaticCapture();
   }
 
   public Command getAutonomousCommand() {
