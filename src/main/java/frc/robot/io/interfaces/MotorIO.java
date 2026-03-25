@@ -50,6 +50,7 @@ public interface MotorIO {
     public double positionMeters =
         0.0; // the current position of the linear mechanism connected to the motor shaft (in
     // meters)
+    public double statorCurrentAmps = -1.0;
 
     public boolean isConnected = false;
 

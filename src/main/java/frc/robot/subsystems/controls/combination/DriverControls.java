@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -362,11 +363,8 @@ public class DriverControls {
                         "Controls/launchShooterRPM", settings.shooterDepotLaunchRPM)));
     controller
         .rightTrigger()
-        .onTrue(
-            new InstantCommand(
-                () ->
-                    SmartDashboard.putNumber(
-                        "Controls/launchShooterRPM", settings.shooterOutpostLaunchRPM)));
+        .onTrue(new FlywheelToVelocity(intake, () -> settings.intakeRPM))
+        .onFalse(stopIntake);
 
     Command intakeOut =
         new ParallelCommandGroup(
@@ -378,8 +376,9 @@ public class DriverControls {
     Command DeployerVoltagePlus =
         new MotorRunVoltageCommand((Motor) intakeArm, () -> settings.intakeArmVolts);
 
-    controller.pov(90).whileTrue(DeployerVoltagePlus).onFalse(stopIntakeArm);
-    controller.pov(270).whileTrue(DeployerVoltageMinus).onFalse(stopIntakeArm);
+    controller.pov(0).whileTrue(DeployerVoltagePlus).onFalse(stopIntakeArm);
+    controller.pov(180).whileTrue(DeployerVoltageMinus).onFalse(stopIntakeArm);
+    
 
     controller.leftTrigger().onTrue(intakeOut).onFalse(stopIntake).onFalse(stopConveyor);
   }
