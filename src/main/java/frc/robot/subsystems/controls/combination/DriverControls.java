@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -17,7 +16,6 @@ import frc.robot.commands.common.drive.DriveCommand;
 import frc.robot.commands.common.flywheel.FlywheelToVelocity;
 import frc.robot.commands.common.motor.MotorPitCommand;
 import frc.robot.commands.common.motor.MotorRunVoltageCommand;
-import frc.robot.commands.driveAssist.AssistiveInformationCommand;
 import frc.robot.subsystems.implementations.drive.DriveSwerveCTRE;
 import frc.robot.subsystems.interfaces.Arm;
 import frc.robot.subsystems.interfaces.Drive;
@@ -104,26 +102,27 @@ public class DriverControls {
     public double yAngularSpeed = 1.00;
 
     public static DefenseControlsSettings getDefenseControlsSettings(Properties properties) {
-        DefenseControlsSettings settings = new DefenseControlsSettings();
-        settings.xLinearSpeed =
-            Double.parseDouble(properties.getProperty("driverControls.xLinearSpeed"));
-        settings.xAngularSpeed =
-            Double.parseDouble(properties.getProperty("driverControls.xAngularSpeed"));
-            settings.yAngularSpeed =
-            Double.parseDouble(properties.getProperty("driverControls.yAngularSpeed"));
-            settings.yLinearSpeed =
-            Double.parseDouble(properties.getProperty("driverControls.yLinearSpeed"));
-            settings.aAngularSpeed =
-            Double.parseDouble(properties.getProperty("driverControls.aAngularSpeed"));
-            settings.aLinearSpeed =
-            Double.parseDouble(properties.getProperty("driverControls.aLinearSpeed"));
-            settings.bAngularSpeed =
-            Double.parseDouble(properties.getProperty("driverControls.bAngularSpeed"));
-            settings.bLinearSpeed =
-            Double.parseDouble(properties.getProperty("driverControls.bLinearSpeed"));
-            return settings;
+      DefenseControlsSettings settings = new DefenseControlsSettings();
+      settings.xLinearSpeed =
+          Double.parseDouble(properties.getProperty("driverControls.xLinearSpeed"));
+      settings.xAngularSpeed =
+          Double.parseDouble(properties.getProperty("driverControls.xAngularSpeed"));
+      settings.yAngularSpeed =
+          Double.parseDouble(properties.getProperty("driverControls.yAngularSpeed"));
+      settings.yLinearSpeed =
+          Double.parseDouble(properties.getProperty("driverControls.yLinearSpeed"));
+      settings.aAngularSpeed =
+          Double.parseDouble(properties.getProperty("driverControls.aAngularSpeed"));
+      settings.aLinearSpeed =
+          Double.parseDouble(properties.getProperty("driverControls.aLinearSpeed"));
+      settings.bAngularSpeed =
+          Double.parseDouble(properties.getProperty("driverControls.bAngularSpeed"));
+      settings.bLinearSpeed =
+          Double.parseDouble(properties.getProperty("driverControls.bLinearSpeed"));
+      return settings;
     }
   }
+
   public static void setupMainController(
       Drive drive,
       Flywheel intake,
@@ -299,22 +298,39 @@ public class DriverControls {
         .leftTrigger()
         .onTrue(
             driveForintakeCommand.until(() -> controller.leftTrigger().negate().getAsBoolean()));
-
   }
+
   public static void setupDefenseController(
-      Drive drive,
-      CommandXboxController controller,
-      DefenseControlsSettings settings
-      ) {
-        controller.x().onTrue(new InstantCommand(() -> {((DriveSwerveCTRE) drive).setDriveSpeedFactor(1);
-        }));
-        controller.y().onTrue(new InstantCommand(() -> {((DriveSwerveCTRE) drive).setDriveSpeedFactor(1.5);
-        }));
-        controller.a().onTrue(new InstantCommand(() -> {((DriveSwerveCTRE) drive).setDriveSpeedFactor(.5);
-        }));
-        controller.b().onTrue(new InstantCommand(() -> {((DriveSwerveCTRE) drive).setDriveSpeedFactor(.75);
-        }));
-      }
+      Drive drive, CommandXboxController controller, DefenseControlsSettings settings) {
+    controller
+        .x()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  ((DriveSwerveCTRE) drive).setDriveSpeedFactor(1);
+                }));
+    controller
+        .y()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  ((DriveSwerveCTRE) drive).setDriveSpeedFactor(1.5);
+                }));
+    controller
+        .a()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  ((DriveSwerveCTRE) drive).setDriveSpeedFactor(.5);
+                }));
+    controller
+        .b()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  ((DriveSwerveCTRE) drive).setDriveSpeedFactor(.75);
+                }));
+  }
 
   public static void setupAssistController(
       Drive drive,
@@ -380,7 +396,6 @@ public class DriverControls {
 
     controller.pov(0).whileTrue(DeployerVoltagePlus).onFalse(stopIntakeArm);
     controller.pov(180).whileTrue(DeployerVoltageMinus).onFalse(stopIntakeArm);
-    
 
     controller.leftTrigger().onTrue(intakeOut).onFalse(stopIntake).onFalse(stopConveyor);
   }

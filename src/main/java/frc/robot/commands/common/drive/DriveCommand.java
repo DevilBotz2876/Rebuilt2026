@@ -84,9 +84,9 @@ public class DriveCommand extends Command {
     }
 
     if (drive instanceof DriveSwerveCTRE) {
-      xSpeed *= ((DriveSwerveCTRE)drive).getDriveSpeedFactor();
-      ySpeed *= ((DriveSwerveCTRE)drive).getDriveSpeedFactor();
-      newRot *= ((DriveSwerveCTRE)drive).getDriveSpeedFactor();
+      xSpeed *= ((DriveSwerveCTRE) drive).getDriveSpeedFactor();
+      ySpeed *= ((DriveSwerveCTRE) drive).getDriveSpeedFactor();
+      newRot *= ((DriveSwerveCTRE) drive).getDriveSpeedFactor();
     }
 
     ChassisSpeeds speeds =

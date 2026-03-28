@@ -151,7 +151,7 @@ public class AutoControls {
         new SequentialCommandGroup(
             DeployerVoltageMinus.asProxy(), new WaitCommand(2), stopIntakeArm.asProxy()));
     NamedCommands.registerCommand(
-                "Deployer Up",
+        "Deployer Up",
         new SequentialCommandGroup(
             DeployerVoltagePlus.asProxy(), new WaitCommand(1), stopIntakeArm.asProxy()));
     NamedCommands.registerCommand(

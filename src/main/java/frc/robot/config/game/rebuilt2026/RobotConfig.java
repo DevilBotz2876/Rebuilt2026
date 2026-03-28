@@ -3,7 +3,6 @@ package frc.robot.config.game.rebuilt2026;
 import static edu.wpi.first.units.Units.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.util.FlippingUtil;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.ArmFeedforward;
@@ -14,8 +13,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color8Bit;
@@ -150,18 +147,19 @@ public class RobotConfig {
     ConveyorControls.setupMainController(conveyorFlywheel, mainController);
     IntakeArmControls.setupController(intakeArm, mainController);
 
-    if(Boolean.parseBoolean(properties.getProperty("robot.isDefenseBot", "false"))) {
-        DriverControls.setupDefenseController(drive, mainController, DefenseControlsSettings.getDefenseControlsSettings(properties));
+    if (Boolean.parseBoolean(properties.getProperty("robot.isDefenseBot", "false"))) {
+      DriverControls.setupDefenseController(
+          drive, mainController, DefenseControlsSettings.getDefenseControlsSettings(properties));
     } else {
-        DriverControls.setupMainController(
-            drive,
-            intakeFlywheel,
-            shooterFlywheel,
-            indexerFlywheel,
-            conveyorFlywheel,
-            intakeArm,
-            mainController,
-            driverSettings);
+      DriverControls.setupMainController(
+          drive,
+          intakeFlywheel,
+          shooterFlywheel,
+          indexerFlywheel,
+          conveyorFlywheel,
+          intakeArm,
+          mainController,
+          driverSettings);
     }
 
     DriverControls.setupAssistController(
@@ -183,7 +181,7 @@ public class RobotConfig {
     DriverControls.setupArmSmartDashboardControl(intakeArm);
 
     assistCommand = new AssistiveInformationCommand(drive, driverSettings);
-    
+
     if (null != this.autoChooser) {
       SmartDashboard.putData("Autonomous", this.autoChooser);
     }
@@ -492,7 +490,7 @@ public class RobotConfig {
     String[] cameraNames = robotProperties.getProperty("vision.cameras", "").split(", ");
     System.out.println(cameraNames[0]);
     for (String cameraName : cameraNames) {
-        if(cameraName.isEmpty()) break;
+      if (cameraName.isEmpty()) break;
       switch (robotProperties.getProperty(cameraName + ".cameraType")) {
         case "photon":
           vision.addCamera(
