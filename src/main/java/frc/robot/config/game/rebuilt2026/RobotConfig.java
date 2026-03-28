@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot;
+import frc.robot.commands.driveAssist.AssistiveInformationCommand;
 import frc.robot.config.game.rebuilt2026.tunerConstants.TunerConstants;
 import frc.robot.io.implementations.motor.MotorIOArmStub;
 import frc.robot.io.implementations.motor.MotorIOBase.MotorIOBaseSettings;
@@ -72,6 +73,7 @@ public class RobotConfig {
   public FlywheelMotorSubsystem indexerFlywheel;
   public FlywheelMotorSubsystem conveyorFlywheel;
   public ArmMotorSubsystem intakeArm;
+  public Command assistCommand;
 
   public Properties properties;
   // TODO: Add VisionSubsystem Declaration
@@ -180,6 +182,8 @@ public class RobotConfig {
     DriverControls.setupFlywheelSmartDashboardControl(conveyorFlywheel);
     DriverControls.setupArmSmartDashboardControl(intakeArm);
 
+    assistCommand = new AssistiveInformationCommand(drive, driverSettings);
+    
     if (null != this.autoChooser) {
       SmartDashboard.putData("Autonomous", this.autoChooser);
     }

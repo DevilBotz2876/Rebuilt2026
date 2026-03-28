@@ -17,6 +17,7 @@ import frc.robot.commands.common.drive.DriveCommand;
 import frc.robot.commands.common.flywheel.FlywheelToVelocity;
 import frc.robot.commands.common.motor.MotorPitCommand;
 import frc.robot.commands.common.motor.MotorRunVoltageCommand;
+import frc.robot.commands.driveAssist.AssistiveInformationCommand;
 import frc.robot.subsystems.implementations.drive.DriveSwerveCTRE;
 import frc.robot.subsystems.interfaces.Arm;
 import frc.robot.subsystems.interfaces.Drive;
@@ -298,6 +299,7 @@ public class DriverControls {
         .leftTrigger()
         .onTrue(
             driveForintakeCommand.until(() -> controller.leftTrigger().negate().getAsBoolean()));
+
   }
   public static void setupDefenseController(
       Drive drive,
@@ -360,7 +362,7 @@ public class DriverControls {
             new InstantCommand(
                 () ->
                     SmartDashboard.putNumber(
-                        "Controls/launchShooterRPM", settings.shooterDepotLaunchRPM)));
+                        "Controls/launchShooterRPM", settings.shooterPassRPM)));
     controller
         .rightTrigger()
         .onTrue(new FlywheelToVelocity(intake, () -> settings.intakeRPM))

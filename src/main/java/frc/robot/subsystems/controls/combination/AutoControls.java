@@ -141,6 +141,8 @@ public class AutoControls {
     SmartDashboard.putNumber("Auto/rad", 2.05);
     PathConstraints constraints = new PathConstraints(1.0, 1.0, 2 * Math.PI, 4 * Math.PI);
 
+    Command DeployerVoltagePlus =
+        new MotorRunVoltageCommand((Motor) intakeArm, () -> driverSettings.intakeArmVolts);
     Command DeployerVoltageMinus =
         new MotorRunVoltageCommand((Motor) intakeArm, () -> -driverSettings.intakeArmVolts);
 
@@ -149,9 +151,9 @@ public class AutoControls {
         new SequentialCommandGroup(
             DeployerVoltageMinus.asProxy(), new WaitCommand(2), stopIntakeArm.asProxy()));
     NamedCommands.registerCommand(
-        "Deploy Some",
+                "Deployer Up",
         new SequentialCommandGroup(
-            DeployerVoltageMinus.asProxy(), new WaitCommand(0.5), stopIntakeArm.asProxy()));
+            DeployerVoltagePlus.asProxy(), new WaitCommand(1), stopIntakeArm.asProxy()));
     NamedCommands.registerCommand(
         "Launch 8 From Known Distance SDB", launch8FuelSmartDashboard.asProxy().withTimeout(4));
     NamedCommands.registerCommand(
@@ -159,7 +161,12 @@ public class AutoControls {
     NamedCommands.registerCommand(
         "Launch From Center Hub Path",
         new SequentialCommandGroup(
-            new InstantCommand(() -> SmartDashboard.putNumber("Controls/launchShooterRPM", 3175)),
+            new InstantCommand(() -> SmartDashboard.putNumber("Controls/launchShooterRPM", 2720)),
+            launchSequentialParallelSmartDashBoard.asProxy()));
+    NamedCommands.registerCommand(
+        "Launch From Neutral Path",
+        new SequentialCommandGroup(
+            new InstantCommand(() -> SmartDashboard.putNumber("Controls/launchShooterRPM", 3725)),
             launchSequentialParallelSmartDashBoard.asProxy()));
     NamedCommands.registerCommand("Stop Launching", stopLaunching.asProxy().withTimeout(0.5));
 

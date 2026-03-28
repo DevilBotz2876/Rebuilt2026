@@ -1,0 +1,62 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "red-left trench to neutral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "red-neutral to left trench score"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Launch From Neutral Path"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Intake"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Deployer Up"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Deployer Up"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "red",
+  "choreoAuto": false
+}
