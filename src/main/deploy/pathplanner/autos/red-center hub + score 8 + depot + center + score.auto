@@ -1,0 +1,55 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "red-move back to score"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Launch From Center Hub Path"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Launching"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "red-center to depot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "red-depot to center score"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Launch From Center Hub Path"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "red",
+  "choreoAuto": false
+}

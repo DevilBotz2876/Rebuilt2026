@@ -3,7 +3,6 @@ package frc.robot.config.game.rebuilt2026;
 import static edu.wpi.first.units.Units.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.util.FlippingUtil;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.ArmFeedforward;
@@ -14,14 +13,13 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot;
+import frc.robot.commands.driveAssist.AssistiveInformationCommand;
 import frc.robot.config.game.rebuilt2026.tunerConstants.TunerConstants;
 import frc.robot.io.implementations.motor.MotorIOArmStub;
 import frc.robot.io.implementations.motor.MotorIOBase.MotorIOBaseSettings;
@@ -36,6 +34,7 @@ import frc.robot.subsystems.controls.arm.IntakeArmControls;
 import frc.robot.subsystems.controls.combination.AutoControls;
 import frc.robot.subsystems.controls.combination.AutoControls.AutoRoutineSettings;
 import frc.robot.subsystems.controls.combination.DriverControls;
+import frc.robot.subsystems.controls.combination.DriverControls.DefenseControlsSettings;
 import frc.robot.subsystems.controls.combination.DriverControls.DriverControlsSettings;
 import frc.robot.subsystems.controls.drive.DriveControls;
 import frc.robot.subsystems.controls.flywheel.ConveyorControls;
@@ -71,6 +70,7 @@ public class RobotConfig {
   public FlywheelMotorSubsystem indexerFlywheel;
   public FlywheelMotorSubsystem conveyorFlywheel;
   public ArmMotorSubsystem intakeArm;
+  public Command assistCommand;
 
   public Properties properties;
   // TODO: Add VisionSubsystem Declaration
@@ -147,15 +147,20 @@ public class RobotConfig {
     ConveyorControls.setupMainController(conveyorFlywheel, mainController);
     IntakeArmControls.setupController(intakeArm, mainController);
 
-    DriverControls.setupMainController(
-        drive,
-        intakeFlywheel,
-        shooterFlywheel,
-        indexerFlywheel,
-        conveyorFlywheel,
-        intakeArm,
-        mainController,
-        driverSettings);
+    if (Boolean.parseBoolean(properties.getProperty("robot.isDefenseBot", "false"))) {
+      DriverControls.setupDefenseController(
+          drive, mainController, DefenseControlsSettings.getDefenseControlsSettings(properties));
+    } else {
+      DriverControls.setupMainController(
+          drive,
+          intakeFlywheel,
+          shooterFlywheel,
+          indexerFlywheel,
+          conveyorFlywheel,
+          intakeArm,
+          mainController,
+          driverSettings);
+    }
 
     DriverControls.setupAssistController(
         drive,
@@ -174,6 +179,8 @@ public class RobotConfig {
     DriverControls.setupFlywheelSmartDashboardControl(indexerFlywheel);
     DriverControls.setupFlywheelSmartDashboardControl(conveyorFlywheel);
     DriverControls.setupArmSmartDashboardControl(intakeArm);
+
+    assistCommand = new AssistiveInformationCommand(drive, driverSettings);
 
     if (null != this.autoChooser) {
       SmartDashboard.putData("Autonomous", this.autoChooser);
@@ -481,7 +488,9 @@ public class RobotConfig {
     }
 
     String[] cameraNames = robotProperties.getProperty("vision.cameras", "").split(", ");
+    System.out.println(cameraNames[0]);
     for (String cameraName : cameraNames) {
+      if (cameraName.isEmpty()) break;
       switch (robotProperties.getProperty(cameraName + ".cameraType")) {
         case "photon":
           vision.addCamera(
