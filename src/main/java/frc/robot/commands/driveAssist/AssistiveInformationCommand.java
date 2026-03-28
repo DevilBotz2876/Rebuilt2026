@@ -3,7 +3,6 @@ package frc.robot.commands.driveAssist;
 import com.pathplanner.lib.util.FlippingUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -55,11 +54,11 @@ public class AssistiveInformationCommand extends Command {
 
   @Override
   public void execute() {
-    SmartDashboard.putNumber(
-        "Controls/Needed Rotation",
-        Units.radiansToDegrees(
-            drive.getPose().getRotation().getRadians()
-                - getHubScoreRotation(drive.getPose().getX(), drive.getPose().getY())));
+    // SmartDashboard.putNumber(
+    //     "Controls/Needed Rotation",
+    //     Units.radiansToDegrees(
+    //         drive.getPose().getRotation().getRadians()
+    //             - getHubScoreRotation(drive.getPose().getX(), drive.getPose().getY())));
 
     // double shooterTargetRPM = 0;
     // int correctionNeed = -2;
