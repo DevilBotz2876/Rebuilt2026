@@ -290,8 +290,14 @@ public class DriverControls {
     Command driveForintakeCommand =
         new DriveCommand(
             drive,
-            () -> MathUtil.applyDeadband(-controller.getLeftY() * (drive.isFieldOrientedDrive() ? 1 : -1), 0.05) * settings.intakeDriveSpeed,
-            () -> MathUtil.applyDeadband(-controller.getLeftX() * (drive.isFieldOrientedDrive() ? 1 : -1), 0.05) * settings.intakeDriveSpeed,
+            () ->
+                MathUtil.applyDeadband(
+                        -controller.getLeftY() * (drive.isFieldOrientedDrive() ? 1 : -1), 0.05)
+                    * settings.intakeDriveSpeed,
+            () ->
+                MathUtil.applyDeadband(
+                        -controller.getLeftX() * (drive.isFieldOrientedDrive() ? 1 : -1), 0.05)
+                    * settings.intakeDriveSpeed,
             () ->
                 MathUtil.applyDeadband(-controller.getRightX(), 0.05) * settings.intakeDriveSpeed);
     controller

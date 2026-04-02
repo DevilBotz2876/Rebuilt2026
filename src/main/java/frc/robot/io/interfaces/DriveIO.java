@@ -34,7 +34,6 @@ public class DriveIO {
     public double pigeonAccumGyroY;
     public double pigeonAccumGyroZ;
     public boolean pigeonIsConnected;
-
   }
 
   @AutoLog
@@ -88,7 +87,6 @@ public class DriveIO {
     inputs.pigeonAccumGyroY = pigeon.getAccumGyroY().getValue().baseUnitMagnitude();
     inputs.pigeonAccumGyroZ = pigeon.getAccumGyroZ().getValue().baseUnitMagnitude();
     inputs.pigeonIsConnected = pigeon.isConnected();
-   
 
     for (int i = 0; i < 4; i++) {
       SwerveModule<TalonFX, TalonFX, CANcoder> module = drivetrain.getModule(i);

@@ -14,8 +14,14 @@ public class DriveControls {
     driveSubsystem.setDefaultCommand(
         new DriveCommand(
             drive,
-            () -> MathUtil.applyDeadband(-controller.getLeftY() * (drive.isFieldOrientedDrive() ? 1 : -1), 0.05), // Robot Strafe Front/Back
-            () -> MathUtil.applyDeadband(-controller.getLeftX() * (drive.isFieldOrientedDrive() ? 1 : -1), 0.05), // Robot Strafe Left/Right
+            () ->
+                MathUtil.applyDeadband(
+                    -controller.getLeftY() * (drive.isFieldOrientedDrive() ? 1 : -1),
+                    0.05), // Robot Strafe Front/Back
+            () ->
+                MathUtil.applyDeadband(
+                    -controller.getLeftX() * (drive.isFieldOrientedDrive() ? 1 : -1),
+                    0.05), // Robot Strafe Left/Right
             () -> MathUtil.applyDeadband(-controller.getRightX(), 0.05))); // Robot Rotate
     /* Debug/Test Only:
      *    Back Button = Zero Pose
