@@ -1,6 +1,7 @@
 package frc.robot.io.interfaces;
 
 import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.swerve.SwerveModule;
 import com.pathplanner.lib.util.FlippingUtil;
@@ -22,6 +23,18 @@ public class DriveIO {
     public double flippedPoseY = 0.0;
     public double flippedPoseRotInDegrees = 0.0;
     public Translation3d currentAcceleration = new Translation3d();
+
+    public double pigeonYaw;
+    public double pigeonRoll;
+    public double pigeonPitch;
+    public double pigeonAccelerationX;
+    public double pigeonAccelerationY;
+    public double pigeonAccelerationZ;
+    public double pigeonAccumGyroX;
+    public double pigeonAccumGyroY;
+    public double pigeonAccumGyroZ;
+    public boolean pigeonIsConnected;
+
   }
 
   @AutoLog
@@ -63,6 +76,19 @@ public class DriveIO {
     inputs.flippedPoseX = inputs.flippedPose.getTranslation().getX();
     inputs.flippedPoseY = inputs.flippedPose.getTranslation().getY();
     inputs.flippedPoseRotInDegrees = inputs.flippedPose.getRotation().getDegrees();
+
+    Pigeon2 pigeon = drivetrain.getPigeon2();
+    inputs.pigeonYaw = pigeon.getYaw().getValue().baseUnitMagnitude();
+    inputs.pigeonRoll = pigeon.getRoll().getValue().baseUnitMagnitude();
+    inputs.pigeonPitch = pigeon.getPitch().getValue().baseUnitMagnitude();
+    inputs.pigeonAccelerationX = pigeon.getAccelerationX().getValue().baseUnitMagnitude();
+    inputs.pigeonAccelerationY = pigeon.getAccelerationY().getValue().baseUnitMagnitude();
+    inputs.pigeonAccelerationZ = pigeon.getAccelerationZ().getValue().baseUnitMagnitude();
+    inputs.pigeonAccumGyroX = pigeon.getAccumGyroX().getValue().baseUnitMagnitude();
+    inputs.pigeonAccumGyroY = pigeon.getAccumGyroY().getValue().baseUnitMagnitude();
+    inputs.pigeonAccumGyroZ = pigeon.getAccumGyroZ().getValue().baseUnitMagnitude();
+    inputs.pigeonIsConnected = pigeon.isConnected();
+   
 
     for (int i = 0; i < 4; i++) {
       SwerveModule<TalonFX, TalonFX, CANcoder> module = drivetrain.getModule(i);
