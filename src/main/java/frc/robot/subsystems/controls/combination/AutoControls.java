@@ -161,7 +161,7 @@ public class AutoControls {
     NamedCommands.registerCommand(
         "Launch From Center Hub Path",
         new SequentialCommandGroup(
-            new InstantCommand(() -> SmartDashboard.putNumber("Controls/launchShooterRPM", 2720)),
+            new InstantCommand(() -> SmartDashboard.putNumber("Controls/launchShooterRPM", 3200)),
             launchSequentialParallelSmartDashBoard.asProxy()));
     NamedCommands.registerCommand(
         "Launch From Neutral Path",

@@ -254,13 +254,13 @@ public class DriverControls {
                     SmartDashboard.putNumber(
                         "Controls/launchShooterRPM", settings.shooterTrenchLaunchRPM)));
 
-    controller
-        .a()
-        .onTrue(
-            new InstantCommand(
-                () ->
-                    SmartDashboard.putNumber(
-                        "Controls/launchShooterRPM", settings.shooterAgainstHubLaunchRPM)));
+    // controller
+    //     .a()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () ->
+    //                 SmartDashboard.putNumber(
+    //                     "Controls/launchShooterRPM", settings.shooterAgainstHubLaunchRPM)));
 
     // intake
     controller
@@ -290,14 +290,35 @@ public class DriverControls {
     Command driveForintakeCommand =
         new DriveCommand(
             drive,
-            () -> MathUtil.applyDeadband(-controller.getLeftY(), 0.05) * settings.intakeDriveSpeed,
-            () -> MathUtil.applyDeadband(-controller.getLeftX(), 0.05) * settings.intakeDriveSpeed,
+            () ->
+                MathUtil.applyDeadband(
+                        -controller.getLeftY() * (drive.isFieldOrientedDrive() ? 1 : -1), 0.05)
+                    * settings.intakeDriveSpeed,
+            () ->
+                MathUtil.applyDeadband(
+                        -controller.getLeftX() * (drive.isFieldOrientedDrive() ? 1 : -1), 0.05)
+                    * settings.intakeDriveSpeed,
             () ->
                 MathUtil.applyDeadband(-controller.getRightX(), 0.05) * settings.intakeDriveSpeed);
     controller
         .leftTrigger()
         .onTrue(
             driveForintakeCommand.until(() -> controller.leftTrigger().negate().getAsBoolean()));
+
+    controller
+        .a()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  ((DriveSwerveCTRE) drive).setDriveSpeedFactor(1);
+                }));
+    controller
+        .b()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  ((DriveSwerveCTRE) drive).setDriveSpeedFactor(.5);
+                }));
   }
 
   public static void setupDefenseController(

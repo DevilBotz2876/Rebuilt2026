@@ -172,6 +172,7 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
     }
 
     // add valid pose measurment to consumer
+    // if(!DriverStation.isAutonomousEnabled()) return;
     for (VisionPoseMeasurement measurement : validPoseMeasurements) {
       double distanceMeters = measurement.robotToBestTargetDistanceInMeters;
       visionMeasurementConsumer
