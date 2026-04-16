@@ -122,7 +122,7 @@ public class RobotConfig {
             intakeArm,
             autoRoutineSettings,
             driverSettings);
-        autoChooser =
+        this.autoChooser =
             AutoBuilder.buildAutoChooserWithOptionsModifier(
                 (stream) -> {
                   stream =

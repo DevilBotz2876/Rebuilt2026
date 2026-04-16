@@ -49,7 +49,7 @@ public class RobotContainer {
 
     robotConfig.configureBindings();
 
-    CameraServer.startAutomaticCapture();
+    // CameraServer.startAutomaticCapture();
   }
 
   public Command getAutonomousCommand() {

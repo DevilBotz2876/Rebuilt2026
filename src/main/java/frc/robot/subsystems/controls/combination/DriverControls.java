@@ -399,7 +399,16 @@ public class DriverControls {
             new InstantCommand(
                 () ->
                     SmartDashboard.putNumber(
-                        "Controls/launchShooterRPM", settings.shooterPassRPM)));
+                        "Controls/launchShooterRPM", settings.shooterOutpostLaunchRPM)));
+
+    controller
+        .rightBumper()
+        .onTrue(
+            new InstantCommand(
+                () ->
+                    SmartDashboard.putNumber(
+                        "Controls/launchShooterRPM", settings.shooterDepotLaunchRPM)));
+
     controller
         .rightTrigger()
         .onTrue(new FlywheelToVelocity(intake, () -> settings.intakeRPM))

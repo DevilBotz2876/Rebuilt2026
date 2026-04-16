@@ -17,6 +17,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Stop Intake"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -27,12 +33,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Stop Intake"
           }
         },
         {
@@ -51,6 +51,12 @@
           "type": "named",
           "data": {
             "name": "Deployer Up"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Spin Intake Flywheel"
           }
         }
       ]
