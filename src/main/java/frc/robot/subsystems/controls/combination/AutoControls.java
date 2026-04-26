@@ -203,8 +203,10 @@ public class AutoControls {
         DynamicLocation.createPathfindingToLocationCommand(
             DynamicLocation.DEPOT, Rotation2d.k180deg, constraints));
     NamedCommands.registerCommand("Intake In", intakeIn.asProxy().withTimeout(5));
-    NamedCommands.registerCommand("Spin Intake Flywheel", new FlywheelToVelocity(intake, () -> driverSettings.intakeRPM));
-    NamedCommands.registerCommand("Stop Intake Flywheel", new MotorRunVoltageCommand((Motor) intake, ()->0.0));
+    NamedCommands.registerCommand(
+        "Spin Intake Flywheel", new FlywheelToVelocity(intake, () -> driverSettings.intakeRPM));
+    NamedCommands.registerCommand(
+        "Stop Intake Flywheel", new MotorRunVoltageCommand((Motor) intake, () -> 0.0));
     NamedCommands.registerCommand("Stop Intake", stopIntake.asProxy().withTimeout(0.2));
     NamedCommands.registerCommand(
         "Rotate to score",

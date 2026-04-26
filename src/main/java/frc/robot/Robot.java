@@ -6,8 +6,6 @@ package frc.robot;
 
 import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.PathfindingCommand;
-import com.pathplanner.lib.util.PathPlannerLogging;
-
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -83,7 +81,7 @@ public class Robot extends LoggedRobot {
 
     FollowPathCommand.warmupCommand().schedule();
     PathfindingCommand.warmupCommand().schedule();
-    
+
     /* Start Webserver for Elastic Remote Layout JSON download */
     WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
   }
@@ -109,7 +107,9 @@ public class Robot extends LoggedRobot {
     DevilBotState.setState(State.AUTO);
 
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    SmartDashboard.putData("Auto/Run Auto Command", new InstantCommand(()-> m_robotContainer.getAutonomousCommand().schedule()));
+    SmartDashboard.putData(
+        "Auto/Run Auto Command",
+        new InstantCommand(() -> m_robotContainer.getAutonomousCommand().schedule()));
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();

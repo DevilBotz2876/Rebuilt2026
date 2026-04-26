@@ -22,8 +22,6 @@ import frc.robot.subsystems.interfaces.Arm;
 import frc.robot.subsystems.interfaces.Drive;
 import frc.robot.subsystems.interfaces.Flywheel;
 import frc.robot.subsystems.interfaces.Motor;
-
-import java.lang.reflect.Field;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -323,7 +321,6 @@ public class DriverControls {
                   ((DriveSwerveCTRE) drive).setDriveSpeedFactor(.5);
                 }));
 
-
     Field2d field = new Field2d();
     field.setRobotPose(drive.getPose());
     SmartDashboard.putData("Field", field);
@@ -436,7 +433,6 @@ public class DriverControls {
     controller.pov(180).whileTrue(DeployerVoltageMinus).onFalse(stopIntakeArm);
 
     controller.leftTrigger().onTrue(intakeOut).onFalse(stopIntake).onFalse(stopConveyor);
-
   }
 
   public static void setupPitControls() {
