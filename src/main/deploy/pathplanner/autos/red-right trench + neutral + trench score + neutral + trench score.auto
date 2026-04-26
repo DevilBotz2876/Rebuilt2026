@@ -5,9 +5,22 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "red-right trench to neutral"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "red-right trench to neutral"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 5.0
+                }
+              }
+            ]
           }
         },
         {

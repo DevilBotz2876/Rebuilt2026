@@ -44,9 +44,9 @@ public class DriveIO {
     public double driveAcceleration = 0.0;
     public double driveAppliedVolts = 0.0;
     public double driveSupplyCurrentAmps = 0.0;
-    // public double driveStatorCurrentAmps = 0.0;
-    // public double driveMotorStallCurrentAmps = 0.0;
-    // public double driveTorqueCurrentCurrentAmps = 0.0;
+    public double driveStatorCurrentAmps = 0.0;
+    public double driveMotorStallCurrentAmps = 0.0;
+    public double driveTorqueCurrentAmps = 0.0;
 
     public boolean steerConnected = false;
     public double steerPositionRad = 0.0;
@@ -54,9 +54,9 @@ public class DriveIO {
     public double steerAcceleration = 0.0;
     public double steerAppliedVolts = 0.0;
     public double steerSupplyCurrentAmps = 0.0;
-    // public double steerStatorCurrentAmps = 0.0;
-    // public double steerMotorStallCurrentAmps = 0.0;
-    // public double steerTorqueCurrentCurrentAmps = 0.0;
+    public double steerStatorCurrentAmps = 0.0;
+    public double steerMotorStallCurrentAmps = 0.0;
+    public double steerTorqueCurrentAmps = 0.0;
 
     public boolean cancoderConnected = false;
     public double cancoderPositionRad = 0.0;
@@ -109,12 +109,12 @@ public class DriveIO {
       moduleInput.driveAppliedVolts = module.getDriveMotor().getMotorVoltage().getValueAsDouble();
       moduleInput.driveSupplyCurrentAmps =
           module.getDriveMotor().getSupplyCurrent().getValueAsDouble();
-      // moduleInput.driveStatorCurrentAmps =
-      // module.getDriveMotor().getStatorCurrent().getValueAsDouble();
-      // moduleInput.driveTorqueCurrentAmps =
-      // module.getDriveMotor().getTorqueCurrent().getValueAsDouble();
-      // moduleInput.driveMotorStallCurrentAmps =
-      // module.getDriveMotor().getMotorStallCurrent().getValueAsDouble();
+      moduleInput.driveStatorCurrentAmps =
+      module.getDriveMotor().getStatorCurrent().getValueAsDouble();
+      moduleInput.driveTorqueCurrentAmps =
+      module.getDriveMotor().getTorqueCurrent().getValueAsDouble();
+      moduleInput.driveMotorStallCurrentAmps =
+      module.getDriveMotor().getMotorStallCurrent().getValueAsDouble();
 
       moduleInput.steerConnected = module.getSteerMotor().isConnected();
       moduleInput.steerPositionRad =
@@ -129,12 +129,12 @@ public class DriveIO {
       moduleInput.steerAppliedVolts = module.getSteerMotor().getMotorVoltage().getValueAsDouble();
       moduleInput.steerSupplyCurrentAmps =
           module.getSteerMotor().getSupplyCurrent().getValueAsDouble();
-      // moduleInput.steerStatorCurrentAmps =
-      // module.getSteerMotor().getStatorCurrent().getValueAsDouble();
-      // moduleInput.steerTorqueCurrentAmps =
-      // module.getSteerMotor().getTorqueCurrent().getValueAsDouble();
-      // moduleInput.steerMotorStallCurrentAmps =
-      // module.getSteerMotor().getMotorStallCurrent().getValueAsDouble();
+      moduleInput.steerStatorCurrentAmps =
+      module.getSteerMotor().getStatorCurrent().getValueAsDouble();
+      moduleInput.steerTorqueCurrentAmps =
+      module.getSteerMotor().getTorqueCurrent().getValueAsDouble();
+      moduleInput.steerMotorStallCurrentAmps =
+      module.getSteerMotor().getMotorStallCurrent().getValueAsDouble();
     }
   }
   // Other methods for controlling the drive subsystem...

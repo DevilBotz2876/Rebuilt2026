@@ -122,7 +122,7 @@ public class DriveSwerveCTRE extends DriveBase {
           new PPHolonomicDriveController( // PPHolonomicController is the built in path following
               // controller for holonomic drive trains
               new PIDConstants(15.0, 0.0, 0.0), // Translation PID constants
-              new PIDConstants(7.0, 0.0, 0.0) // Rotation PID constants
+              new PIDConstants(3.0, 0.0, 0.0) // Rotation PID constants
               ),
           config, // The robot configuration
           () -> {

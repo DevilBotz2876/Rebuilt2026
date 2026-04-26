@@ -7,43 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "red-move back to score"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Launch From Center Hub Path"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 3.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Stop Launching"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Stop Launching"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Stop Launching"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "red-center to depot"
+            "pathName": "red-left trench to neutral 0.75 mps"
           }
         },
         {
@@ -55,13 +19,44 @@
         {
           "type": "path",
           "data": {
-            "pathName": "red-depot to center score"
+            "pathName": "red-neutral to left trench score 0.75 mps"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Launch From Neutral Path"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Launch From Center Hub Path"
+            "name": "Deployer Up"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Deployer Up"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Spin Intake Flywheel"
           }
         }
       ]

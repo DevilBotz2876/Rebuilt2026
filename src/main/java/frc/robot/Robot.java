@@ -6,11 +6,14 @@ package frc.robot;
 
 import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.PathfindingCommand;
+import com.pathplanner.lib.util.PathPlannerLogging;
+
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.util.DevilBotState;
 import frc.robot.util.DevilBotState.State;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -77,8 +80,10 @@ public class Robot extends LoggedRobot {
 
     SmartDashboard.putData(CommandScheduler.getInstance());
     // Warms up pathplanner commands so that first path does not have large delay
+
     FollowPathCommand.warmupCommand().schedule();
     PathfindingCommand.warmupCommand().schedule();
+    
     /* Start Webserver for Elastic Remote Layout JSON download */
     WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
   }
@@ -104,6 +109,7 @@ public class Robot extends LoggedRobot {
     DevilBotState.setState(State.AUTO);
 
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    SmartDashboard.putData("Auto/Run Auto Command", new InstantCommand(()-> m_robotContainer.getAutonomousCommand().schedule()));
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
