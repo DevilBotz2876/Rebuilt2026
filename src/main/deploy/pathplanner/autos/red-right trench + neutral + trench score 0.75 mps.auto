@@ -7,19 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "red-left trench to neutral"
+            "pathName": "red-right trench to neutral 0.75mps"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "red-neutral to left trench score"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Stop Intake"
+            "pathName": "red-neutral to right trench score 0.75 mps"
           }
         },
         {
@@ -33,6 +27,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Intake"
           }
         },
         {
@@ -51,12 +51,6 @@
           "type": "named",
           "data": {
             "name": "Deployer Up"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Spin Intake Flywheel"
           }
         }
       ]

@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "red-left trench to neutral"
+            "pathName": "red-left trench to neutral 0.75 mps"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "red-neutral to left trench score"
+            "pathName": "red-neutral to left trench score 0.75 mps"
           }
         },
         {

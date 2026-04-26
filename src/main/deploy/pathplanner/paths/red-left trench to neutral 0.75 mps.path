@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 3.9970222222222223,
-        "y": 0.6283260000000004
+        "y": 7.441288888888889
       },
       "prevControl": null,
       "nextControl": {
         "x": 5.613009600195001,
-        "y": 0.6283260000000004
+        "y": 7.441288888888889
       },
       "isLocked": false,
       "linkedName": null
@@ -17,15 +17,15 @@
     {
       "anchor": {
         "x": 6.375377777777777,
-        "y": 0.6283260000000004
+        "y": 7.441288888888889
       },
       "prevControl": {
         "x": 5.951631488672063,
-        "y": 0.6283260000000004
+        "y": 7.441288888888889
       },
       "nextControl": {
         "x": 6.801633230803973,
-        "y": 0.6283260000000004
+        "y": 7.441288888888889
       },
       "isLocked": false,
       "linkedName": null
@@ -33,15 +33,15 @@
     {
       "anchor": {
         "x": 7.745955555555556,
-        "y": 1.2023260000000002
+        "y": 6.8668555555555555
       },
       "prevControl": {
         "x": 7.745955555555556,
-        "y": 0.290125057315211
+        "y": 7.779056498240345
       },
       "nextControl": {
         "x": 7.745955555555556,
-        "y": 1.9783148888888888
+        "y": 6.090866666666667
       },
       "isLocked": false,
       "linkedName": null
@@ -49,11 +49,11 @@
     {
       "anchor": {
         "x": 7.746,
-        "y": 2.4823260000000005
+        "y": 5.587
       },
       "prevControl": {
         "x": 7.746,
-        "y": 2.2323260000000005
+        "y": 5.837
       },
       "nextControl": null,
       "isLocked": false,
@@ -62,12 +62,12 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.3357015985790408,
+      "waypointRelativePos": 0.2984014209591479,
       "rotationDegrees": 0.0
     },
     {
-      "waypointRelativePos": 2.142095914742455,
-      "rotationDegrees": 90.0
+      "waypointRelativePos": 2.1687388987566707,
+      "rotationDegrees": -90.0
     }
   ],
   "constraintZones": [],
@@ -86,27 +86,27 @@
     },
     {
       "name": "Intake In",
-      "waypointRelativePos": 1.848776223776221,
+      "waypointRelativePos": 1.7952755905511686,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "Intake In"
+          "name": "Spin Intake Flywheel"
         }
       }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 1.5,
-    "maxAcceleration": 10.0,
+    "maxVelocity": 0.75,
+    "maxAcceleration": 0.75,
     "maxAngularVelocity": 720.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 90.0
+    "velocity": 0.02,
+    "rotation": -90.0
   },
   "reversed": false,
   "folder": "red",

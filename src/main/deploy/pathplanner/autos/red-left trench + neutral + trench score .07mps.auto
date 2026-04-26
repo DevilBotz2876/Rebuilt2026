@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "red-left trench to neutral"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "red-neutral to left trench score"
+            "pathName": "red-left trench to neutral 0.75 mps"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Stop Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "red-neutral to left trench score 0.75 mps"
           }
         },
         {

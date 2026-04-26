@@ -62,11 +62,11 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.6,
+      "waypointRelativePos": 0.2984014209591479,
       "rotationDegrees": 0.0
     },
     {
-      "waypointRelativePos": 1.95,
+      "waypointRelativePos": 2.1687388987566707,
       "rotationDegrees": -90.0
     }
   ],
@@ -86,7 +86,7 @@
     },
     {
       "name": "Intake In",
-      "waypointRelativePos": 1.848776223776221,
+      "waypointRelativePos": 1.7952755905511686,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -98,14 +98,14 @@
   ],
   "globalConstraints": {
     "maxVelocity": 1.5,
-    "maxAcceleration": 1.5,
-    "maxAngularVelocity": 360.0,
-    "maxAngularAcceleration": 540.0,
+    "maxAcceleration": 10.0,
+    "maxAngularVelocity": 720.0,
+    "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 0.02,
     "rotation": -90.0
   },
   "reversed": false,

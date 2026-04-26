@@ -29,9 +29,27 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Stop Launching"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Launching"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "red-center to depot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Intake"
           }
         },
         {
