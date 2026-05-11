@@ -56,7 +56,6 @@ public class AutoControls {
     }
   }
 
-  private static Drive drive = null;
   @AutoLogOutput private static Pose2d pose = new Pose2d();
 
   public static void registerNamedCommands(
@@ -137,7 +136,6 @@ public class AutoControls {
             stopConveyor.asProxy().withTimeout(0.25),
             stopIndexer.asProxy().withTimeout(0.25));
 
-    AutoControls.drive = drive;
     SmartDashboard.putNumber("Auto/rad", 2.05);
     PathConstraints constraints = new PathConstraints(1.0, 1.0, 2 * Math.PI, 4 * Math.PI);
 

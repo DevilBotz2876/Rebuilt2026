@@ -129,6 +129,8 @@ public class MotorIOTalonFx extends MotorIOBase {
 
     inputs.isConnected = motorFx.isConnected();
     inputs.statorCurrentAmps = motorFx.getStatorCurrent().getValueAsDouble();
+    inputs.torqueCurrentAmps = motorFx.getTorqueCurrent().getValueAsDouble();
+    inputs.motorStallCurrentAmps = motorFx.getMotorStallCurrent().getValueAsDouble();
     super.updateInputs(inputs);
   }
 
