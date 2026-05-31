@@ -11,39 +11,71 @@
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "Launch From Center Hub Path"
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 2.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Launch From Center Hub Path"
+                }
+              }
+            ]
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 3.0
+            "waitTime": 2.0
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Stop Launching"
+            "name": "Stop Conveyor"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Stop Launching"
+            "name": "Stop Indexer"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Stop Launching"
+            "name": "Stop Shooter"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "red-center to depot"
+            "name": "Stop Shooter"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "red-center to depot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stop Shooting Parallel"
+                }
+              }
+            ]
           }
         },
         {
@@ -62,6 +94,24 @@
           "type": "named",
           "data": {
             "name": "Launch From Center Hub Path"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Deployer Up"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Deployer Up"
           }
         }
       ]

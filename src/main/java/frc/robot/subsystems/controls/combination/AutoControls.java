@@ -159,14 +159,15 @@ public class AutoControls {
     NamedCommands.registerCommand(
         "Launch From Center Hub Path",
         new SequentialCommandGroup(
-            new InstantCommand(() -> SmartDashboard.putNumber("Controls/launchShooterRPM", 2876)),
+            new InstantCommand(() -> SmartDashboard.putNumber("Controls/launchShooterRPM", 2700)),
             launchSequentialParallelSmartDashBoard.asProxy()));
     NamedCommands.registerCommand(
         "Launch From Neutral Path",
         new SequentialCommandGroup(
-            new InstantCommand(() -> SmartDashboard.putNumber("Controls/launchShooterRPM", 3725)),
+            new InstantCommand(() -> SmartDashboard.putNumber("Controls/launchShooterRPM", 3000)),
             launchSequentialParallelSmartDashBoard.asProxy()));
     NamedCommands.registerCommand("Stop Launching", stopLaunching.asProxy().withTimeout(0.5));
+    NamedCommands.registerCommand("Stop Conveyor", stopConveyor.asProxy().withTimeout(0.5));
 
     NamedCommands.registerCommand(
         "Start Shooter from Radius Distance",
@@ -182,7 +183,8 @@ public class AutoControls {
         "Start Shooter (3250RPM)", new FlywheelToVelocity(shooter, () -> 3250));
     NamedCommands.registerCommand(
         "Start Shooter (3600RPM)", new FlywheelToVelocity(shooter, () -> 3600));
-    NamedCommands.registerCommand("Stop Shooter", stopShooter.asProxy().withTimeout(0.25));
+    NamedCommands.registerCommand("Stop Shooter", stopShooter.asProxy().withTimeout(0.75));
+    NamedCommands.registerCommand("Stop Shooting Parallel", stopShooter.asProxy().withTimeout(4));
 
     NamedCommands.registerCommand(
         "Drive to Hub (Radius)",
@@ -206,6 +208,7 @@ public class AutoControls {
     NamedCommands.registerCommand(
         "Stop Intake Flywheel", new MotorRunVoltageCommand((Motor) intake, () -> 0.0));
     NamedCommands.registerCommand("Stop Intake", stopIntake.asProxy().withTimeout(0.2));
+    NamedCommands.registerCommand("Stop Indexer", stopIndexer.asProxy().withTimeout(0.75));
     NamedCommands.registerCommand(
         "Rotate to score",
         Commands.defer(

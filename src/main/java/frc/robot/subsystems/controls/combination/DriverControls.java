@@ -185,7 +185,12 @@ public class DriverControls {
 
     Command intakeInDynamic =
         new ParallelCommandGroup(
-            new FlywheelToVelocity(intake, () -> SmartDashboard.getNumber(((SubsystemBase) intake).getName() + "/Commands/Set Speed", settings.intakeRPM)),
+            new FlywheelToVelocity(
+                intake,
+                () ->
+                    SmartDashboard.getNumber(
+                        ((SubsystemBase) intake).getName() + "/Commands/Set Speed",
+                        settings.intakeRPM)),
             new FlywheelToVelocity(conveyor, () -> settings.conveyorLaunchRPM),
             new MotorRunVoltageCommand(
                 (Motor) intakeArm, () -> settings.intakeArmWhileInakingVolts));
@@ -271,21 +276,21 @@ public class DriverControls {
     //                     "Controls/launchShooterRPM", settings.shooterAgainstHubLaunchRPM)));
 
     // // intake uncomment once intake RPM is set.
+    controller
+        .leftTrigger()
+        .whileTrue(intakeIn)
+        .onFalse(stopIntake)
+        .onFalse(stopConveyor)
+        .onFalse(stopIntakeArm);
+
+    // comment once intake RPM is set.
     // controller
     //     .leftTrigger()
-    //     .whileTrue(intakeIn)
+    //     .whileTrue(intakeInDynamic)
     //     .onFalse(stopIntake)
     //     .onFalse(stopConveyor)
     //     .onFalse(stopIntakeArm);
 
-    // comment once intake RPM is set.
-    controller
-        .leftTrigger()
-        .whileTrue(intakeInDynamic)
-        .onFalse(stopIntake)
-        .onFalse(stopConveyor)
-        .onFalse(stopIntakeArm);
-        
     controller.leftBumper().whileTrue(intakeOut).onFalse(stopIntake).onFalse(stopConveyor);
 
     // deployer
