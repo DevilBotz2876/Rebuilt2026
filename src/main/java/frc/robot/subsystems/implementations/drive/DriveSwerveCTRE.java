@@ -14,6 +14,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -57,6 +58,7 @@ public class DriveSwerveCTRE extends DriveBase {
   private final SwerveRequest.FieldCentric driveFieldCentric;
   private final SwerveRequest.RobotCentric driveRobotCentric;
   private final SwerveRequest.ApplyRobotSpeeds pathApplyRobotSpeeds; // the speeds for pathplanner
+  private final SwerveRequest.SwerveDriveBrake xBrake = new SwerveRequest.SwerveDriveBrake();
 
   DriveIO io = new DriveIO();
   private final DriveIOInputsAutoLogged inputs = new DriveIOInputsAutoLogged();
@@ -70,7 +72,10 @@ public class DriveSwerveCTRE extends DriveBase {
   public DriveSwerveCTRE(TunerConstants tunerConstants, DriveSettings settings) {
     super("CTRE");
     drivetrain = tunerConstants.createDrivetrain();
+    drivetrain.getModule(2).getSteerMotor().setPosition(Angle.ofBaseUnits(0, Degree));
     this.settings = settings;
+
+    
     // Ensure max speed is less than or equal to max speed at 12v
     this.settings.maxSpeedMetersPerSecond =
         Math.min(
@@ -224,9 +229,8 @@ public class DriveSwerveCTRE extends DriveBase {
   }
 
   @Override
-  public void lockPose() {
-    SwerveRequest.SwerveDriveBrake xBrake = new SwerveRequest.SwerveDriveBrake();
-    drivetrain.setControl(xBrake);
+  public Command lockPose() {
+    return drivetrain.applyRequest(() -> xBrake);
   }
 
   @Override

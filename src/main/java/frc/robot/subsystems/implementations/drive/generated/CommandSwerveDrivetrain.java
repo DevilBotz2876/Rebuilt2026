@@ -4,6 +4,9 @@ import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.configs.FeedbackConfigs;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -114,6 +117,12 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
   public CommandSwerveDrivetrain(
       SwerveDrivetrainConstants drivetrainConstants, SwerveModuleConstants<?, ?, ?>... modules) {
     super(drivetrainConstants, modules);
+    final FeedbackConfigs BLConfigs = new FeedbackConfigs();
+    final TalonFX BLSteerMotor = getModule(2).getSteerMotor();
+    BLSteerMotor.getConfigurator().refresh(BLConfigs);
+    BLConfigs.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
+    BLConfigs.SensorToMechanismRatio = modules[2].SteerMotorGearRatio;
+    BLSteerMotor.getConfigurator().apply(BLConfigs);
     if (Utils.isSimulation()) {
       startSimThread();
     }

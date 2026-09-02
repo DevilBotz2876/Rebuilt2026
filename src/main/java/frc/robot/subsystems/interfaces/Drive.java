@@ -6,6 +6,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 public interface Drive {
   public static class Constants {
@@ -80,7 +81,9 @@ public interface Drive {
     return 0;
   }
 
-  public default void lockPose() {}
+  public default Command lockPose() {
+    return new InstantCommand();
+  }
 
   public default void addVisionMeasurement(
       Pose2d robotPose, double timestamp, Matrix<N3, N1> visionMeasurementStdDevs) {}

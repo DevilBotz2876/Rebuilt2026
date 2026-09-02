@@ -454,6 +454,7 @@ public class DriverControls {
     controller.pov(180).whileTrue(DeployerVoltageMinus).onFalse(stopIntakeArm);
 
     controller.leftTrigger().onTrue(intakeOut).onFalse(stopIntake).onFalse(stopConveyor);
+    controller.leftStick().whileTrue(drive.lockPose());
   }
 
   public static void setupPitControls() {
